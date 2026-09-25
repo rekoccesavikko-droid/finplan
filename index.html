@@ -146,6 +146,10 @@ select{padding:9px 10px}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--surface);border-radius:22px 22px 0 0;max-height:92vh;overflow:auto;padding:10px 16px calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .25s ease;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .sheet.on{transform:none}
 @media (prefers-reduced-motion:reduce){.sheet,.backdrop{transition:none}}
+@supports (height:100dvh){.sheet{max-height:92dvh}}
+html.tg .sheet{max-height:calc(var(--tg-viewport-stable-height,100vh) - 12px)}
+button,label,select,input{touch-action:manipulation}
+.actions{position:sticky;bottom:calc(-20px - env(safe-area-inset-bottom,0px));background:var(--surface);padding:10px 0 calc(20px + env(safe-area-inset-bottom,0px));margin-bottom:calc(-20px - env(safe-area-inset-bottom,0px));z-index:2;border-top:1px solid var(--line)}
 .grab{width:40px;height:5px;border-radius:99px;background:var(--line);margin:2px auto 0}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--surface-2);border-radius:12px;padding:3px;gap:3px}
 .seg button{border:0;background:transparent;padding:8px 6px;border-radius:9px;font-size:13.5px;color:var(--ink-2)}
@@ -379,7 +383,7 @@ details.card[open] summary::after{transform:rotate(90deg)}
   <div id="pvBox" hidden style="display:flex;flex-direction:column;gap:10px">
     <div class="spread"><b id="pvTitle"></b><button type="button" class="btn-ghost" id="pvToggle">Снять все</button></div>
     <div class="pv" id="pv"></div>
-    <div class="grid2"><button type="button" id="pvCancel">Отмена</button><button type="button" class="btn-primary" id="pvSave">Сохранить</button></div>
+    <div class="grid2 actions"><button type="button" id="pvCancel">Отмена</button><button type="button" class="btn-primary" id="pvSave">Сохранить</button></div>
   </div>
 </div>
 
@@ -391,7 +395,10 @@ details.card[open] summary::after{transform:rotate(90deg)}
   <select id="eCat" aria-label="Категория"></select>
   <input type="text" id="eNote" aria-label="Описание" placeholder="Описание">
   <div class="grid2"><input type="date" id="eDate" aria-label="Дата"><select id="eWho" aria-label="Кто"></select></div>
-  <div class="grid2"><button type="button" id="eDel" style="color:var(--bad)">Удалить</button><button type="button" class="btn-primary" id="eSave">Сохранить</button></div>
+  <label class="spread" for="eRemember" style="gap:12px"><span>Всегда относить к этой категории траты, в названии которых есть:</span><input type="checkbox" id="eRemember" class="sw-in"></label>
+  <input type="text" id="eKey" aria-label="Слово для правила" placeholder="например, vv_kkm">
+  <p class="hint" id="eKeyHint">Сработает для будущих выписок и похожих трат, которые уже есть. Все правила — в меню ⋯ → «Правила категорий».</p>
+  <div class="grid2 actions"><button type="button" id="eDel" style="color:var(--bad)">Удалить</button><button type="button" class="btn-primary" id="eSave">Сохранить</button></div>
 </div>
 
 <!-- WIZARD SHEET -->
@@ -419,11 +426,23 @@ details.card[open] summary::after{transform:rotate(90deg)}
   <button type="button" class="btn-primary" id="wGo">Рассчитать бюджет</button>
 </div>
 
+<!-- RULES SHEET -->
+<div class="sheet" id="rulesSheet" role="dialog" aria-modal="true" aria-labelledby="rulesTitle" hidden>
+  <div class="grab"></div>
+  <div class="spread"><h2 id="rulesTitle">Правила категорий</h2><button type="button" class="btn-ghost" data-close aria-label="Закрыть">✕</button></div>
+  <p class="hint">Если в названии траты встречается слово — трата попадёт в выбранную категорию. Регистр не важен, можно часть слова.</p>
+  <div class="grid2"><input type="text" id="rKey" placeholder="например, vv_kkm" aria-label="Слово в названии"><select id="rCat" aria-label="Категория"></select></div>
+  <button type="button" class="btn-primary" id="rAdd">Добавить правило</button>
+  <div class="msg" id="rMsg" aria-live="polite"></div>
+  <div id="rulesList"></div>
+</div>
+
 <!-- MENU SHEET -->
 <div class="sheet" id="menuSheet" role="dialog" aria-modal="true" aria-labelledby="menuTitle" hidden>
   <div class="grab"></div>
   <div class="spread"><h2 id="menuTitle">Ещё</h2><button type="button" class="btn-ghost" data-close aria-label="Закрыть">✕</button></div>
   <div class="menu">
+    <button type="button" id="rulesBtn">Правила категорий<small>Какое название — в какую категорию. Работает для будущих выписок</small></button>
     <button type="button" id="cpNew">Скопировать новые для Google Таблицы<small>Вставьте в лист «Траты», первая пустая ячейка колонки A</small></button>
     <button type="button" id="cpAll">Скопировать весь месяц<small>Если нужно перенести заново</small></button>
     <button type="button" id="csvDl">Скачать месяц в CSV<small>Для Excel или Google Таблиц</small></button>
@@ -441,7 +460,7 @@ details.card[open] summary::after{transform:rotate(90deg)}
 <script>
 (function(){
 "use strict";
-const CONFIG = {"ai": false, "fw": {"per": {"Продукты": [17.5, 0.7], "Кафе и доставка": [7.5, 0.3], "Транспорт и такси": [4, 0.3], "Здоровье и спорт": [3.5, 0.6], "Красота и уход": [2.5, 0.2], "Одежда и обувь": [4, 0.8], "Развлечения и хобби": [3.5, 0.5], "Подарки": [2, 0.4], "Прочее": [4, 0.3]}, "shared": {"ЖКУ и связь": [8, 0.12], "Дом и быт": [5, 0.15], "Подписки": [1.5, 0.05]}, "kid": {"Ребёнок": 10}}, "family": [2, 0], "have": [null, null], "budCushion": 31.5, "budIncome": 225, "budCapital": 13.5, "weights": {"ЖКУ и связь": 8, "Продукты": 35, "Кафе и доставка": 15, "Транспорт и такси": 8, "Здоровье и спорт": 7, "Красота и уход": 5, "Одежда и обувь": 8, "Дом и быт": 5, "Развлечения и хобби": 7, "Подписки": 1.5, "Подарки": 4, "Прочее": 8}, "mode": "public", "useDb": false, "who": ["Общее", "Я", "Партнёр"], "defaults": {"kid": 0, "flat": 0, "base": 2026, "age": 28, "cap0": 2, "infl": 6, "ret": 10, "s_sal": 0.48, "s_bon": 0, "s_gift": 0, "extra": 0, "bm": 3, "gm": 12, "sg": 3, "exp": 1.5, "rent": 50, "birth": 2029, "c0": -0.2, "c1": 0, "ccost": 0.6, "cend": 22, "price": 15, "pg": 6, "buy": 2033, "flim": 12, "frate": 6, "fterm": 30, "mkt": 0, "mrate": 16, "mterm": 20, "renov": 1.5, "maint": 0.05, "resv": 1.5, "swr": 3.5, "prices": [10, 15, 20, 25, 30]}, "cats": [["Аренда", 50], ["Кредиты", 0], ["ЖКУ и связь", 8], ["Продукты", 35], ["Кафе и доставка", 15], ["Транспорт и такси", 8], ["Здоровье и спорт", 7], ["Красота и уход", 5], ["Одежда и обувь", 8], ["Дом и быт", 5], ["Развлечения и хобби", 7], ["Подписки", 1.5], ["Подарки", 4], ["Прочее", 8], ["Ребёнок", 0], ["Путешествия и крупные покупки", 15]], "keywords": [["Аренда", ["аренд", "хозяйке квартир", "за квартиру"]], ["Кредиты", ["кредит", "ипотек", "займ", "рассрочк", "долями", "сплит", "split", "погашение"]], ["ЖКУ и связь", ["mts", "beeline", "megafon", "tele2", "rostelecom", "mosenergo", "mosenergosbyt", "zhku", "zhkh", "жку", "жкх", "коммунал", "электроэнерг", "мосэнерго", "свет ", "интернет", "связь", "мобильн", "мтс", "билайн", "мегафон", "теле2", "tele2", "ростелеком"]], ["Продукты", ["pyaterochka", "perekrestok", "vkusvill", "magnit", "auchan", "ashan", "lenta", "dixy", "azbuka vkusa", "samokat", "lavka", "metro cc", "spar", "verniy", "vernyi", "chizhik", "vkusvill", "пятерочк", "перекрест", "вкусвилл", "магнит", "ашан", "лента", "дикси", "азбука вкуса", "самокат", "лавка", "продукт", "супермаркет", "metro", "окей", "глобус", "spar", "виктория", "верный", "бристоль", "красное и белое", "чижик", "хлеб", "молок", "овощ", "фрукт"]], ["Кафе и доставка", ["cofix", "starbucks", "shokoladnitsa", "coffee", "kofe", "cafe", "kafe", "restoran", "vkusno i tochka", "kfc", "rostics", "burger", "sushi", "pizza", "yandex*eda", "yandex eda", "delivery club", "teremok", "dodo", "кофе", "кафе", "ресторан", "бар ", "обед", "ужин", "завтрак", "доставк", "шоколадниц", "cofix", "старбакс", "вкусно и точка", "kfc", "ростикс", "бургер", "суши", "пицц", "шаурм", "кофейн", "кондитер", "delivery", "яндекс еда", "еда"]], ["Транспорт и такси", ["yandex*go", "yandex go", "yandex.taxi", "yandex taxi", "yandex*taxi", "taxi", "uber", "citymobil", "lukoil", "gazprom", "rosneft", "shell", "azs", "delimobil", "citydrive", "belkacar", "mos.transport", "mosmetro", "metro moskva", "parking", "parkovka", "whoosh", "urent", "такси", "метро", "транспорт", "бензин", "заправк", "азс", "лукойл", "газпромнефть", "роснефть", "каршеринг", "делимобиль", "ситидрайв", "яндекс драйв", "парковк", "электричк", "тройк", "автобус", "самокат аренда", "whoosh", "юрент"]], ["Здоровье и спорт", ["apteka", "pharm", "ozerki", "rigla", "gorzdrav", "medsi", "invitro", "gemotest", "klinika", "clinic", "fitness", "world class", "аптек", "врач", "клиник", "анализ", "стоматолог", "спорт", "фитнес", "трениров", "бассейн", "йог", "массаж", "лекарств", "витамин", "медси", "инвитро", "гемотест"]], ["Красота и уход", ["zolotoe yabloko", "goldapple", "letual", "rive gauche", "ile de beaute", "beauty", "salon", "barber", "маникюр", "педикюр", "стрижк", "парикмах", "салон", "косметик", "золотое яблоко", "летуаль", "рив гош", "барбер", "брови", "ресниц", "шампун", "крем"]], ["Одежда и обувь", ["zara", "uniqlo", "lamoda", "sportmaster", "hm ", "h&m", "befree", "gloria jeans", "love republic", "ostin", "12storeez", "ekonika", "одежд", "обув", "zara", "uniqlo", "lamoda", "кроссовк", "платье", "куртк", "джинс", "футболк", "love republic", "befree", "gloria jeans", "спортмастер"]], ["Дом и быт", ["ikea", "leroy", "leroymerlin", "hoff", "fix price", "fixprice", "икеа", "ikea", "леруа", "хозтовар", "быт", "посуд", "уборк", "химчистк", "порошок", "hoff", "fix price", "фикс прайс", "ремонт", "мебель"]], ["Развлечения и хобби", ["cinema", "karo", "formula kino", "theatre", "teatr", "museum", "muzey", "litres", "chitai-gorod", "bookvoed", "steam", "playstation", "кино", "театр", "концерт", "музей", "выставк", "книг", "игр", "хобби", "боулинг", "квест", "караоке", "билет на"]], ["Подписки", ["kinopoisk", "okko", "ivi", "spotify", "apple.com", "itunes", "yandex plus", "yandex.plus", "google", "netflix", "youtube", "icloud", "openai", "anthropic", "wink", "premier", "подписк", "яндекс плюс", "плюс", "netflix", "spotify", "кинопоиск", "icloud", "okko", "ivi", "premier", "wink", "chatgpt", "claude", "telegram premium", "youtube"]], ["Подарки", ["flowers", "cvety", "tsvety", "подар", "цвет", "букет"]], ["Ребёнок", ["подгузн", "детск", "ребен", "игрушк", "садик", "няня", "детский мир"]], ["Путешествия и крупные покупки", ["aeroflot", "pobeda", "s7 ", "utair", "rzd", "booking", "airbnb", "hotel", "otel", "ostrovok", "tutu", "aviasales", "отел", "гостиниц", "авиа", "самолет", "аэрофлот", "победа", "s7", "поезд", "ржд", "путешеств", "airbnb", "booking", "отпуск", "тур ", "виза", "островок", "суточно"]]], "bankMap": {"Кредиты": "Кредиты", "Кредит": "Кредиты", "Погашение кредитов": "Кредиты", "Погашение кредита": "Кредиты", "Супермаркеты": "Продукты", "Продукты": "Продукты", "Рестораны": "Кафе и доставка", "Фастфуд": "Кафе и доставка", "Кафе": "Кафе и доставка", "Доставка еды": "Кафе и доставка", "Такси": "Транспорт и такси", "Транспорт": "Транспорт и такси", "Местный транспорт": "Транспорт и такси", "Топливо": "Транспорт и такси", "Каршеринг": "Транспорт и такси", "Автоуслуги": "Транспорт и такси", "Аренда авто": "Транспорт и такси", "Аптеки": "Здоровье и спорт", "Медицина": "Здоровье и спорт", "Спорттовары": "Здоровье и спорт", "Спорт": "Здоровье и спорт", "Красота": "Красота и уход", "Косметика": "Красота и уход", "Одежда и обувь": "Одежда и обувь", "Одежда": "Одежда и обувь", "Дом и ремонт": "Дом и быт", "Хозтовары": "Дом и быт", "Мебель": "Дом и быт", "Электроника и техника": "Дом и быт", "Развлечения": "Развлечения и хобби", "Кино": "Развлечения и хобби", "Книги": "Развлечения и хобби", "Музыка": "Развлечения и хобби", "Искусство": "Развлечения и хобби", "Фото и видео": "Развлечения и хобби", "Образование": "Развлечения и хобби", "Цифровые товары": "Подписки", "Сервис": "Подписки", "Мобильная связь": "ЖКУ и связь", "Связь": "ЖКУ и связь", "Коммунальные услуги": "ЖКУ и связь", "ЖКХ": "ЖКУ и связь", "Интернет": "ЖКУ и связь", "Связь, интернет": "ЖКУ и связь", "Цветы": "Подарки", "Подарки": "Подарки", "Сувениры": "Подарки", "Авиабилеты": "Путешествия и крупные покупки", "Ж/д билеты": "Путешествия и крупные покупки", "Отели": "Путешествия и крупные покупки", "Турагентства": "Путешествия и крупные покупки", "Duty Free": "Путешествия и крупные покупки", "Путешествия": "Путешествия и крупные покупки", "Детские товары": "Ребёнок", "Рестораны и кафе": "Кафе и доставка", "Автомобиль": "Транспорт и такси", "Здоровье и красота": "Здоровье и спорт", "Одежда и аксессуары": "Одежда и обувь", "Отдых и развлечения": "Развлечения и хобби", "Все для дома": "Дом и быт", "Всё для дома": "Дом и быт", "Коммунальные платежи, связь, интернет.": "ЖКУ и связь", "Коммунальные платежи, связь, интернет": "ЖКУ и связь", "Прочие расходы": "Прочее", "Прочие операции": "Прочее", "Выдача наличных": "Прочее", "Перевод с карты": "Прочее", "Перевод СБП": "Прочее", "Переводы": "Прочее", "Товары для детей": "Ребёнок", "Путешествия и отдых": "Путешествия и крупные покупки", "Питание": "Кафе и доставка", "Продуктовые магазины": "Продукты", "Кафе и рестораны": "Кафе и доставка", "Здоровье": "Здоровье и спорт", "Красота и здоровье": "Красота и уход", "Дом": "Дом и быт", "Развлечения и хобби": "Развлечения и хобби", "Подписки": "Подписки", "Животные": "Прочее", "Наличные": "Прочее", "Госуслуги": "Прочее", "Другое": "Прочее", "Маркетплейсы": "Прочее", "Финансовые услуги": "Прочее"}, "persona": "Ты — финансовый помощник человека или семьи в России. Помогаешь вести бюджет, понимать траты и планировать капитал, квартиру и финансовую свободу.", "sugg": ["Как я иду по бюджету в этом месяце?", "Где можно сократить без боли?", "Сколько мне нужно для финансовой свободы?", "Потяну ли я квартиру из плана?"], "budgetNote": "Это пример. Укажите свой доход и нажмите «Разложить по доходу» или поменяйте цифры справа. Через 1–2 месяца учёта поправьте план по факту.", "localStatus": "Только на этом устройстве", "standalone": true};
+const CONFIG = {"ai": false, "fw": {"per": {"Продукты": [17.5, 0.7], "Кафе и доставка": [7.5, 0.3], "Транспорт и такси": [4, 0.3], "Здоровье и спорт": [3.5, 0.6], "Красота и уход": [2.5, 0.2], "Одежда и обувь": [4, 0.8], "Развлечения и хобби": [3.5, 0.5], "Подарки": [2, 0.4], "Прочее": [4, 0.3]}, "shared": {"ЖКУ и связь": [8, 0.12], "Дом и быт": [5, 0.15], "Подписки": [1.5, 0.05]}, "kid": {"Ребёнок": 10}}, "family": [2, 0], "have": [null, null], "budCushion": 31.5, "budIncome": 225, "budCapital": 13.5, "weights": {"ЖКУ и связь": 8, "Продукты": 35, "Кафе и доставка": 15, "Транспорт и такси": 8, "Здоровье и спорт": 7, "Красота и уход": 5, "Одежда и обувь": 8, "Дом и быт": 5, "Развлечения и хобби": 7, "Подписки": 1.5, "Подарки": 4, "Прочее": 8}, "mode": "public", "useDb": false, "who": ["Общее", "Я", "Партнёр"], "defaults": {"kid": 0, "flat": 0, "base": 2026, "age": 28, "cap0": 2, "infl": 6, "ret": 10, "s_sal": 0.48, "s_bon": 0, "s_gift": 0, "extra": 0, "bm": 3, "gm": 12, "sg": 3, "exp": 1.5, "rent": 50, "birth": 2029, "c0": -0.2, "c1": 0, "ccost": 0.6, "cend": 22, "price": 15, "pg": 6, "buy": 2033, "flim": 12, "frate": 6, "fterm": 30, "mkt": 0, "mrate": 16, "mterm": 20, "renov": 1.5, "maint": 0.05, "resv": 1.5, "swr": 3.5, "prices": [10, 15, 20, 25, 30]}, "cats": [["Аренда", 50], ["Кредиты", 0], ["ЖКУ и связь", 8], ["Продукты", 35], ["Кафе и доставка", 15], ["Транспорт и такси", 8], ["Здоровье и спорт", 7], ["Красота и уход", 5], ["Одежда и обувь", 8], ["Дом и быт", 5], ["Развлечения и хобби", 7], ["Подписки", 1.5], ["Подарки", 4], ["Прочее", 8], ["Ребёнок", 0], ["Путешествия и крупные покупки", 15]], "keywords": [["Аренда", ["аренд", "хозяйке квартир", "за квартиру"]], ["Кредиты", ["кредит", "ипотек", "займ", "рассрочк", "долями", "сплит", "split", "погашение"]], ["ЖКУ и связь", ["mts", "beeline", "megafon", "tele2", "rostelecom", "mosenergo", "mosenergosbyt", "zhku", "zhkh", "жку", "жкх", "коммунал", "электроэнерг", "мосэнерго", "свет ", "интернет", "связь", "мобильн", "мтс", "билайн", "мегафон", "теле2", "tele2", "ростелеком"]], ["Продукты", ["vv_kkm", "vv kkm", "pyaterochka", "perekrestok", "vkusvill", "magnit", "auchan", "ashan", "lenta", "dixy", "azbuka vkusa", "samokat", "lavka", "metro cc", "spar", "verniy", "vernyi", "chizhik", "vkusvill", "пятерочк", "перекрест", "вкусвилл", "магнит", "ашан", "лента", "дикси", "азбука вкуса", "самокат", "лавка", "продукт", "супермаркет", "metro", "окей", "глобус", "spar", "виктория", "верный", "бристоль", "красное и белое", "чижик", "хлеб", "молок", "овощ", "фрукт"]], ["Кафе и доставка", ["restaurant", "restoran", "cofix", "starbucks", "shokoladnitsa", "coffee", "kofe", "cafe", "kafe", "restoran", "vkusno i tochka", "kfc", "rostics", "burger", "sushi", "pizza", "yandex*eda", "yandex eda", "delivery club", "teremok", "dodo", "кофе", "кафе", "ресторан", "бар ", "обед", "ужин", "завтрак", "доставк", "шоколадниц", "cofix", "старбакс", "вкусно и точка", "kfc", "ростикс", "бургер", "суши", "пицц", "шаурм", "кофейн", "кондитер", "delivery", "яндекс еда", "еда"]], ["Транспорт и такси", ["yandex*go", "yandex go", "yandex.taxi", "yandex taxi", "yandex*taxi", "taxi", "uber", "citymobil", "lukoil", "gazprom", "rosneft", "shell", "azs", "delimobil", "citydrive", "belkacar", "mos.transport", "mosmetro", "metro moskva", "parking", "parkovka", "whoosh", "urent", "такси", "метро", "транспорт", "бензин", "заправк", "азс", "лукойл", "газпромнефть", "роснефть", "каршеринг", "делимобиль", "ситидрайв", "яндекс драйв", "парковк", "электричк", "тройк", "автобус", "самокат аренда", "whoosh", "юрент"]], ["Здоровье и спорт", ["apteka", "pharm", "ozerki", "rigla", "gorzdrav", "medsi", "invitro", "gemotest", "klinika", "clinic", "fitness", "world class", "аптек", "врач", "клиник", "анализ", "стоматолог", "спорт", "фитнес", "трениров", "бассейн", "йог", "массаж", "лекарств", "витамин", "медси", "инвитро", "гемотест"]], ["Красота и уход", ["zolotoe yabloko", "goldapple", "letual", "rive gauche", "ile de beaute", "beauty", "salon", "barber", "маникюр", "педикюр", "стрижк", "парикмах", "салон", "косметик", "золотое яблоко", "летуаль", "рив гош", "барбер", "брови", "ресниц", "шампун", "крем"]], ["Одежда и обувь", ["zara", "uniqlo", "lamoda", "sportmaster", "hm ", "h&m", "befree", "gloria jeans", "love republic", "ostin", "12storeez", "ekonika", "одежд", "обув", "zara", "uniqlo", "lamoda", "кроссовк", "платье", "куртк", "джинс", "футболк", "love republic", "befree", "gloria jeans", "спортмастер"]], ["Дом и быт", ["ikea", "leroy", "leroymerlin", "hoff", "fix price", "fixprice", "икеа", "ikea", "леруа", "хозтовар", "быт", "посуд", "уборк", "химчистк", "порошок", "hoff", "fix price", "фикс прайс", "ремонт", "мебель"]], ["Развлечения и хобби", ["cinema", "karo", "formula kino", "theatre", "teatr", "museum", "muzey", "litres", "chitai-gorod", "bookvoed", "steam", "playstation", "кино", "театр", "концерт", "музей", "выставк", "книг", "игр", "хобби", "боулинг", "квест", "караоке", "билет на"]], ["Подписки", ["kinopoisk", "okko", "ivi", "spotify", "apple.com", "itunes", "yandex plus", "yandex.plus", "google", "netflix", "youtube", "icloud", "openai", "anthropic", "wink", "premier", "подписк", "яндекс плюс", "плюс", "netflix", "spotify", "кинопоиск", "icloud", "okko", "ivi", "premier", "wink", "chatgpt", "claude", "telegram premium", "youtube"]], ["Подарки", ["flowers", "cvety", "tsvety", "подар", "цвет", "букет"]], ["Ребёнок", ["подгузн", "детск", "ребен", "игрушк", "садик", "няня", "детский мир"]], ["Путешествия и крупные покупки", ["aeroflot", "pobeda", "s7 ", "utair", "rzd", "booking", "airbnb", "hotel", "otel", "ostrovok", "tutu", "aviasales", "отел", "гостиниц", "авиа", "самолет", "аэрофлот", "победа", "s7", "поезд", "ржд", "путешеств", "airbnb", "booking", "отпуск", "тур ", "виза", "островок", "суточно"]]], "bankMap": {"Кредиты": "Кредиты", "Кредит": "Кредиты", "Погашение кредитов": "Кредиты", "Погашение кредита": "Кредиты", "Супермаркеты": "Продукты", "Продукты": "Продукты", "Рестораны": "Кафе и доставка", "Фастфуд": "Кафе и доставка", "Кафе": "Кафе и доставка", "Доставка еды": "Кафе и доставка", "Такси": "Транспорт и такси", "Транспорт": "Транспорт и такси", "Местный транспорт": "Транспорт и такси", "Топливо": "Транспорт и такси", "Каршеринг": "Транспорт и такси", "Автоуслуги": "Транспорт и такси", "Аренда авто": "Транспорт и такси", "Аптеки": "Здоровье и спорт", "Медицина": "Здоровье и спорт", "Спорттовары": "Здоровье и спорт", "Спорт": "Здоровье и спорт", "Красота": "Красота и уход", "Косметика": "Красота и уход", "Одежда и обувь": "Одежда и обувь", "Одежда": "Одежда и обувь", "Дом и ремонт": "Дом и быт", "Хозтовары": "Дом и быт", "Мебель": "Дом и быт", "Электроника и техника": "Дом и быт", "Развлечения": "Развлечения и хобби", "Кино": "Развлечения и хобби", "Книги": "Развлечения и хобби", "Музыка": "Развлечения и хобби", "Искусство": "Развлечения и хобби", "Фото и видео": "Развлечения и хобби", "Образование": "Развлечения и хобби", "Цифровые товары": "Подписки", "Сервис": "Подписки", "Мобильная связь": "ЖКУ и связь", "Связь": "ЖКУ и связь", "Коммунальные услуги": "ЖКУ и связь", "ЖКХ": "ЖКУ и связь", "Интернет": "ЖКУ и связь", "Связь, интернет": "ЖКУ и связь", "Цветы": "Подарки", "Подарки": "Подарки", "Сувениры": "Подарки", "Авиабилеты": "Путешествия и крупные покупки", "Ж/д билеты": "Путешествия и крупные покупки", "Отели": "Путешествия и крупные покупки", "Турагентства": "Путешествия и крупные покупки", "Duty Free": "Путешествия и крупные покупки", "Путешествия": "Путешествия и крупные покупки", "Детские товары": "Ребёнок", "Рестораны и кафе": "Кафе и доставка", "Автомобиль": "Транспорт и такси", "Здоровье и красота": "Здоровье и спорт", "Одежда и аксессуары": "Одежда и обувь", "Отдых и развлечения": "Развлечения и хобби", "Все для дома": "Дом и быт", "Всё для дома": "Дом и быт", "Коммунальные платежи, связь, интернет.": "ЖКУ и связь", "Коммунальные платежи, связь, интернет": "ЖКУ и связь", "Прочие расходы": "Прочее", "Прочие операции": "Прочее", "Выдача наличных": "Прочее", "Перевод с карты": "Прочее", "Перевод СБП": "Прочее", "Переводы": "Прочее", "Товары для детей": "Ребёнок", "Путешествия и отдых": "Путешествия и крупные покупки", "Питание": "Кафе и доставка", "Продуктовые магазины": "Продукты", "Кафе и рестораны": "Кафе и доставка", "Здоровье": "Здоровье и спорт", "Красота и здоровье": "Красота и уход", "Дом": "Дом и быт", "Развлечения и хобби": "Развлечения и хобби", "Подписки": "Подписки", "Животные": "Прочее", "Наличные": "Прочее", "Госуслуги": "Прочее", "Другое": "Прочее", "Маркетплейсы": "Прочее", "Финансовые услуги": "Прочее"}, "persona": "Ты — финансовый помощник человека или семьи в России. Помогаешь вести бюджет, понимать траты и планировать капитал, квартиру и финансовую свободу.", "sugg": ["Как я иду по бюджету в этом месяце?", "Где можно сократить без боли?", "Сколько мне нужно для финансовой свободы?", "Потяну ли я квартиру из плана?"], "budgetNote": "Это пример. Укажите свой доход и нажмите «Разложить по доходу» или поменяйте цифры справа. Через 1–2 месяца учёта поправьте план по факту.", "localStatus": "Только на этом устройстве", "standalone": true};
 const DEFAULTS = CONFIG.defaults;
 let P = JSON.parse(JSON.stringify(DEFAULTS)); P.base=new Date().getFullYear();
 
@@ -751,7 +770,7 @@ const lsGet=k=>{ try{ const v=localStorage.getItem(LS+k); return v?JSON.parse(v)
 const lsSet=(k,v)=>{ try{ localStorage.setItem(LS+k,JSON.stringify(v)); }catch(e){} };
 /* Telegram cloud: each user's data lives in their own Telegram account, never on our side */
 let CLOUD=null;
-const tgCall=(fn,...a)=>new Promise((res,rej)=>{ try{ fn(...a,(err,val)=>err?rej(err):res(val)); }catch(e){ rej(e); } });
+const tgCall=(fn,...a)=>Promise.race([new Promise((res,rej)=>{ try{ fn(...a,(err,val)=>err?rej(err):res(val)); }catch(e){ rej(e); } }), new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),8000))]);
 const ckey=p=>p.replace(/[^A-Za-z0-9_-]/g,"_");
 async function cloudGet(path){
   const cs=CLOUD, k=ckey(path);
@@ -762,7 +781,7 @@ async function cloudGet(path){
 }
 async function cloudSet(path,val){
   const cs=CLOUD, k=ckey(path), str=JSON.stringify(val), parts=[];
-  for(let i=0;i<str.length;i+=3800) parts.push(str.slice(i,i+3800));
+  for(let i=0;i<str.length;i+=1800) parts.push(str.slice(i,i+1800));
   const oldN=parseInt(await tgCall(cs.getItem.bind(cs),k+"__n"),10)||0;
   for(let i=0;i<parts.length;i++) await tgCall(cs.setItem.bind(cs),k+"__"+i,parts[i]);
   await tgCall(cs.setItem.bind(cs),k+"__n",String(parts.length));
@@ -776,7 +795,7 @@ async function initTelegram(){
   const W=window.Telegram&&window.Telegram.WebApp; if(!W||!W.initData) return false;
   try{ W.ready(); W.expand(); if(W.disableVerticalSwipes) W.disableVerticalSwipes(); if(W.setHeaderColor) W.setHeaderColor("bg_color"); }catch(e){}
   if(!W.CloudStorage||!(W.isVersionAtLeast&&W.isVersionAtLeast("6.9"))) return false;
-  CLOUD=W.CloudStorage; downloads=null; return true;
+  CLOUD=W.CloudStorage; downloads=null; document.documentElement.classList.add("tg"); return true;
 }
 async function getDoc(path){
   if(db){ try{ const s=await db.doc(path).get(); return s.exists?s.data():null; }catch(e){} }
@@ -896,7 +915,7 @@ function mutateMonth(ym,fn,inc){
     const fresh=db?await loadMonth(ym):(XP[ym]||await loadMonth(ym));
     const items=fn(fresh.slice());
     XP[ym]=items; if(inc!==undefined) INC[ym]=inc;
-    await setDoc("expenses/"+ym,{items,income:INC[ym]??null,updated:new Date().toISOString()});
+    const w=setDoc("expenses/"+ym,{items,income:INC[ym]??null,updated:new Date().toISOString()}); if(!CLOUD) await w;
     if(ym===VM) renderAll();
   }).catch(()=>{});
   return mchain[ym];
@@ -1071,7 +1090,7 @@ function prog(p){ const el=$("#prog"); if(p===null){ el.hidden=true; return; } e
 /* local parser (works without Claude) */
 const KW=CONFIG.keywords;
 function guessCat(text){
-  const rk=normKey(text); if(rk&&RULES[rk]&&catNames().includes(RULES[rk])) return RULES[rk];
+  const rc=ruleCat(text); if(rc) return rc;
   const t=text.toLowerCase().replace(/ё/g,"е");
   for(const [cat,list] of KW){ if(!catNames().includes(cat)) continue; for(const k of list){ if(t.includes(k)) return cat; } }
   return "Прочее";
@@ -1168,10 +1187,28 @@ function cleanMerchant(s){
 }
 
 let RULES={};
-const normKey=s=>String(s||"").toLowerCase().replace(/ё/g,"е").replace(/[^a-zа-я ]/g," ").split(" ").filter(w=>w.length>1).slice(0,3).join(" ");
-function learn(note,cat){ const k=normKey(note); if(!k||k.length<3) return; if(RULES[k]===cat) return; RULES[k]=cat; setDoc("plan/rules",{map:RULES}); }
+const normText=s=>String(s||"").toLowerCase().replace(/ё/g,"е");
+function ruleFor(text){
+  const t=normText(text), tn=t.replace(/[^a-zа-я0-9_ ]/g," ").replace(/\s+/g," ");
+  let best=null;
+  for(const [p,c] of Object.entries(RULES)){ if(!p||!catNames().includes(c)) continue; if((t.includes(p)||tn.includes(p))&&(!best||p.length>best[0].length)) best=[p,c]; }
+  return best;
+}
+const ruleCat=text=>{ const r=ruleFor(text); return r?r[1]:null; };
+function suggestKey(note){
+  const t=normText(cleanMerchant(note)).replace(/[«»"'.,;:()]/g," ").trim(); const tok=t.split(/\s+/).filter(Boolean);
+  if(!tok.length) return ""; return (tok[0].length>=5||!tok[1]?tok[0]:tok[0]+" "+tok[1]).slice(0,40);
+}
+function saveRules(){ setDoc("plan/rules",{map:RULES}); }
+function applyRule(p,cat){
+  let n=0;
+  for(const ym of Object.keys(XP)){ const items=XP[ym]||[]; const k=items.filter(i=>i.c!==cat&&normText(i.n).includes(p)).length; if(!k) continue; n+=k;
+    mutateMonth(ym,arr=>arr.map(i=>(i.c!==cat&&normText(i.n).includes(p))?Object.assign({},i,{c:cat,chk:false}):i)); }
+  return n;
+}
+function learn(note,cat){ const k=suggestKey(note); if(!k||k.length<3) return; if(RULES[k]===cat) return; RULES[k]=cat; saveRules(); }
 function categorize(desc,bankCat,mcc){
-  const k=normKey(desc); if(k&&RULES[k]&&catNames().includes(RULES[k])) return RULES[k];
+  const rc=ruleCat(desc); if(rc) return rc;
   const bc=String(bankCat||"").trim();
   if(bc&&BANK_MAP[bc]&&catNames().includes(BANK_MAP[bc])) return BANK_MAP[bc];
   const m=mccCat(mcc); if(m&&catNames().includes(m)) return m;
@@ -1219,7 +1256,7 @@ function tableLocal(rows){
     const d=toISO(r[iDate]); if(!d) continue;
     const note=cleanMerchant(descRaw)||bcat;
     let cat=categorize(note,bcat,iMcc>=0?r[iMcc]:null), chk=false;
-    if(/^переводы?$/i.test(bcat)||TRANSFER_RE.test(descRaw)){ if(!RULES[normKey(note)]) cat="Прочее"; chk=true; }
+    if(/^переводы?$/i.test(bcat)||TRANSFER_RE.test(descRaw)){ if(!ruleCat(note)) cat="Прочее"; chk=true; }
     const it=cleanItem({date:d,amount:amt,category:cat,note,s:"выписка",chk}); if(it) out.push(it);
   }
   return out;
@@ -1254,7 +1291,7 @@ function pdfLocal(text){
     let note=cleanMerchant(o.detail&&(bankCat||o.desc.length<4)?o.detail:(o.desc.replace(bankCat,"").trim()||o.detail))||bankCat||"Операция";
     const key=o.d+"|"+o.a+"|"+note; if(seen.has(key)) continue; seen.add(key);
     let cat=categorize(note,bankCat,null), chk=false;
-    if(TRANSFER_RE.test(full)){ if(!RULES[normKey(note)]) cat="Прочее"; chk=true; }
+    if(TRANSFER_RE.test(full)){ if(!ruleCat(note)) cat="Прочее"; chk=true; }
     const it=cleanItem({date:o.d,amount:o.a,category:cat,note,s:"выписка",chk}); if(it) out.push(it);
   }
   return out;
@@ -1312,6 +1349,7 @@ $("#bankFile").addEventListener("change",async e=>{
 
 /* preview */
 async function showPreview(items){
+  try{ if(document.activeElement&&document.activeElement.blur) document.activeElement.blur(); }catch(e){}
   const yms=[...new Set(items.map(i=>ymOf(i.d)))];
   for(const ym of yms) if(!XP[ym]) await loadMonth(ym);
   const seen=new Set();
@@ -1337,6 +1375,8 @@ $("#pvToggle").addEventListener("click",()=>{ const any=PENDING.some(p=>p.on); P
 $("#pvCancel").addEventListener("click",()=>{ resetPreview(); msg(""); });
 $("#pvSave").addEventListener("click",async()=>{
   const list=PENDING.filter(p=>p.on).map(p=>p.it); if(!list.length){ msg("Ничего не отмечено.",true); return; }
+  const btn=$("#pvSave"); if(btn.disabled) return; btn.disabled=true; btn.textContent="Сохраняю…";
+  setTimeout(()=>{ btn.disabled=false; btn.textContent="Сохранить"; },2500);
   const sum=list.reduce((t,i)=>t+i.a,0); const firstYM=ymOf(list.sort((a,b)=>b.d.localeCompare(a.d))[0].d);
   await addItems(list); resetPreview(); $("#aiText").value="";
   msg(`Сохранено: ${plural(list.length,"трата","траты","трат")} на ${rub(sum)}.`);
@@ -1349,18 +1389,37 @@ let EDIT=null;
 function openEdit(id){
   const it=(XP[VM]||[]).find(i=>i.id===id); if(!it) return; EDIT=it;
   $("#eAmt").value=it.a; fillSel($("#eCat"),catNames(),it.c); $("#eNote").value=it.n||""; $("#eDate").value=it.d; fillSel($("#eWho"),WHO,it.w);
+  const r=ruleFor(it.n); $("#eKey").value=r?r[0]:suggestKey(it.n); $("#eRemember").checked=!!(r&&r[1]===it.c);
   openSheet("#editSheet");
 }
 $("#eSave").addEventListener("click",async()=>{
   if(!EDIT) return; const old=EDIT;
   const it=cleanItem({id:old.id,date:$("#eDate").value,amount:$("#eAmt").value,category:$("#eCat").value,note:$("#eNote").value,who:$("#eWho").value,x:old.x,s:old.s});
   if(!it) return;
-  if(it.c!==old.c) learn(it.n,it.c);
+  let applied=0; const key=normText($("#eKey").value).trim();
+  if($("#eRemember").checked&&key.length>=2){ RULES[key]=it.c; saveRules(); applied=1; }
   if(ymOf(it.d)===ymOf(old.d)) await mutateMonth(ymOf(old.d),items=>items.map(i=>i.id===old.id?it:i));
   else { await mutateMonth(ymOf(old.d),items=>items.filter(i=>i.id!==old.id)); await addItems([it]); }
+  if(applied){ applyRule(key,it.c); }
   closeSheet();
 });
 $("#eDel").addEventListener("click",async()=>{ if(!EDIT) return; const old=EDIT; await mutateMonth(ymOf(old.d),items=>items.filter(i=>i.id!==old.id)); closeSheet(); });
+
+$("#eCat").addEventListener("change",()=>{ if($("#eKey").value.trim()) $("#eRemember").checked=true; });
+
+/* rules sheet */
+function renderRules(){
+  const list=Object.entries(RULES).filter(([p,c])=>p&&catNames().includes(c)).sort((a,b)=>a[1].localeCompare(b[1])||a[0].localeCompare(b[0]));
+  $("#rulesList").innerHTML=list.length?list.map(([p,c])=>`<div class="spread" style="padding:9px 0;border-top:1px solid var(--line)"><span style="min-width:0"><b>«${esc(p)}»</b> <span class="hint">→</span> ${esc(c)}</span><button type="button" class="btn-ghost" data-rm="${esc(p)}" aria-label="Удалить правило">✕</button></div>`).join(""):`<p class="hint">Правил пока нет. Добавьте ниже или отметьте «Всегда относить…» при исправлении траты.</p>`;
+  $("#rulesList").querySelectorAll("button[data-rm]").forEach(b=>b.addEventListener("click",()=>{ delete RULES[b.dataset.rm]; saveRules(); renderRules(); }));
+}
+$("#rulesBtn").addEventListener("click",()=>{ closeSheet(true); fillSel($("#rCat"),catNames(),"Продукты"); $("#rKey").value=""; $("#rMsg").textContent=""; renderRules(); openSheet("#rulesSheet"); });
+$("#rAdd").addEventListener("click",()=>{
+  const k=normText($("#rKey").value).trim(), c=$("#rCat").value;
+  if(k.length<2){ $("#rMsg").textContent="Впишите слово или часть названия, например vv_kkm."; $("#rMsg").className="msg err"; return; }
+  RULES[k]=c; saveRules(); const n=applyRule(k,c); renderRules(); $("#rKey").value="";
+  $("#rMsg").className="msg"; $("#rMsg").textContent=`Готово: «${k}» → ${c}.`+(n?` Исправила уже внесённые траты: ${n}.`:"");
+});
 
 /* menu: export / backup */
 $("#moreBtn").addEventListener("click",()=>{ $("#menuMsg").textContent=""; $("#cpBox").hidden=true; $("#bkPasteGo")?.remove(); $("#homeText").hidden=true; $("#bkSave").hidden=!downloads&&!!db; $("#csvDl").hidden=!downloads; openSheet("#menuSheet"); });
