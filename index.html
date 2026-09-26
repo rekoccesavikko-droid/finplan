@@ -20,7 +20,8 @@
 <style>
 :root{
   --bg:#f2f4f1; --surface:#ffffff; --surface-2:#e9eee8; --line:#dbe1d9;
-  --ink:#16201b; --ink-2:#48554f; --ink-3:#7a8680;
+  --ink:#16201b; --ink-2:#48554f; --ink-3:#5f6b65;
+  --c-cush:#2a78d6; --c-cap:#16955f;
   --accent:#1f6b52; --accent-ink:#ffffff; --accent-soft:#dcebe3;
   --s1:#2a78d6; --s2:#eb6834;
   --good:#1f7a3f; --good-bg:#e1f1e5; --bad:#b3261e; --bad-bg:#fbe4e1; --warn:#8a5a00; --warn-bg:#fff1cf;
@@ -34,7 +35,8 @@
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#0f1412; --surface:#161d1a; --surface-2:#1e2723; --line:#2a3531;
-    --ink:#e7eee9; --ink-2:#a9b6af; --ink-3:#7c8a83;
+    --ink:#e7eee9; --ink-2:#a9b6af; --ink-3:#8a988f;
+    --c-cush:#3987e5; --c-cap:#35a878;
     --accent:#5cc49b; --accent-ink:#0b1510; --accent-soft:#1c3a2e;
     --s1:#3987e5; --s2:#d95926;
     --good:#6fd394; --good-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1c1a; --warn:#f2c35b; --warn-bg:#3a2e12;
@@ -45,7 +47,8 @@
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0f1412; --surface:#161d1a; --surface-2:#1e2723; --line:#2a3531;
-  --ink:#e7eee9; --ink-2:#a9b6af; --ink-3:#7c8a83;
+  --ink:#e7eee9; --ink-2:#a9b6af; --ink-3:#8a988f;
+    --c-cush:#3987e5; --c-cap:#35a878;
   --accent:#5cc49b; --accent-ink:#0b1510; --accent-soft:#1c3a2e;
   --s1:#3987e5; --s2:#d95926;
   --good:#6fd394; --good-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1c1a; --warn:#f2c35b; --warn-bg:#3a2e12;
@@ -240,6 +243,46 @@ details.card[open] summary::after{transform:rotate(90deg)}
 .menu button{border:0;border-top:1px solid var(--line);border-radius:0;text-align:left;padding:14px 4px;background:transparent;font-size:15px}
 .menu button:first-child{border-top:0}
 .menu button small{display:block;color:var(--ink-3);font-size:12.5px;font-weight:400}
+
+/* plan v2 */
+.steps{display:flex;flex-direction:column}
+.stp{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
+.stp:last-child{padding-bottom:0}
+.stp:not(:last-child)::before{content:"";position:absolute;left:13px;top:30px;bottom:2px;width:2px;background:var(--line)}
+.stp.done:not(:last-child)::before{background:var(--accent)}
+.mk{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:600 13px var(--sans);background:var(--surface-2);color:var(--ink-3);border:2px solid var(--surface-2)}
+.stp.done .mk{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.stp.now .mk{background:var(--surface);border-color:var(--accent);color:var(--accent)}
+.stp .hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding-top:3px}
+.stp .hd b{font-weight:600;font-size:15px}
+.stp .when{font-size:12.5px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.stp.done .when{color:var(--good)}
+.stp .ds{font-size:13px;color:var(--ink-2);line-height:1.45;margin-top:2px}
+.stp.later .hd b{color:var(--ink-2)}
+.nowbox{margin-top:8px;background:var(--accent-soft);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:7px;font-size:13.5px}
+.nowbox .bar{background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.tagnow{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-left:6px}
+.pbig{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.agein{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+.agein input{width:64px;padding:5px 8px;font:500 14px var(--mono);text-align:right}
+.sw.a{border-top:0;height:10px;border-radius:3px;background:var(--c-cap)}
+.sw.b{border-top:0;height:10px;border-radius:3px;background:var(--c-cush)}
+.sw.t{border-top:2px dashed var(--ink-2)}
+.sw.s{border-top:2px dotted var(--ink-3)}
+input[type=range]{padding:0;border:0;background:transparent;accent-color:var(--accent);height:28px}
+.tryout{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tryout .v{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.rrow{display:grid;grid-template-columns:58px minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:13px;padding:3px 0}
+.rrow .rb{height:14px;border-radius:0 4px 4px 0;background:color-mix(in srgb,var(--c-cap) 30%,var(--surface-2))}
+.rrow.me{font-weight:600}
+.rrow.me .rb{background:var(--c-cap)}
+.rrow span:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.method{display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.pempty{display:flex;flex-direction:column;gap:12px}
+.hrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.hrow .a{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hrow .x{padding:4px 8px}
+.kdot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:1px}
 </style>
 </head>
 <body>
@@ -302,26 +345,33 @@ details.card[open] summary::after{transform:rotate(90deg)}
 
   <!-- PLAN -->
   <section id="scr-plan" class="screen" hidden>
-    <section class="kpis" id="kpis" aria-label="Главные итоги"></section>
-    <div class="card">
-      <div class="spread" style="flex-wrap:wrap"><h2>Путь к финансовой свободе</h2><div class="legend"><span><i class="sw"></i>Капитал, млн ₽</span><span><i class="sw d"></i>Нужно</span></div></div>
-      <div class="chartbox" id="chartbox"><svg id="chart" viewBox="0 0 760 320" role="img" aria-label="График капитала и цели по годам"></svg><div class="tip" id="tip" hidden></div></div>
+    <div class="card hero" id="pHero"></div>
+    <div class="card" id="pSteps"></div>
+    <div class="card" id="pHist"></div>
+    <div class="card" id="pChartCard">
+      <div class="spread" style="flex-wrap:wrap"><h2>Как растут деньги</h2><div class="seg" role="tablist" id="pView" style="min-width:196px"><button type="button" role="tab" data-v="near" aria-selected="true">3 года</button><button type="button" role="tab" data-v="far" aria-selected="false">Весь путь</button></div></div>
+      <div class="legend" id="pLegend"></div>
+      <div class="chartbox" id="chartbox"><svg id="chart" role="img" aria-label="График подушки и капитала по годам"></svg><div class="tip" id="tip" hidden></div></div>
       <p class="hint" id="chartHint"></p>
     </div>
-    <div class="card" id="fiLevers"></div>
-    <div class="card">
-      <h2>Цели в плане</h2>
-      <label class="spread" for="tKid" style="padding:6px 0"><span>Рождение ребёнка<br><span class="hint">расходы, декрет, семейная ипотека</span></span><input type="checkbox" id="tKid" class="sw-in"></label>
+    <div class="card" id="pTry"></div>
+    <div class="card" id="pRate"></div>
+    <div class="card" id="pGoals">
+      <h2>Крупные цели</h2>
+      <label class="spread" for="tKid" style="padding:6px 0"><span>Ребёнок<br><span class="hint">расходы на ребёнка до выбранного возраста</span></span><input type="checkbox" id="tKid" class="sw-in"></label>
       <label class="spread" for="tFlat" style="padding:6px 0;border-top:1px solid var(--line)"><span>Покупка квартиры<br><span class="hint">первый взнос, ремонт, платёж по ипотеке</span></span><input type="checkbox" id="tFlat" class="sw-in"></label>
-      <p class="hint">Включите цель — появятся её настройки в «Мои цифры» и расчёт покупки.</p>
+      <div id="goalOut"></div>
     </div>
-    <details class="card" id="paramsBox"><summary>Мои цифры</summary><div id="inputs"></div></details>
-    <div class="card" id="buyCard"><h2 id="buyTitle">Покупка квартиры</h2><div id="verdict"></div><div class="buygrid" id="buygrid"></div></div>
-    <div class="card" id="whenCard"><div class="spread"><h2>Когда хватит на квартиру</h2></div><div class="tbl"><table id="whenTbl"></table></div>
-      <p class="hint">С ребёнком — по семейной ипотеке до 6%; без ребёнка — первый взнос 20% и рыночная ипотека. «Нет» — к тому времени ребёнку исполнится 6 и льгота закончится.</p></div>
+    <details class="card" id="paramsBox"><summary>Мои цифры</summary><p class="hint">Доход, траты, сбережения и уже накопленное план берёт из «Бюджета». Здесь — то, чего в бюджете нет.</p><div id="inputs"></div></details>
     <details class="card"><summary>Прогноз по годам</summary><div class="tbl" style="max-height:480px;overflow:auto"><table id="projTbl"></table></div></details>
+    <details class="card"><summary>Как это считается</summary><div class="method">
+      <p><b>Порядок шагов</b> — классическая «финансовая пирамида» из учебников по личным финансам: сначала небольшой запас, затем дорогие долги, затем полная подушка на 3–6 месяцев и только потом долгосрочные вложения. Пока подушка не собрана, большая часть сбережений идёт в неё; когда собрана — всё в капитал.</p>
+      <p><b>Сколько нужно для свободы.</b> Годовые расходы, делённые на долю безопасного изъятия. В классическом исследовании (Bengen, 1994; Trinity study, 1998) для американского рынка это 4% в год. Российский рынок волатильнее, поэтому по умолчанию берём осторожные 3,5% — это примерно 29 годовых расходов.</p>
+      <p><b>Финансовая безопасность</b> — промежуточная цель: капитал оплачивает только обязательное (жильё, еду, ЖКУ, транспорт, здоровье). Даже без зарплаты у вас есть крыша и еда.</p>
+      <p><b>Всё в сегодняшних деньгах</b>: доходность считается за вычетом инфляции, поэтому 10 млн через 20 лет на графике — это 10 млн по сегодняшним ценам.</p>
+    </div></details>
     <div class="foot">
-      <p>Семейная ипотека: до 6%, взнос от 20%, лимит 12 млн (Москва, СПб и области; в других регионах 6 млн), одна на семью; условия с 1.10.2026 могут меняться. Модель — для самостоятельных решений, это не финансовая рекомендация.</p>
+      <p>Модель — ориентир для самостоятельных решений, а не финансовая рекомендация и не обещание доходности.</p>
     </div>
   </section>
 </div>
@@ -374,7 +424,7 @@ details.card[open] summary::after{transform:rotate(90deg)}
         <span class="btn-primary" style="padding:8px 14px;border-radius:10px">Выбрать файлы</span>
       </label>
       <input type="file" id="bankFile" multiple accept=".pdf,.csv,.txt,.xls,.xlsx" style="position:absolute;width:1px;height:1px;opacity:0">
-      <p class="hint">Пополнения, переводы между своими счетами и в накопления пропускаются. Траты, которые вы уже внесли вручную, помечаются как «похоже, уже есть».</p>
+      <p class="hint">Пополнения и переводы между своими счетами пропускаются. Переводы на накопительный, вклад и брокерский счёт попадут в историю сбережений, а не в траты. Траты, которые уже есть, помечаются «похоже, уже есть».</p>
     </div>
   </div>
 
@@ -383,6 +433,7 @@ details.card[open] summary::after{transform:rotate(90deg)}
   <div id="pvBox" hidden style="display:flex;flex-direction:column;gap:10px">
     <div class="spread"><b id="pvTitle"></b><button type="button" class="btn-ghost" id="pvToggle">Снять все</button></div>
     <div class="pv" id="pv"></div>
+    <div id="pvSav" hidden style="display:flex;flex-direction:column;gap:8px"><b>Переводы в сбережения</b><p class="hint">Это не траты. Запишу их в историю сбережений (План → «История сбережений»). Минус — деньги сняли обратно.</p><div class="pv" id="pvSavList"></div></div>
     <div class="grid2 actions"><button type="button" id="pvCancel">Отмена</button><button type="button" class="btn-primary" id="pvSave">Сохранить</button></div>
   </div>
 </div>
@@ -437,6 +488,28 @@ details.card[open] summary::after{transform:rotate(90deg)}
   <div id="rulesList"></div>
 </div>
 
+<!-- SAVINGS SHEET -->
+<div class="sheet" id="savSheet" role="dialog" aria-modal="true" aria-labelledby="savTitle" hidden>
+  <div class="grab"></div>
+  <div class="spread"><h2 id="savTitle">Сколько отложено</h2><button type="button" class="btn-ghost" data-close aria-label="Закрыть">✕</button></div>
+  <div class="seg" role="tablist" id="sSign"><button type="button" role="tab" data-s="1" aria-selected="true">Отложено</button><button type="button" role="tab" data-s="-1" aria-selected="false">Снято</button></div>
+  <div class="grid2">
+    <label class="hint" for="sCush">В подушку, ₽<input type="number" inputmode="decimal" id="sCush" placeholder="0" style="margin-top:4px"></label>
+    <label class="hint" for="sCap">В капитал, ₽<input type="number" inputmode="decimal" id="sCap" placeholder="0" style="margin-top:4px"></label>
+  </div>
+  <div class="grid2"><label class="hint" for="sDate">Дата<input type="date" id="sDate" style="margin-top:4px"></label><label class="hint" for="sNote">Комментарий<input type="text" id="sNote" placeholder="например, премия" style="margin-top:4px"></label></div>
+  <button type="button" class="btn-primary" id="sGo">Записать</button>
+  <div class="msg" id="sMsg" aria-live="polite"></div>
+  <div class="group" style="border-top:1px solid var(--line)">
+    <h3>Сейчас накоплено</h3>
+    <div class="grid2">
+      <label class="hint" for="sHaveC">В подушке, ₽<input type="number" inputmode="decimal" id="sHaveC" placeholder="0" style="margin-top:4px"></label>
+      <label class="hint" for="sHaveP">В капитале, ₽<input type="number" inputmode="decimal" id="sHaveP" placeholder="0" style="margin-top:4px"></label>
+    </div>
+    <p class="hint">Записи выше прибавляются сюда сами. Если из-за процентов или курса сумма другая — поправьте вручную: это не попадёт в «отложено».</p>
+  </div>
+</div>
+
 <!-- MENU SHEET -->
 <div class="sheet" id="menuSheet" role="dialog" aria-modal="true" aria-labelledby="menuTitle" hidden>
   <div class="grab"></div>
@@ -449,6 +522,7 @@ details.card[open] summary::after{transform:rotate(90deg)}
     <button type="button" id="bkSave">Сохранить резервную копию<small>Все траты, бюджет и план одним файлом</small></button>
     <button type="button" id="bkLoad">Загрузить резервную копию<small>Перенос на другое устройство</small></button>
     <button type="button" id="bkPaste">Вставить копию из текста<small>Если сохраняли копию в заметку или Telegram</small></button>
+    <button type="button" id="donateBtn" hidden>Поддержать автора<small>Приложение бесплатное. Если оно помогает — можно отблагодарить</small></button>
     <button type="button" id="homeTip">Добавить на экран телефона<small>Открывать одним касанием, как приложение</small></button>
   </div>
   <input type="file" id="bkFile" accept=".json,application/json" style="position:absolute;width:1px;height:1px;opacity:0">
@@ -460,133 +534,140 @@ details.card[open] summary::after{transform:rotate(90deg)}
 <script>
 (function(){
 "use strict";
-const CONFIG = {"ai": false, "fw": {"per": {"Продукты": [17.5, 0.7], "Кафе и доставка": [7.5, 0.3], "Транспорт и такси": [4, 0.3], "Здоровье и спорт": [3.5, 0.6], "Красота и уход": [2.5, 0.2], "Одежда и обувь": [4, 0.8], "Развлечения и хобби": [3.5, 0.5], "Подарки": [2, 0.4], "Прочее": [4, 0.3]}, "shared": {"ЖКУ и связь": [8, 0.12], "Дом и быт": [5, 0.15], "Подписки": [1.5, 0.05]}, "kid": {"Ребёнок": 10}}, "family": [2, 0], "have": [null, null], "budCushion": 31.5, "budIncome": 225, "budCapital": 13.5, "weights": {"ЖКУ и связь": 8, "Продукты": 35, "Кафе и доставка": 15, "Транспорт и такси": 8, "Здоровье и спорт": 7, "Красота и уход": 5, "Одежда и обувь": 8, "Дом и быт": 5, "Развлечения и хобби": 7, "Подписки": 1.5, "Подарки": 4, "Прочее": 8}, "mode": "public", "useDb": false, "who": ["Общее", "Я", "Партнёр"], "defaults": {"kid": 0, "flat": 0, "base": 2026, "age": 28, "cap0": 2, "infl": 6, "ret": 10, "s_sal": 0.48, "s_bon": 0, "s_gift": 0, "extra": 0, "bm": 3, "gm": 12, "sg": 3, "exp": 1.5, "rent": 50, "birth": 2029, "c0": -0.2, "c1": 0, "ccost": 0.6, "cend": 22, "price": 15, "pg": 6, "buy": 2033, "flim": 12, "frate": 6, "fterm": 30, "mkt": 0, "mrate": 16, "mterm": 20, "renov": 1.5, "maint": 0.05, "resv": 1.5, "swr": 3.5, "prices": [10, 15, 20, 25, 30]}, "cats": [["Аренда", 50], ["Кредиты", 0], ["ЖКУ и связь", 8], ["Продукты", 35], ["Кафе и доставка", 15], ["Транспорт и такси", 8], ["Здоровье и спорт", 7], ["Красота и уход", 5], ["Одежда и обувь", 8], ["Дом и быт", 5], ["Развлечения и хобби", 7], ["Подписки", 1.5], ["Подарки", 4], ["Прочее", 8], ["Ребёнок", 0], ["Путешествия и крупные покупки", 15]], "keywords": [["Аренда", ["аренд", "хозяйке квартир", "за квартиру"]], ["Кредиты", ["кредит", "ипотек", "займ", "рассрочк", "долями", "сплит", "split", "погашение"]], ["ЖКУ и связь", ["mts", "beeline", "megafon", "tele2", "rostelecom", "mosenergo", "mosenergosbyt", "zhku", "zhkh", "жку", "жкх", "коммунал", "электроэнерг", "мосэнерго", "свет ", "интернет", "связь", "мобильн", "мтс", "билайн", "мегафон", "теле2", "tele2", "ростелеком"]], ["Продукты", ["vv_kkm", "vv kkm", "pyaterochka", "perekrestok", "vkusvill", "magnit", "auchan", "ashan", "lenta", "dixy", "azbuka vkusa", "samokat", "lavka", "metro cc", "spar", "verniy", "vernyi", "chizhik", "vkusvill", "пятерочк", "перекрест", "вкусвилл", "магнит", "ашан", "лента", "дикси", "азбука вкуса", "самокат", "лавка", "продукт", "супермаркет", "metro", "окей", "глобус", "spar", "виктория", "верный", "бристоль", "красное и белое", "чижик", "хлеб", "молок", "овощ", "фрукт"]], ["Кафе и доставка", ["restaurant", "restoran", "cofix", "starbucks", "shokoladnitsa", "coffee", "kofe", "cafe", "kafe", "restoran", "vkusno i tochka", "kfc", "rostics", "burger", "sushi", "pizza", "yandex*eda", "yandex eda", "delivery club", "teremok", "dodo", "кофе", "кафе", "ресторан", "бар ", "обед", "ужин", "завтрак", "доставк", "шоколадниц", "cofix", "старбакс", "вкусно и точка", "kfc", "ростикс", "бургер", "суши", "пицц", "шаурм", "кофейн", "кондитер", "delivery", "яндекс еда", "еда"]], ["Транспорт и такси", ["yandex*go", "yandex go", "yandex.taxi", "yandex taxi", "yandex*taxi", "taxi", "uber", "citymobil", "lukoil", "gazprom", "rosneft", "shell", "azs", "delimobil", "citydrive", "belkacar", "mos.transport", "mosmetro", "metro moskva", "parking", "parkovka", "whoosh", "urent", "такси", "метро", "транспорт", "бензин", "заправк", "азс", "лукойл", "газпромнефть", "роснефть", "каршеринг", "делимобиль", "ситидрайв", "яндекс драйв", "парковк", "электричк", "тройк", "автобус", "самокат аренда", "whoosh", "юрент"]], ["Здоровье и спорт", ["apteka", "pharm", "ozerki", "rigla", "gorzdrav", "medsi", "invitro", "gemotest", "klinika", "clinic", "fitness", "world class", "аптек", "врач", "клиник", "анализ", "стоматолог", "спорт", "фитнес", "трениров", "бассейн", "йог", "массаж", "лекарств", "витамин", "медси", "инвитро", "гемотест"]], ["Красота и уход", ["zolotoe yabloko", "goldapple", "letual", "rive gauche", "ile de beaute", "beauty", "salon", "barber", "маникюр", "педикюр", "стрижк", "парикмах", "салон", "косметик", "золотое яблоко", "летуаль", "рив гош", "барбер", "брови", "ресниц", "шампун", "крем"]], ["Одежда и обувь", ["zara", "uniqlo", "lamoda", "sportmaster", "hm ", "h&m", "befree", "gloria jeans", "love republic", "ostin", "12storeez", "ekonika", "одежд", "обув", "zara", "uniqlo", "lamoda", "кроссовк", "платье", "куртк", "джинс", "футболк", "love republic", "befree", "gloria jeans", "спортмастер"]], ["Дом и быт", ["ikea", "leroy", "leroymerlin", "hoff", "fix price", "fixprice", "икеа", "ikea", "леруа", "хозтовар", "быт", "посуд", "уборк", "химчистк", "порошок", "hoff", "fix price", "фикс прайс", "ремонт", "мебель"]], ["Развлечения и хобби", ["cinema", "karo", "formula kino", "theatre", "teatr", "museum", "muzey", "litres", "chitai-gorod", "bookvoed", "steam", "playstation", "кино", "театр", "концерт", "музей", "выставк", "книг", "игр", "хобби", "боулинг", "квест", "караоке", "билет на"]], ["Подписки", ["kinopoisk", "okko", "ivi", "spotify", "apple.com", "itunes", "yandex plus", "yandex.plus", "google", "netflix", "youtube", "icloud", "openai", "anthropic", "wink", "premier", "подписк", "яндекс плюс", "плюс", "netflix", "spotify", "кинопоиск", "icloud", "okko", "ivi", "premier", "wink", "chatgpt", "claude", "telegram premium", "youtube"]], ["Подарки", ["flowers", "cvety", "tsvety", "подар", "цвет", "букет"]], ["Ребёнок", ["подгузн", "детск", "ребен", "игрушк", "садик", "няня", "детский мир"]], ["Путешествия и крупные покупки", ["aeroflot", "pobeda", "s7 ", "utair", "rzd", "booking", "airbnb", "hotel", "otel", "ostrovok", "tutu", "aviasales", "отел", "гостиниц", "авиа", "самолет", "аэрофлот", "победа", "s7", "поезд", "ржд", "путешеств", "airbnb", "booking", "отпуск", "тур ", "виза", "островок", "суточно"]]], "bankMap": {"Кредиты": "Кредиты", "Кредит": "Кредиты", "Погашение кредитов": "Кредиты", "Погашение кредита": "Кредиты", "Супермаркеты": "Продукты", "Продукты": "Продукты", "Рестораны": "Кафе и доставка", "Фастфуд": "Кафе и доставка", "Кафе": "Кафе и доставка", "Доставка еды": "Кафе и доставка", "Такси": "Транспорт и такси", "Транспорт": "Транспорт и такси", "Местный транспорт": "Транспорт и такси", "Топливо": "Транспорт и такси", "Каршеринг": "Транспорт и такси", "Автоуслуги": "Транспорт и такси", "Аренда авто": "Транспорт и такси", "Аптеки": "Здоровье и спорт", "Медицина": "Здоровье и спорт", "Спорттовары": "Здоровье и спорт", "Спорт": "Здоровье и спорт", "Красота": "Красота и уход", "Косметика": "Красота и уход", "Одежда и обувь": "Одежда и обувь", "Одежда": "Одежда и обувь", "Дом и ремонт": "Дом и быт", "Хозтовары": "Дом и быт", "Мебель": "Дом и быт", "Электроника и техника": "Дом и быт", "Развлечения": "Развлечения и хобби", "Кино": "Развлечения и хобби", "Книги": "Развлечения и хобби", "Музыка": "Развлечения и хобби", "Искусство": "Развлечения и хобби", "Фото и видео": "Развлечения и хобби", "Образование": "Развлечения и хобби", "Цифровые товары": "Подписки", "Сервис": "Подписки", "Мобильная связь": "ЖКУ и связь", "Связь": "ЖКУ и связь", "Коммунальные услуги": "ЖКУ и связь", "ЖКХ": "ЖКУ и связь", "Интернет": "ЖКУ и связь", "Связь, интернет": "ЖКУ и связь", "Цветы": "Подарки", "Подарки": "Подарки", "Сувениры": "Подарки", "Авиабилеты": "Путешествия и крупные покупки", "Ж/д билеты": "Путешествия и крупные покупки", "Отели": "Путешествия и крупные покупки", "Турагентства": "Путешествия и крупные покупки", "Duty Free": "Путешествия и крупные покупки", "Путешествия": "Путешествия и крупные покупки", "Детские товары": "Ребёнок", "Рестораны и кафе": "Кафе и доставка", "Автомобиль": "Транспорт и такси", "Здоровье и красота": "Здоровье и спорт", "Одежда и аксессуары": "Одежда и обувь", "Отдых и развлечения": "Развлечения и хобби", "Все для дома": "Дом и быт", "Всё для дома": "Дом и быт", "Коммунальные платежи, связь, интернет.": "ЖКУ и связь", "Коммунальные платежи, связь, интернет": "ЖКУ и связь", "Прочие расходы": "Прочее", "Прочие операции": "Прочее", "Выдача наличных": "Прочее", "Перевод с карты": "Прочее", "Перевод СБП": "Прочее", "Переводы": "Прочее", "Товары для детей": "Ребёнок", "Путешествия и отдых": "Путешествия и крупные покупки", "Питание": "Кафе и доставка", "Продуктовые магазины": "Продукты", "Кафе и рестораны": "Кафе и доставка", "Здоровье": "Здоровье и спорт", "Красота и здоровье": "Красота и уход", "Дом": "Дом и быт", "Развлечения и хобби": "Развлечения и хобби", "Подписки": "Подписки", "Животные": "Прочее", "Наличные": "Прочее", "Госуслуги": "Прочее", "Другое": "Прочее", "Маркетплейсы": "Прочее", "Финансовые услуги": "Прочее"}, "persona": "Ты — финансовый помощник человека или семьи в России. Помогаешь вести бюджет, понимать траты и планировать капитал, квартиру и финансовую свободу.", "sugg": ["Как я иду по бюджету в этом месяце?", "Где можно сократить без боли?", "Сколько мне нужно для финансовой свободы?", "Потяну ли я квартиру из плана?"], "budgetNote": "Это пример. Укажите свой доход и нажмите «Разложить по доходу» или поменяйте цифры справа. Через 1–2 месяца учёта поправьте план по факту.", "localStatus": "Только на этом устройстве", "standalone": true};
+const CONFIG = {"ai": false, "fw": {"per": {"Продукты": [17.5, 0.7], "Кафе и доставка": [7.5, 0.3], "Транспорт и такси": [4, 0.3], "Здоровье и спорт": [3.5, 0.6], "Красота и уход": [2.5, 0.2], "Одежда и обувь": [4, 0.8], "Развлечения и хобби": [3.5, 0.5], "Подарки": [2, 0.4], "Прочее": [4, 0.3]}, "shared": {"ЖКУ и связь": [8, 0.12], "Дом и быт": [5, 0.15], "Подписки": [1.5, 0.05]}, "kid": {"Ребёнок": 10}}, "family": [2, 0], "have": [null, null], "budCushion": 31.5, "budIncome": 225, "budCapital": 13.5, "weights": {"ЖКУ и связь": 8, "Продукты": 35, "Кафе и доставка": 15, "Транспорт и такси": 8, "Здоровье и спорт": 7, "Красота и уход": 5, "Одежда и обувь": 8, "Дом и быт": 5, "Развлечения и хобби": 7, "Подписки": 1.5, "Подарки": 4, "Прочее": 8}, "mode": "public", "useDb": false, "who": ["Общее", "Я", "Партнёр"], "defaults": {"kid": 0, "flat": 0, "base": 2026, "age": 28, "cap0": 2, "infl": 6, "ret": 10, "s_sal": 0.48, "s_bon": 0, "s_gift": 0, "extra": 0, "bm": 3, "gm": 12, "sg": 3, "exp": 1.5, "rent": 50, "birth": 2029, "c0": -0.2, "c1": 0, "ccost": 0.6, "cend": 22, "price": 15, "pg": 6, "buy": 2033, "flim": 12, "frate": 6, "fterm": 30, "mkt": 0, "mrate": 16, "mterm": 20, "renov": 1.5, "maint": 0.05, "resv": 1.5, "swr": 3.5, "prices": [10, 15, 20, 25, 30]}, "cats": [["Аренда", 50], ["Кредиты", 0], ["ЖКУ и связь", 8], ["Продукты", 35], ["Кафе и доставка", 15], ["Транспорт и такси", 8], ["Здоровье и спорт", 7], ["Красота и уход", 5], ["Одежда и обувь", 8], ["Дом и быт", 5], ["Развлечения и хобби", 7], ["Подписки", 1.5], ["Подарки", 4], ["Прочее", 8], ["Ребёнок", 0], ["Путешествия и крупные покупки", 15]], "keywords": [["Аренда", ["аренд", "хозяйке квартир", "за квартиру"]], ["Кредиты", ["кредит", "ипотек", "займ", "рассрочк", "долями", "сплит", "split", "погашение"]], ["ЖКУ и связь", ["mts", "beeline", "megafon", "tele2", "rostelecom", "mosenergo", "mosenergosbyt", "zhku", "zhkh", "жку", "жкх", "коммунал", "электроэнерг", "мосэнерго", "свет ", "интернет", "связь", "мобильн", "мтс", "билайн", "мегафон", "теле2", "tele2", "ростелеком"]], ["Продукты", ["vv_kkm", "vv kkm", "pyaterochka", "perekrestok", "vkusvill", "magnit", "auchan", "ashan", "lenta", "dixy", "azbuka vkusa", "samokat", "lavka", "metro cc", "spar", "verniy", "vernyi", "chizhik", "vkusvill", "пятерочк", "перекрест", "вкусвилл", "магнит", "ашан", "лента", "дикси", "азбука вкуса", "самокат", "лавка", "продукт", "супермаркет", "metro", "окей", "глобус", "spar", "виктория", "верный", "бристоль", "красное и белое", "чижик", "хлеб", "молок", "овощ", "фрукт"]], ["Кафе и доставка", ["restaurant", "restoran", "cofix", "starbucks", "shokoladnitsa", "coffee", "kofe", "cafe", "kafe", "restoran", "vkusno i tochka", "kfc", "rostics", "burger", "sushi", "pizza", "yandex*eda", "yandex eda", "delivery club", "teremok", "dodo", "кофе", "кафе", "ресторан", "бар ", "обед", "ужин", "завтрак", "доставк", "шоколадниц", "cofix", "старбакс", "вкусно и точка", "kfc", "ростикс", "бургер", "суши", "пицц", "шаурм", "кофейн", "кондитер", "delivery", "яндекс еда", "еда"]], ["Транспорт и такси", ["yandex*go", "yandex go", "yandexgo", "yandex taxi", "яндекс такси", "яндекс го", "яндекс.такси", "яндекс драйв", "yandex.taxi", "yandex taxi", "yandex*taxi", "taxi", "uber", "citymobil", "lukoil", "gazprom", "rosneft", "shell", "azs", "delimobil", "citydrive", "belkacar", "mos.transport", "mosmetro", "metro moskva", "parking", "parkovka", "whoosh", "urent", "такси", "метро", "транспорт", "бензин", "заправк", "азс", "лукойл", "газпромнефть", "роснефть", "каршеринг", "делимобиль", "ситидрайв", "яндекс драйв", "парковк", "электричк", "тройк", "автобус", "самокат аренда", "whoosh", "юрент"]], ["Здоровье и спорт", ["apteka", "pharm", "ozerki", "rigla", "gorzdrav", "medsi", "invitro", "gemotest", "klinika", "clinic", "fitness", "world class", "аптек", "врач", "клиник", "анализ", "стоматолог", "спорт", "фитнес", "трениров", "бассейн", "йог", "массаж", "лекарств", "витамин", "медси", "инвитро", "гемотест"]], ["Красота и уход", ["zolotoe yabloko", "goldapple", "letual", "rive gauche", "ile de beaute", "beauty", "salon", "barber", "маникюр", "педикюр", "стрижк", "парикмах", "салон", "косметик", "золотое яблоко", "летуаль", "рив гош", "барбер", "брови", "ресниц", "шампун", "крем"]], ["Одежда и обувь", ["zara", "uniqlo", "lamoda", "sportmaster", "hm ", "h&m", "befree", "gloria jeans", "love republic", "ostin", "12storeez", "ekonika", "одежд", "обув", "zara", "uniqlo", "lamoda", "кроссовк", "платье", "куртк", "джинс", "футболк", "love republic", "befree", "gloria jeans", "спортмастер"]], ["Дом и быт", ["ikea", "leroy", "leroymerlin", "hoff", "fix price", "fixprice", "икеа", "ikea", "леруа", "хозтовар", "быт", "посуд", "уборк", "химчистк", "порошок", "hoff", "fix price", "фикс прайс", "ремонт", "мебель"]], ["Развлечения и хобби", ["cinema", "karo", "formula kino", "theatre", "teatr", "museum", "muzey", "litres", "chitai-gorod", "bookvoed", "steam", "playstation", "кино", "театр", "концерт", "музей", "выставк", "книг", "игр", "хобби", "боулинг", "квест", "караоке", "билет на"]], ["Подписки", ["kinopoisk", "okko", "ivi", "spotify", "apple.com", "itunes", "yandex plus", "yandex.plus", "google", "netflix", "youtube", "icloud", "openai", "anthropic", "wink", "premier", "подписк", "яндекс плюс", "плюс", "netflix", "spotify", "кинопоиск", "icloud", "okko", "ivi", "premier", "wink", "chatgpt", "claude", "telegram premium", "youtube"]], ["Подарки", ["flowers", "cvety", "tsvety", "подар", "цвет", "букет"]], ["Ребёнок", ["подгузн", "детск", "ребен", "игрушк", "садик", "няня", "детский мир"]], ["Путешествия и крупные покупки", ["aeroflot", "pobeda", "s7 ", "utair", "rzd", "booking", "airbnb", "hotel", "otel", "ostrovok", "tutu", "aviasales", "отел", "гостиниц", "авиа", "самолет", "аэрофлот", "победа", "s7", "поезд", "ржд", "путешеств", "airbnb", "booking", "отпуск", "тур ", "виза", "островок", "суточно"]]], "bankMap": {"Кредиты": "Кредиты", "Кредит": "Кредиты", "Погашение кредитов": "Кредиты", "Погашение кредита": "Кредиты", "Супермаркеты": "Продукты", "Продукты": "Продукты", "Рестораны": "Кафе и доставка", "Фастфуд": "Кафе и доставка", "Кафе": "Кафе и доставка", "Доставка еды": "Кафе и доставка", "Такси": "Транспорт и такси", "Транспорт": "Транспорт и такси", "Местный транспорт": "Транспорт и такси", "Топливо": "Транспорт и такси", "Каршеринг": "Транспорт и такси", "Автоуслуги": "Транспорт и такси", "Аренда авто": "Транспорт и такси", "Аптеки": "Здоровье и спорт", "Медицина": "Здоровье и спорт", "Спорттовары": "Здоровье и спорт", "Спорт": "Здоровье и спорт", "Красота": "Красота и уход", "Косметика": "Красота и уход", "Одежда и обувь": "Одежда и обувь", "Одежда": "Одежда и обувь", "Дом и ремонт": "Дом и быт", "Хозтовары": "Дом и быт", "Мебель": "Дом и быт", "Электроника и техника": "Дом и быт", "Развлечения": "Развлечения и хобби", "Кино": "Развлечения и хобби", "Книги": "Развлечения и хобби", "Музыка": "Развлечения и хобби", "Искусство": "Развлечения и хобби", "Фото и видео": "Развлечения и хобби", "Образование": "Развлечения и хобби", "Цифровые товары": "Подписки", "Сервис": "Подписки", "Мобильная связь": "ЖКУ и связь", "Связь": "ЖКУ и связь", "Коммунальные услуги": "ЖКУ и связь", "ЖКХ": "ЖКУ и связь", "Интернет": "ЖКУ и связь", "Связь, интернет": "ЖКУ и связь", "Цветы": "Подарки", "Подарки": "Подарки", "Сувениры": "Подарки", "Авиабилеты": "Путешествия и крупные покупки", "Ж/д билеты": "Путешествия и крупные покупки", "Отели": "Путешествия и крупные покупки", "Турагентства": "Путешествия и крупные покупки", "Duty Free": "Путешествия и крупные покупки", "Путешествия": "Путешествия и крупные покупки", "Детские товары": "Ребёнок", "Рестораны и кафе": "Кафе и доставка", "Автомобиль": "Транспорт и такси", "Здоровье и красота": "Здоровье и спорт", "Одежда и аксессуары": "Одежда и обувь", "Отдых и развлечения": "Развлечения и хобби", "Все для дома": "Дом и быт", "Всё для дома": "Дом и быт", "Коммунальные платежи, связь, интернет.": "ЖКУ и связь", "Коммунальные платежи, связь, интернет": "ЖКУ и связь", "Прочие расходы": "Прочее", "Прочие операции": "Прочее", "Выдача наличных": "Прочее", "Перевод с карты": "Прочее", "Перевод СБП": "Прочее", "Переводы": "Прочее", "Товары для детей": "Ребёнок", "Путешествия и отдых": "Путешествия и крупные покупки", "Питание": "Кафе и доставка", "Продуктовые магазины": "Продукты", "Кафе и рестораны": "Кафе и доставка", "Здоровье": "Здоровье и спорт", "Красота и здоровье": "Красота и уход", "Дом": "Дом и быт", "Развлечения и хобби": "Развлечения и хобби", "Подписки": "Подписки", "Животные": "Прочее", "Наличные": "Прочее", "Госуслуги": "Прочее", "Другое": "Прочее", "Маркетплейсы": "Прочее", "Финансовые услуги": "Прочее"}, "persona": "Ты — финансовый помощник человека или семьи в России. Помогаешь вести бюджет, понимать траты и планировать капитал, квартиру и финансовую свободу.", "sugg": ["Как я иду по бюджету в этом месяце?", "Где можно сократить без боли?", "Сколько мне нужно для финансовой свободы?", "Потяну ли я квартиру из плана?"], "budgetNote": "Это пример. Укажите свой доход и нажмите «Разложить по доходу» или поменяйте цифры справа. Через 1–2 месяца учёта поправьте план по факту.", "localStatus": "Только на этом устройстве", "standalone": true, "donateUrl": "https://pay.cloudtips.ru/p/7a825e1d"};
 const DEFAULTS = CONFIG.defaults;
-let P = JSON.parse(JSON.stringify(DEFAULTS)); P.base=new Date().getFullYear();
+let P = JSON.parse(JSON.stringify(DEFAULTS)); P.base=new Date().getFullYear(); P.debt=0;
 
-const GROUPS = [
-  {t:"О вас", f:[
-    ["age","Ваш возраст сейчас","лет",""],
-  ]},
-  {t:"Капитал и рынок", f:[
-    ["cap0","Капитал сейчас","млн","Сумма всех счетов и вложений. Обновляйте раз в месяц–квартал"],
-    ["infl","Инфляция в год","%",""],
-    ["ret","Доходность портфеля (после налогов)","%","За 3 года было ~23%, но это эпоха ставок 16–21%. Консервативно 10–12%."],
-  ]},
-  {t:"Сбережения", f:[
-    ["s_sal","Откладываем с зарплат в год","млн","Ежемесячный взнос × 12"],
-    ["s_bon","С премии в год","млн",""],
-    ["s_gift","С подарков в год","млн","Нестабильный источник: проверьте план и с 0"],
-    ["=s_tot","Итого в год","млн",""],
-    ["extra","До конца года отложим сверх обычного","млн","Премия или подарки до 31 декабря"],
-    ["bm","Месяц премии","мес",""],
-    ["gm","Месяц подарков","мес",""],
-    ["sg","Рост взносов сверх инфляции","%","Индексация ≈ 0%. Повышения и смена работы: 3–5%. Самый сильный рычаг."],
-    ["exp","Расходы в год без аренды","млн","Для цели финансовой свободы"],
-    ["rent","Аренда в месяц","тыс",""],
-  ]},
-  {t:"Ребёнок", g:"kid", f:[
-    ["birth","Год рождения","год",""],
-    ["c0","Сбережения в год рождения","млн","Пособия почти всё покрывают, минус — риск по премии"],
-    ["c1","Сбережения в следующем году","млн","Пособие по уходу до 1,5 лет компенсирует расходы"],
-    ["ccost","Расходы на ребёнка в год, потом","млн","~70 тыс./мес без няни"],
-    ["cend","Учитывать расходы до возраста","лет",""],
-  ]},
-  {t:"Квартира", g:"flat", f:[
-    ["price","Цена сегодня","млн",""],
-    ["pg","Рост цен на жильё","%",""],
-    ["buy","Год покупки","год","Семейная ипотека — если есть ребёнок младше 6 лет"],
-    ["flim","Семейная ипотека: лимит","млн","Не растёт с инфляцией"],
-    ["frate","Семейная: ставка","%",""],
-    ["fterm","Семейная: срок","лет",""],
-    ["mkt","Рыночный кредит сверху","млн","Если своих денег не хватает"],
-    ["mrate","Рыночный: ставка","%","Сейчас 18–19,5%; к 2030-м, вероятно, ниже"],
-    ["mterm","Рыночный: срок","лет",""],
-    ["renov","Ремонт и мебель (сегодня)","млн",""],
-    ["maint","Содержание в год (сегодня)","млн","Налог, страховка, мелкий ремонт"],
-    ["resv","Резерв после покупки (сегодня)","млн","Подушка на 6–12 месяцев"],
-  ]},
-  {t:"Финансовая свобода", f:[
-    ["swr","Безопасное изъятие в год","%","Капитал для жизни = расходы / эта доля"],
-  ]},
-];
-const HOR=40;
-const INT_KEYS = new Set(["age","birth","buy","fterm","mterm","cend","rent","bm","gm"]);
+const HOR=45;
+const INT_KEYS = new Set(["age","birth","buy","fterm","mterm","cend"]);
 const $ = s => document.querySelector(s);
 const fmt = (v,d=1) => (v===null||v===undefined||!isFinite(v)) ? "—" : v.toLocaleString("ru-RU",{minimumFractionDigits:d,maximumFractionDigits:d});
 const fmt0 = v => fmt(v,0);
 const pmt = (r,n,pv) => r===0 ? pv/n : pv*r/(1-Math.pow(1+r,-n));
-const bal = (r,n,pmtv,pv) => r===0 ? Math.max(0,pv-pmtv*n) : Math.max(0, pv*Math.pow(1+r,n) - pmtv*(Math.pow(1+r,n)-1)/r);
+const fmtM = v => (v==null||!isFinite(v)) ? "—" : (Math.abs(v)<1000 ? fmtT(v) : fmt(v/1000, Math.abs(v)<10000?1:0)+" млн");
+const MON3=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+const ESS_CATS=["Аренда","ЖКУ и связь","Продукты","Транспорт и такси","Здоровье и спорт","Ребёнок"];
 
-function model(p0){
-  const p=Object.assign({},p0);
-  if(!p.kid) p.birth=p.base+500;
-  if(!p.flat) p.buy=p.base+500;
-  const infl=p.infl/100, ret=p.ret/100, sg=p.sg/100, pg=p.pg/100, frate=p.frate/100, mrate=p.mrate/100, swr=p.swr/100;
-  const s_tot = p.s_sal+p.s_bon+p.s_gift;
-  const famok = p.buy>=p.birth && p.buy<=p.birth+5;
-  const pbuy = p.price*Math.pow(1+pg,p.buy-p.base);
-  const floan = famok ? Math.min(p.flim,pbuy*0.8) : 0;
-  const mloan = (!p.kid && p.flat && !(p.mkt>0)) ? pbuy*0.8 : Math.max(0,p.mkt);
-  const rbuy = p.renov*Math.pow(1+pg,p.buy-p.base);
-  const own = pbuy-floan-mloan+rbuy;
-  const downpct = pbuy>0 ? (pbuy-floan-mloan)/pbuy : 0;
-  const fpayM = floan>0 ? pmt(frate/12,p.fterm*12,floan) : 0;   // млн/мес
-  const mpayM = mloan>0 ? pmt(mrate/12,p.mterm*12,mloan) : 0;
-  const rm = Math.pow(1+ret,1/12)-1;
-  const mr = 12-(new Date().getMonth()+1);
-  const cq = p.s_sal/12 + (mr>0 ? p.extra/mr : 0);
-  const k27 = mr===0 ? p.cap0+p.extra : (ret===0 ? p.cap0+mr*cq : p.cap0*Math.pow(1+ret,mr/12) + cq*(Math.pow(1+ret,mr/12)-1)/rm);
-  const mf = (ret===0||s_tot===0) ? 12 : (p.s_sal/s_tot)*ret/rm + 12*(p.s_bon/s_tot)*Math.pow(1+ret,(12-p.bm)/12) + 12*(p.s_gift/s_tot)*Math.pow(1+ret,(12-p.gm)/12);
-  const rows=[]; let prevN=k27, prevU=k27;
-  for(let j=0;j<HOR;j++){
-    const y=p.base+1+j, C=Math.pow(1+infl,y-p.base);
-    const D=s_tot*Math.pow((1+infl)*(1+sg),y-p.base);
-    const childOn = y>=p.birth && y<p.birth+p.cend;
-    const E = y===p.birth ? p.c0*C : y===p.birth+1 ? p.c1*C : (y>=p.birth+2 && y<p.birth+p.cend) ? -p.ccost*C : 0;
-    const F = y>=p.buy ? 1 : 0;
-    const G = F*p.rent*12/1000*C;
-    const H = (F && y<p.buy+p.fterm ? fpayM*12 : 0) + (F && y<p.buy+p.mterm ? mpayM*12 : 0);
-    const I = F*p.maint*C;
-    const J = D+E+G-H-I;
-    const K = prevN;
-    const L = y===p.buy ? own : 0;
-    const N = (K-L)*(1+ret) + J/12*mf;
-    const M = N-(K-L)-J;
-    const n1=Math.min((y-p.buy+1)*12,p.fterm*12), n2=Math.min((y-p.buy+1)*12,p.mterm*12);
-    const Pb = F ? (floan>0?bal(frate/12,n1,fpayM,floan):0)+(mloan>0?bal(mrate/12,n2,mpayM,mloan):0) : 0;
-    const Q = (p.exp+(childOn?p.ccost:0)+(F?p.maint:p.rent*12/1000))*C;
-    const R = Q/swr+Pb;
-    const U = prevU*(1+ret)+(D+E)/12*mf;
-    rows.push({y,age:p.age+y-p.base,C,D,E,F,G,H,I,J,K,L,M,N,O:N/C,Pb,Q,R,S:R/C,T:N>=R,U,Ustart:prevU});
-    prevN=N; prevU=U;
-  }
-  const br = rows.find(r=>r.y===p.buy);
-  const capb = br ? br.K : NaN;
-  const capa = capb-own;
-  const resn = p.resv*Math.pow(1+infl,p.buy-p.base);
-  const fiRow = rows.find(r=>r.T);
-  return {rows,s_tot,famok,pbuy,floan,mloan,rbuy,own,downpct,fpay:fpayM*1000,mpay:mpayM*1000,capb,capa,resn,
-    resok: capa>=resn, rentb:p.rent*Math.pow(1+infl,p.buy-p.base), fiRow,
-    cap10: rows[9].O, tgt: fiRow ? fiRow.S : rows[HOR-1].S};
+const GROUPS = [
+  {t:"О вас", f:[["age","Ваш возраст","лет",""]]},
+  {t:"Кредиты", g:"debt", f:[["debt","Сколько осталось выплатить","тыс","Чтобы посчитать, когда долг закроется. Ставку и платёж план берёт из бюджета."]]},
+  {t:"Рынок", f:[
+    ["ret","Доходность вложений в год","%","Берите осторожно. 10% при инфляции 6% — это около 4% сверх инфляции."],
+    ["infl","Инфляция в год","%",""],
+    ["sg","Сбережения растут быстрее инфляции на","%","Повышения и смена работы — 2–4% в год. Если доход не растёт — 0."]]},
+  {t:"Свобода", f:[["swr","Безопасное изъятие в год","%","Какую долю капитала можно тратить в год, не проедая его. Классика — 4%, осторожно — 3–3,5%."]]},
+  {t:"Ребёнок", g:"kid", f:[
+    ["birth","Год рождения","год",""],
+    ["ccost","Расходы на ребёнка в год","млн","Если их ещё нет в бюджете. Около 0,6–0,8 млн в год без няни."],
+    ["cend","Учитывать до возраста","лет",""]]},
+  {t:"Квартира", g:"flat", f:[
+    ["price","Цена сегодня","млн",""],["pg","Рост цен на жильё в год","%",""],["buy","Год покупки","год",""],
+    ["flim","Семейная ипотека: лимит","млн","Если в год покупки есть ребёнок до 6 лет"],["frate","Семейная: ставка","%",""],["fterm","Семейная: срок","лет",""],
+    ["mkt","Рыночный кредит сверх семейной","млн",""],["mrate","Рыночная ипотека: ставка","%",""],["mterm","Рыночная: срок","лет",""],
+    ["renov","Ремонт и мебель","млн",""],["maint","Содержание в год","млн","Налог, страховка, мелкий ремонт"],["resv","Оставить после покупки","млн","Запас, который не трогаем"]]},
+];
+
+/* ---------- plan: inputs from the budget ---------- */
+function planBase(){
+  const g=n=>+((BUD.cats.find(c=>c.name===n)||{}).plan)||0;
+  const all=BUD.cats.reduce((t,c)=>t+(+c.plan||0),0);
+  const cred=g("Кредиты"), rent=g("Аренда");
+  const E=all-cred;
+  const Eess=BUD.cats.filter(c=>ESS_CATS.includes(c.name)).reduce((t,c)=>t+(+c.plan||0),0);
+  const R=recommend();
+  return {I:BUD.income, E, Eess, cred, rent, kidCat:g("Ребёнок"),
+    S:(+BUD.cushion||0)+(+BUD.capital||0), R,
+    T:R?R.T:Math.round(3*E), one:R?R.E:E, months:R?R.months:3,
+    cush0:curCush()||0, cap0:curCap()||0, haveKnown:curCush()!=null||curCap()!=null,
+    rate:+BUD.creditRate||0};
 }
-function whenBuy(p,rows,X){
-  const infl=p.infl/100, pg=p.pg/100;
-  for(const r of rows){
-    const k=r.y-p.base, pr=X*Math.pow(1+pg,k);
-    const loan=p.kid?Math.min(p.flim,pr*0.8):pr*0.8;
-    const need = pr-loan+p.renov*Math.pow(1+pg,k)+p.resv*Math.pow(1+infl,k);
-    if(r.Ustart>=need){
-      const ok = p.kid ? (r.y>=p.birth && r.y<=p.birth+5) : true;
-      const why = p.kid ? (ok?"Да":(r.y<p.birth?"Нет: ребёнок ещё не родился":"Нет: ребёнку уже 6+")) : "Рыночная ипотека";
-      const pay = p.kid ? pmt(p.frate/100/12,p.fterm*12,loan)*1000 : pmt(p.mrate/100/12,p.mterm*12,loan)*1000;
-      return {y:r.y,age:r.age,pr,ok,why,pay};
+const planY0=()=>new Date().getFullYear(), planM0=()=>new Date().getMonth();
+const yearOf=t=>planY0()+Math.floor((planM0()+t)/12);
+const ageAt=t=>P.age+(yearOf(t)-planY0());
+const monOf=t=>(planM0()+t)%12;
+const tLabel=t=>`${MONTHS[monOf(t)].toLowerCase()} ${yearOf(t)}`;
+
+/* month-by-month simulation, everything in today's money (тыс ₽) */
+function journey(p,b,o){
+  o=o||{};
+  const infl=p.infl/100, retN=(o.ret??p.ret)/100;
+  const rc=Math.pow((1+retN)/(1+infl),1/12)-1, rcush=Math.pow(1.01,1/12)-1;
+  const sg=(o.sg??p.sg)/100, swr=p.swr/100;
+  const E=o.E??b.E, k=b.E>0?E/b.E:1, Eess=b.Eess*k, S0=o.S??b.S;
+  const T=b.T*k, one=b.one*k;
+  const high=b.rate>=15&&b.cred>0;
+  let debt=(b.cred>0&&p.debt>0)?+p.debt:0; const debtKnown=debt>0;
+  const rr=Math.pow((1+b.rate/100)/(1+infl),1/12)-1;
+  let cush=b.cush0, cap=b.cap0, freed=0, short=0, shortT=null;
+  const kid=!!p.kid, flat=!!p.flat;
+  const y0=planY0(), m0=planM0();
+  const yOf=t=>y0+Math.floor((m0+t)/12);
+  const kidCostM=p.ccost*1000/12, maintM=p.maint*1000/12;
+  let loans=[], buy=null;
+  const ms={m1:null,m2:high?null:0,m3:null,m4:null,m5:null};
+  if(high&&!debtKnown) ms.m2=undefined;
+  const pts=[];
+  const N=HOR*12;
+  for(let t=0;t<=N;t++){
+    const y=yOf(t), C=Math.pow(1+infl,t/12), a=y-p.birth;
+    const kidOn=kid&&a>=0&&a<p.cend;
+    // purchase in January of the chosen year (or now, if that year has started)
+    if(flat&&!buy&&(y>=p.buy)){
+      const yrs=t/12, gr=Math.pow((1+p.pg/100)/(1+infl),yrs);
+      const price=p.price*1000*gr, renov=p.renov*1000*gr;
+      const famOk=kid&&a>=0&&a<=5;
+      let floan=0, mloan=0;
+      if(famOk){ floan=Math.min(p.flim*1000/C,price*0.8); mloan=Math.max(0,p.mkt)*1000; }
+      else mloan=price*0.8;
+      const own=Math.max(0,price-floan-mloan)+renov;
+      const capBefore=cap, cushBefore=cush;
+      loans=[];
+      if(floan>0) loans.push({bn:floan*C,r:p.frate/100/12,n:p.fterm*12});
+      if(mloan>0) loans.push({bn:mloan*C,r:p.mrate/100/12,n:p.mterm*12});
+      loans.forEach(l=>l.pn=pmt(l.r,l.n,l.bn));
+      const payR=loans.reduce((s,l)=>s+l.pn,0)/C;
+      cap-=own; if(cap<0){ cush+=cap; cap=0; if(cush<0){ short-=cush; cush=0; } }
+      const Sy=S0*Math.pow(1+sg,Math.floor(t/12));
+      buy={t,y,price,floan,mloan,own,renov,capBefore,cushBefore,capAfter:capBefore-own,famOk,payR,resv:p.resv*1000,Sy,
+        down:price>0?(price-floan-mloan)/price:0};
     }
+    const bought=!!buy;
+    const mortR=loans.reduce((s,l)=>s+l.bn,0)/C;
+    const kidM=kidOn?kidCostM:0;
+    const expM=E-(bought?b.rent:0)+(bought?maintM:0)+kidM;
+    const essM=Eess-(bought?b.rent:0)+(bought?maintM:0)+kidM;
+    const fi=expM*12/swr+mortR, sec=essM*12/swr+mortR;
+    // milestones on the current state
+    if(ms.m1===null&&cush>=one-0.5) ms.m1=t;
+    if(ms.m2===null&&debt<=0) ms.m2=t;
+    if(ms.m3===null&&cush>=T-0.5) ms.m3=t;
+    if(ms.m4===null&&cap>=sec&&cap>0) ms.m4=t;
+    if(ms.m5===null&&cap>=fi&&cap>0) ms.m5=t;
+    if(short>0&&shortT===null) shortT=t;
+    pts.push({t,y,cush,cap,fi,sec,debt,short,age:p.age+(y-y0)});
+    if(t===N) break;
+    // this month's savings
+    let S=S0*Math.pow(1+sg,Math.floor(t/12))+freed-kidM;
+    if(bought){ S+=b.rent-maintM; S-=loans.reduce((s,l)=>s+(l.n>0?l.pn:0),0)/C; }
+    if(S<0){ cap+=S; if(cap<0){ cush+=cap; cap=0; if(cush<0){ short-=cush; cush=0; } } }
+    else{
+      if(short>0){ const pay=Math.min(S,short); short-=pay; S-=pay; }
+      const share=cush<T*0.5?0.8:(cush<T?0.5:0);
+      let toCush=S*share, rest=S-toCush;
+      if(high&&debt>0&&cush>=one){ const pay=Math.min(rest,debt); debt-=pay; rest-=pay; }
+      cush+=toCush; if(cush>T){ rest+=cush-T; cush=T; }
+      cap+=rest;
+    }
+    cap*=1+rc; cush*=1+rcush; if(cush>T){ cap+=cush-T; cush=T; }
+    if(debt>0){ debt=debt*(1+rr)-b.cred; if(debt<=0){ debt=0; freed+=b.cred; } }
+    for(const l of loans){ if(l.n>0&&l.bn>0){ l.bn=Math.max(0,l.bn*(1+l.r)-l.pn); l.n--; if(l.n===0) l.bn=0; } }
   }
-  return null;
+  return {pts,ms,buy,T,one,S0,E,high,debtKnown,shortT,rcReal:Math.pow(1+rc,12)-1};
 }
+const msYear=t=>t==null?null:yearOf(t);
 
 /* ---------- inputs ---------- */
+function gv(g,b){ return g==="debt" ? (b&&b.cred>0) : !!P[g]; }
 function buildInputs(){
   const box=$("#inputs"); box.innerHTML="";
   for(const g of GROUPS){
@@ -596,15 +677,11 @@ function buildInputs(){
       const f=document.createElement("div"); f.className="field";
       const lab=document.createElement("label"); lab.textContent=label;
       const wrap=document.createElement("div"); wrap.className="in";
-      if(k.startsWith("=")){
-        const c=document.createElement("div"); c.className="calc"; c.id="calc_"+k.slice(1); wrap.appendChild(c);
-      } else {
-        const inp=document.createElement("input"); inp.type="number"; inp.id="in_"+k; lab.htmlFor=inp.id;
-        inp.step = INT_KEYS.has(k) ? "1" : (unit==="%" ? "0.5" : "0.1");
-        inp.value=P[k]; inp.inputMode="decimal";
-        inp.addEventListener("input",()=>{const v=parseFloat(inp.value); if(isFinite(v)){P[k]=v; render(); saveParams();}});
-        wrap.appendChild(inp);
-      }
+      const inp=document.createElement("input"); inp.type="number"; inp.id="in_"+k; lab.htmlFor=inp.id;
+      inp.step = INT_KEYS.has(k) ? "1" : (unit==="%" ? "0.5" : unit==="тыс" ? "10" : "0.1");
+      inp.value=P[k]??""; inp.inputMode="decimal";
+      inp.addEventListener("input",()=>{const v=parseFloat(inp.value); if(isFinite(v)){P[k]=v; render(); saveParams();} else if(inp.value===""&&k==="debt"){ P.debt=0; render(); saveParams(); }});
+      wrap.appendChild(inp);
       const u=document.createElement("span"); u.className="u"; u.textContent=unit==="год"?"":unit; wrap.appendChild(u);
       f.appendChild(lab); f.appendChild(wrap); gr.appendChild(f);
       if(hint){const hh=document.createElement("div"); hh.className="hint"; hh.textContent=hint; gr.appendChild(hh);}
@@ -613,149 +690,286 @@ function buildInputs(){
   }
   const br=document.createElement("div"); br.className="btnrow";
   const b=document.createElement("button"); b.type="button"; b.textContent="Вернуть исходные цифры";
-  b.addEventListener("click",()=>{P=JSON.parse(JSON.stringify(DEFAULTS)); P.base=new Date().getFullYear(); syncInputs(); render(); saveParams();});
+  b.addEventListener("click",()=>{ const age=P.age; P=JSON.parse(JSON.stringify(DEFAULTS)); P.base=new Date().getFullYear(); P.age=age; P.debt=0; syncInputs(); render(); saveParams();});
   br.appendChild(b); box.appendChild(br);
 }
 function syncInputs(){
-  for(const g of GROUPS) for(const [k] of g.f){ if(k.startsWith("=")) continue; const el=$("#in_"+k); if(el && document.activeElement!==el) el.value=P[k]; }
+  for(const g of GROUPS) for(const [k] of g.f){ const el=$("#in_"+k); if(el && document.activeElement!==el) el.value=P[k]??""; }
 }
 
 /* ---------- render ---------- */
-function kpi(label,value,sub,pill){
-  return `<div class="kpi"><h3>${label}</h3><div class="v num">${value}</div>${pill||""}<div class="s">${sub}</div></div>`;
+let LASTJ=null, LASTB=null, PVIEW="near", TRY=null;
+function whenTxt(t,short){
+  if(t===0) return "готово";
+  if(t==null) return `позже ${planY0()+HOR}`;
+  if(t<24&&!short) return tLabel(t);
+  return `${yearOf(t)} · ${plural(ageAt(t),"год","года","лет")}`;
 }
 function render(){
-  const m=model(P);
-  $("#calc_s_tot").textContent=fmt(m.s_tot,2);
-  // what the plan includes
-  document.querySelectorAll('#inputs [data-g]').forEach(el=>{ el.hidden=!P[el.dataset.g]; });
-  if($("#tKid")){ $("#tKid").checked=!!P.kid; $("#tFlat").checked=!!P.flat; }
-  $("#buyCard").hidden=!P.flat; $("#whenCard").hidden=!P.flat;
-  const buyOk = m.resok && (m.famok||!P.kid) && m.downpct>=0.199;
-  const yearExp=(P.exp+(P.flat?0:P.rent*12/1000));
-  const cover=yearExp>0?P.cap0*P.swr/100/yearExp:0;
-  const fiK=kpi("Финансовая свобода", m.fiRow?`${m.fiRow.y}`:`после ${P.base+HOR}`, m.fiRow?`вам будет ${m.fiRow.age} · через ${plural(m.fiRow.y-P.base,"год","года","лет")}`:`за ${HOR} лет не достигается`);
-  $("#kpis").innerHTML = P.flat
-    ? kpi("Покупка квартиры", `${P.buy}`, `${fmt(P.price,0)} млн сегодня → ${fmt(m.pbuy,1)} млн в ${P.buy}`,
-        buyOk?'<span class="pill good">✓ денег хватает</span>':'<span class="pill bad">✕ не сходится</span>') +
-      kpi("Платёж в месяц", `${fmt0(m.fpay+m.mpay)} тыс`, `аренда к тому году ~${fmt0(m.rentb)} тыс`) + fiK +
-      kpi("Капитал через 10 лет", `${fmt(m.cap10,1)} млн`, `в сегодняшних деньгах, ${P.base+10} год`)
-    : fiK +
-      kpi("Нужно капитала", `${fmt(m.tgt,0)} млн`, `в сегодняшних деньгах: жить на ${fmt(P.swr,1)}% в год`) +
-      kpi("Уже покрывает", `${Math.round(cover*100)}%`, `расходов — ~${fmt0(P.cap0*P.swr/100/12*1000)} тыс/мес пассивного дохода`,
-        `<span class="pill ${cover>=1?"good":"bad"}" style="${cover>=1?"":"background:var(--surface-2);color:var(--ink-2)"}">${cover>=1?"✓ свобода":"путь к цели"}</span>`) +
-      kpi("Капитал через 10 лет", `${fmt(m.cap10,1)} млн`, `в сегодняшних деньгах, ${P.base+10} год`);
-  renderLevers(m);
-  if($("#chartHint")) $("#chartHint").textContent=P.flat?"Всё в сегодняшних деньгах. Провал — год покупки квартиры, пунктир — сколько нужно для свободы.":"Всё в сегодняшних деньгах. Пунктир — сколько нужно для свободы; где линии пересекаются — вы свободны.";
-  // purchase
-  $("#buyTitle").textContent=`Покупка квартиры в ${P.buy} году`;
-  const problems=[];
-  if(P.kid&&!m.famok) problems.push(P.buy<P.birth?"ребёнок ещё не родился — семейная ипотека недоступна":"ребёнку уже 6+ — семейная ипотека недоступна");
-
-  if(m.downpct<0.199) problems.push("первый взнос меньше 20%");
-  { const br=m.rows.find(r=>r.y===P.buy); if(br){ const lim=m.rentb+br.D/12*1000; const pay=m.fpay+m.mpay; if(pay>lim*1.02) problems.push(`платёж ${fmt0(pay)} тыс/мес больше, чем аренда плюс сбережения к тому году (~${fmt0(lim)} тыс) — капитал начнёт уменьшаться`); } }
-  if(!m.resok) problems.push(`после покупки остаётся ${fmt(m.capa,1)} млн при нужном резерве ${fmt(m.resn,1)} млн — сдвиньте год, снизьте цену или добавьте рыночный кредит`);
-  $("#verdict").innerHTML = problems.length
-    ? `<div class="verdict bad">✕ Не сходится: ${problems.join("; ")}.</div>`
-    : `<div class="verdict good">✓ Сходится: после покупки остаётся ${fmt(m.capa,1)} млн, резерв ${fmt(m.resn,1)} млн соблюдён.</div>`;
-  const kv=(a,b)=>`<div class="kv"><span>${a}</span><span>${b}</span></div>`;
-  $("#buygrid").innerHTML =
-    kv("Цена в год покупки",fmt(m.pbuy,2)+" млн")+kv("Семейная ипотека",fmt(m.floan,2)+" млн")+
-    kv("Рыночный кредит",fmt(m.mloan,2)+" млн")+kv("Ремонт и мебель",fmt(m.rbuy,2)+" млн")+
-    kv("Свои деньги (взнос + ремонт)",fmt(m.own,2)+" млн")+kv("Первый взнос",fmt(m.downpct*100,0)+"%")+
-    kv("Капитал на начало года",fmt(m.capb,2)+" млн")+kv("Капитал после покупки",fmt(m.capa,2)+" млн")+
-    kv("Платёж по семейной",fmt0(m.fpay)+" тыс/мес")+kv("Платёж по рыночному",fmt0(m.mpay)+" тыс/мес");
-  renderChart(m);
-  renderWhen(m);
-  renderProj(m);
-}
-
-function renderChart(m){
-  const svg=$("#chart"), W=760,H=320;
-  const bw=($("#chartbox")&&$("#chartbox").clientWidth)||Math.min(W,(window.innerWidth||W)-64); const fs=Math.round(Math.max(11,11*W/Math.max(280,bw)*0.85));
-  const L=Math.round(14+fs*2.6),R=16,T=Math.round(8+fs),B=Math.round(12+fs*1.8);
-  const rows=m.rows;
-  const vals=rows.flatMap(r=>[r.O,r.S]);
-  let ymax=Math.max(...vals), ymin=Math.min(0,...vals);
-  const step = niceStep((ymax-ymin)/5);
-  ymax=Math.ceil(ymax/step)*step; ymin=Math.floor(ymin/step)*step;
-  const x=i=>L+(W-L-R)*i/(rows.length-1);
-  const y=v=>T+(H-T-B)*(1-(v-ymin)/(ymax-ymin));
-  let s="";
-  for(let v=ymin; v<=ymax+1e-9; v+=step){
-    s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${v===0?1.2:0.7}"/>`;
-    s+=`<text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="${fs}" fill="var(--ink-3)" font-family="var(--mono)">${fmt0(v)}</text>`;
+  const b=planBase();
+  document.querySelectorAll('#inputs [data-g]').forEach(el=>{ el.hidden=!gv(el.dataset.g,b); });
+  $("#tKid").checked=!!P.kid; $("#tFlat").checked=!!P.flat;
+  const ok=b.I>0&&b.E>0;
+  ["#pSteps","#pHist","#pChartCard","#pTry","#pRate","#pGoals"].forEach(id=>$(id).hidden=!ok);
+  if(!ok){
+    $("#pHero").innerHTML=`<div class="pempty"><h3>Ваш путь к свободе</h3><div style="font-size:22px;font-weight:700;line-height:1.25">Сначала — бюджет</div>
+      <p class="sub">Укажите доход и траты — план покажет, когда соберётся подушка, когда капитал начнёт оплачивать жизнь и что приблизит этот год.</p>
+      <button type="button" class="btn-primary" id="pWiz">Разложить доход — 2 минуты</button></div>`;
+    $("#pWiz").addEventListener("click",openWizard); $("#projTbl").innerHTML=""; LASTJ=null; return;
   }
-  rows.forEach((r,i)=>{ if(r.y%5===0) s+=`<text x="${x(i)}" y="${H-12}" text-anchor="middle" font-size="${fs}" fill="var(--ink-3)" font-family="var(--mono)">${r.y}</text>`; });
-  const mark=(yr,label)=>{const i=rows.findIndex(r=>r.y===yr); if(i<0) return "";
-    return `<line x1="${x(i)}" x2="${x(i)}" y1="${T}" y2="${H-B}" stroke="var(--ink-3)" stroke-dasharray="2 3" stroke-width="1"/>`+
-      (x(i)>W-90?`<text x="${x(i)-5}" y="${T+10}" text-anchor="end" font-size="${fs}" fill="var(--ink-2)">${label}</text>`:`<text x="${x(i)+5}" y="${T+10}" font-size="${fs}" fill="var(--ink-2)">${label}</text>`);};
-  if(P.flat) s+=mark(P.buy,"покупка");
-  if(m.fiRow) s+=mark(m.fiRow.y,"свобода");
-  if(P.kid && P.birth>P.base && P.birth<=P.base+HOR) s+=mark(P.birth,"ребёнок");
-  const path=k=>rows.map((r,i)=>(i?"L":"M")+x(i).toFixed(1)+","+y(r[k]).toFixed(1)).join("");
-  s+=`<path d="${path("S")}" fill="none" stroke="var(--s2)" stroke-width="2" stroke-dasharray="6 5"/>`;
-  s+=`<path d="${path("O")}" fill="none" stroke="var(--s1)" stroke-width="2.5" stroke-linejoin="round"/>`;
-  const li=rows.length-1;
-  s+=`<circle cx="${x(li)}" cy="${y(rows[li].O)}" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"/>`;
-  s+=`<g id="hov" visibility="hidden"><line id="hl" y1="${T}" y2="${H-B}" stroke="var(--ink-3)" stroke-width="1"/><circle id="hc1" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"/><circle id="hc2" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"/></g>`;
-  s+=`<rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent" id="hit"/>`;
-  svg.innerHTML=s;
-  const hit=svg.querySelector("#hit"), tip=$("#tip"), box=$("#chartbox");
-  const move=ev=>{
-    const pt=svg.getBoundingClientRect(); const sx=(ev.clientX-pt.left)*W/pt.width;
-    const i=Math.max(0,Math.min(li,Math.round((sx-L)/(W-L-R)*li))); const r=rows[i];
-    const g=svg.querySelector("#hov"); g.setAttribute("visibility","visible");
-    svg.querySelector("#hl").setAttribute("x1",x(i)); svg.querySelector("#hl").setAttribute("x2",x(i));
-    const c1=svg.querySelector("#hc1"), c2=svg.querySelector("#hc2");
-    c1.setAttribute("cx",x(i)); c1.setAttribute("cy",y(r.O)); c2.setAttribute("cx",x(i)); c2.setAttribute("cy",y(r.S));
-    tip.hidden=false;
-    tip.innerHTML=`<b>${r.y}</b> · вам ${r.age}<div class="r"><span>Капитал</span><span class="num">${fmt(r.O,1)} млн</span></div><div class="r"><span>Цель</span><span class="num">${fmt(r.S,1)} млн</span></div><div class="r"><span>Отложили за год</span><span class="num">${fmt(r.J/r.C,2)} млн</span></div>`;
-    const px=x(i)*pt.width/W, bw=box.clientWidth, tw=tip.offsetWidth;
-    tip.style.left=Math.min(bw-tw, Math.max(0, px+12 > bw-tw ? px-tw-12 : px+12))+"px";
-    tip.style.top="8px";
+  const j=journey(P,b); LASTJ=j; LASTB=b;
+  renderPHero(j,b); renderSteps(j,b); renderHist(j,b); renderChart(); renderTry(j,b); renderRate(j,b); renderGoals(j,b); renderProj(j);
+}
+function renderPHero(j,b){
+  const t=j.ms.m5, swr=P.swr/100;
+  const cover=b.E>0?b.cap0*swr/12/b.E:0, rate=b.I>0?b.S/b.I:0;
+  const fiNow=j.pts[0].fi;
+  $("#pHero").innerHTML=`<div class="spread"><h3>Финансовая независимость</h3><label class="agein" for="pAge">вам <input type="number" inputmode="numeric" id="pAge" value="${P.age}" aria-label="Ваш возраст"> лет</label></div>
+    <div class="pbig"><div class="big num">${t==null?`после ${planY0()+HOR}`:yearOf(t)}</div><div class="sub">${t==null?"при нынешнем темпе — дольше 45 лет":t===0?"уже сейчас":`вам будет ${ageAt(t)} · через ${plural(yearOf(t)-planY0(),"год","года","лет")}`}</div></div>
+    <div class="bar" aria-hidden="true"><i style="width:${Math.min(100,cover*100)}%"></i></div>
+    <div class="sub">Капитал уже покрывает <b>${cover<0.01&&cover>0?"<1":Math.round(cover*100)}%</b> расходов${b.cap0>0?` — это ~${fmtT(b.cap0*swr/12)} в месяц пассивного дохода`:""}.</div>
+    <div class="stats">
+      <div class="stat"><span class="l">План в месяц</span><span class="v num">${fmtT(b.S)}</span><span class="hint">${(()=>{ const st=savStats(); return st&&st.done.length?`факт ~${fmtT(st.avg/1000)}`:"откладываю"; })()}</span></div>
+      <div class="stat"><span class="l">Доля</span><span class="v num">${Math.round(rate*100)}%</span><span class="hint">${rate>=0.2?"хороший темп":"цель — 20%+"}</span></div>
+      <div class="stat"><span class="l">Цель</span><span class="v num">${fmtM(fiNow)}</span><span class="hint">капитал</span></div>
+    </div>
+    ${!b.haveKnown?`<p class="hint">Укажите в «Бюджете», сколько уже отложено, — план станет точнее.</p>`:""}`;
+  $("#pAge").addEventListener("change",e=>{ const v=parseInt(e.target.value,10); if(v>0&&v<100){ P.age=v; syncInputs(); render(); saveParams(); } });
+}
+function renderSteps(j,b){
+  const R=b.R, share0=b.cush0<j.T*0.5?0.8:(b.cush0<j.T?0.5:0);
+  const p0=j.pts[0];
+  const steps=[
+    {k:"m1",t:"Запас на месяц",d:`${fmtT(j.one)} — чтобы поломка или болезнь не превращались в кредитку`,have:b.cush0,need:j.one},
+  ];
+  if(j.high) steps.push({k:"m2",t:"Дорогие долги закрыты",d:j.debtKnown?`Осталось ${fmtT(P.debt)} под ${b.rate}%. Досрочное погашение выгоднее вложений: это гарантированные ${b.rate}% в год.`:`Ставка ${b.rate}% — выше, чем приносят вклады. Укажите остаток долга в «Мои цифры», чтобы посчитать срок.`,have:null});
+  steps.push(
+    {k:"m3",t:`Подушка на ${plural(b.months,"месяц","месяца","месяцев")}`,d:`${fmtT(j.T)} на вкладе или накопительном счёте — на случай потери дохода`,have:b.cush0,need:j.T},
+    {k:"m4",t:"Финансовая безопасность",d:`Капитал ${fmtM(p0.sec)} оплачивает обязательное: жильё, еду, ЖКУ, транспорт и здоровье`,have:b.cap0,need:p0.sec},
+    {k:"m5",t:"Финансовая независимость",d:`Капитал ${fmtM(p0.fi)} покрывает все расходы — работать можно по желанию`,have:b.cap0,need:p0.fi});
+  let cur=steps.findIndex(s=>j.ms[s.k]!==0);
+  const act=s=>{
+    if(b.S<=0) return "В бюджете сейчас не заложены сбережения. Начните хотя бы с 5–10% дохода — строка «Подушка» в бюджете.";
+    if(s.k==="m1"||s.k==="m3") return `Откладывайте ${fmtT(b.S)} в месяц, пока подушка не собрана — ${Math.round(share0*100)}% из них в неё. Удобнее всего автопереводом в день зарплаты.`;
+    if(s.k==="m2") return `Всё, что сверх подушки, — в досрочное погашение. Когда долг закроется, платёж ${fmtT(b.cred)} в месяц пойдёт в капитал.`;
+    return `Каждый месяц ${fmtT(b.S)} — в капитал: вклады, облигации, фонды. Не трогайте его ради текущих трат.`;
   };
-  hit.addEventListener("pointermove",move); hit.addEventListener("pointerdown",move);
-  hit.addEventListener("pointerleave",()=>{tip.hidden=true; svg.querySelector("#hov").setAttribute("visibility","hidden");});
+  const why=[P.kid?"расходы на ребёнка":"",P.flat?"покупка квартиры и ипотека":""].filter(Boolean).join(" и ");
+  $("#pSteps").innerHTML=`<div class="spread"><h2>Путь по шагам</h2><span class="hint">когда наступит</span></div>`+(j.shortT!=null?`<div class="verdict bad">С ${whenTxt(j.shortT).replace(/^готово$/,"сегодняшнего дня")} сбережений перестанет хватать${why?": "+why+" съедают больше, чем вы откладываете":""}. Сдвиньте цели или увеличьте сбережения.</div>`:"")+`<div class="steps">`+steps.map((s,i)=>{
+    const t=j.ms[s.k], done=t===0, now=i===cur;
+    const cls=done?"done":now?"now":"later";
+    const when=t===undefined?"—":whenTxt(t);
+    let box="";
+    if(now){
+      const pr=s.have!=null&&s.need>0?Math.max(0,Math.min(1,s.have/s.need)):null;
+      box=`<div class="nowbox">${pr!=null?`<div class="spread"><span>${fmtM(s.have)} из ${fmtM(s.need)}</span><b class="num">${Math.round(pr*100)}%</b></div><div class="bar" style="height:7px"><i style="width:${pr*100}%"></i></div>`:""}<span>${act(s)}</span></div>`;
+    }
+    return `<div class="stp ${cls}"><span class="mk">${done?"✓":i+1}</span><div style="min-width:0"><div class="hd"><b>${s.t}${now?'<span class="tagnow">сейчас</span>':""}</b><span class="when">${when}</span></div><div class="ds">${s.d}</div>${box}</div></div>`;
+  }).join("")+`</div>`;
+}
+function renderHist(j,b){
+  const el=$("#pHist"), st=savStats(), planM=b.S*1000, cur=ymOf(todayStr());
+  let h=`<div class="spread"><h2>История сбережений</h2><button type="button" class="btn-primary" id="hAdd" style="padding:7px 12px;flex:0 0 auto">+ Отметить</button></div>`;
+  if(!st||!st.months.length){
+    el.innerHTML=h+`<p class="sub">Раз в месяц отмечайте, сколько отложили в подушку и капитал. Здесь появится история по месяцам, средний темп и то, как он сдвигает год свободы.</p><p class="hint">Переводы на накопительный, вклад, копилку и брокерский счёт из выписок я нахожу сама.</p>`;
+    $("#hAdd").addEventListener("click",()=>openSav()); return;
+  }
+  const n=Math.min(12,Math.max(6,st.months.length)), range=[]; for(let k=n-1;k>=0;k--) range.push(shiftYM(cur,-k));
+  if(!HSEL||!range.includes(HSEL)) HSEL=[...range].reverse().find(ym=>st.by[ym])||cur;
+  const k=st.done.length;
+  h+=`<div class="legend"><span><i class="sw b"></i>Подушка</span><span><i class="sw a"></i>Капитал</span>${planM>0?'<span><i class="sw t"></i>План</span>':""}</div>
+    <div class="chartbox" id="hBox"><svg id="hSvg" role="img" aria-label="Сколько отложено по месяцам"></svg></div>
+    <div class="stats">
+      <div class="stat"><span class="l">В среднем</span><span class="v num">${tys(st.avg)}</span><span class="hint">за ${plural(k,"месяц","месяца","месяцев")}</span></div>
+      <div class="stat"><span class="l">План</span><span class="v num">${fmtT(b.S)}</span><span class="hint">в месяц</span></div>
+      <div class="stat"><span class="l">Пропуски</span><span class="v num">${st.zero} из ${k}</span><span class="hint">мес. без сбережений</span></div>
+    </div>`;
+  if(k>=2&&b.S>0){
+    const r=journey(P,b,{S:Math.max(0,st.avg/1000)}).ms.m5, base=j.ms.m5;
+    const rY=r==null?null:yearOf(r), bY=base==null?null:yearOf(base);
+    let txt;
+    if(rY===bY) txt=`Вы идёте по плану: при среднем темпе независимость — ${rY??"позже "+(planY0()+HOR)}.`;
+    else if(rY==null) txt=`При таком темпе независимость не наступает за ${HOR} лет. По плану — ${bY}.`;
+    else if(bY==null||rY<bY) txt=`При среднем темпе независимость в <b>${rY}</b> — ${bY?`на ${plural(bY-rY,"год","года","лет")} раньше плана`:"раньше, чем по плану"}. Так держать!`;
+    else txt=`При среднем темпе независимость в <b>${rY}</b> — на ${plural(rY-bY,"год","года","лет")} позже плана (${bY}). Помогает автоперевод в день зарплаты: тогда пропусков меньше.`;
+    h+=`<div class="verdict ${rY!=null&&(bY==null||rY<=bY)?"good":"bad"}" style="${rY!=null&&bY!=null&&rY>bY?"background:var(--warn-bg);color:var(--warn)":""}">${txt}</div>`;
+  }
+  const [yy,mm]=HSEL.split("-").map(Number);
+  const list=SAVH.filter(e=>ymOf(e.d)===HSEL).sort((a,c)=>a.d.localeCompare(c.d));
+  const tot=st.tot(HSEL);
+  h+=`<div><div class="spread" style="padding-top:4px"><b>${MONTHS[mm-1]} ${yy}</b><span class="num" style="font-family:var(--mono)">${tot<0?"−":""}${rub(Math.abs(tot))}</span></div>`+
+    (list.length?list.map(e=>{ const dd=new Date(e.d+"T12:00:00"); return `<div class="hrow"><span style="min-width:0"><i class="kdot" style="background:${e.k==="c"?"var(--c-cush)":"var(--c-cap)"}"></i>${e.k==="c"?"Подушка":"Капитал"}${e.n?` · ${esc(e.n)}`:""}<br><span class="hint">${dd.getDate()} ${MONTHS_G[dd.getMonth()]}${e.src?" · "+esc(e.src):""}</span></span><span class="a">${e.a<0?"−":"+"}${rub(Math.abs(e.a))}</span><button type="button" class="btn-ghost x" data-del="${esc(e.id)}" aria-label="Удалить запись">✕</button></div>`; }).join("")
+      :`<p class="hint" style="padding-top:6px">В этом месяце ничего не отложено.</p>`)+`</div>`;
+  el.innerHTML=h;
+  $("#hAdd").addEventListener("click",()=>openSav());
+  el.querySelectorAll("[data-del]").forEach(x=>x.addEventListener("click",()=>{ SAVH=SAVH.filter(e=>e.id!==x.dataset.del); saveSav(); renderAll(); render(); }));
+  drawHist(range,st.by,planM);
+}
+function drawHist(range,by,planM){
+  const svg=$("#hSvg"), box=$("#hBox"); if(!svg) return;
+  const W=Math.max(280,Math.round(box.clientWidth||340)), H=168, T=16, B=22, L=4, R=4;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("width",W); svg.setAttribute("height",H);
+  const vals=range.map(ym=>by[ym]||{c:0,p:0});
+  const pos=v=>Math.max(0,v.c)+Math.max(0,v.p), neg=v=>Math.min(0,v.c)+Math.min(0,v.p);
+  const max=Math.max(planM,...vals.map(pos),1)*1.15, min=Math.min(0,...vals.map(neg))*1.15;
+  const y=v=>T+(H-T-B)*(max-v)/(max-min);
+  const bw=(W-L-R)/range.length, w=Math.min(30,bw*0.64);
+  let s=`<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)" stroke-width="1.2"/>`;
+  range.forEach((ym,i)=>{
+    const v=vals[i], x=L+i*bw+(bw-w)/2, on=ym===HSEL, op=on?1:.55; let up=0, dn=0, s2="";
+    const seg=(val,color)=>{ if(!val) return; let y1,y2;
+      if(val>0){ y1=y(up+val); y2=y(up)-(up>0?2:0); up+=val; } else { y1=y(dn)+(dn<0?2:0); y2=y(dn+val); dn+=val; }
+      s2+=`<rect x="${x.toFixed(1)}" y="${y1.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1.5,y2-y1).toFixed(1)}" rx="3" fill="${color}" fill-opacity="${op}"/>`; };
+    seg(v.c,"var(--c-cush)"); seg(v.p,"var(--c-cap)");
+    const t=v.c+v.p;
+    if(t&&(on||range.length<=6)) s2+=`<text x="${x+w/2}" y="${t>0?y(up)-5:y(dn)+12}" text-anchor="middle" font-size="10.5" fill="var(--ink)" font-family="var(--mono)" font-weight="${on?600:400}">${t<0?"−":""}${Math.round(Math.abs(t)/1000)}</text>`;
+    s+=`<g data-ym="${ym}" style="cursor:pointer"><rect x="${L+i*bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>${s2}<text x="${x+w/2}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="${on?"var(--ink)":"var(--ink-3)"}" font-weight="${on?600:400}">${MON3[+ym.slice(5)-1]}</text></g>`;
+  });
+  if(planM>0){ const py=y(planM); s+=`<line x1="${L}" x2="${W-R}" y1="${py}" y2="${py}" stroke="var(--ink-2)" stroke-dasharray="5 4" stroke-width="1.3" pointer-events="none"/><text x="${W-R}" y="${py-4}" text-anchor="end" font-size="10.5" fill="var(--ink-2)" paint-order="stroke" stroke="var(--surface)" stroke-width="3" pointer-events="none">план ${Math.round(planM/1000)} тыс</text>`; }
+  svg.innerHTML=s;
+  svg.querySelectorAll("g[data-ym]").forEach(g=>g.addEventListener("click",()=>{ HSEL=g.dataset.ym; if(LASTJ) renderHist(LASTJ,LASTB); }));
 }
 function niceStep(raw){ const p=Math.pow(10,Math.floor(Math.log10(raw||1))); const n=raw/p; return (n<=1?1:n<=2?2:n<=5?5:10)*p; }
-
-function renderWhen(m){
-  let h=`<thead><tr><th>Цена сегодня, млн</th><th>Своих нужно сегодня</th><th>Год, когда хватит</th><th>Возраст</th><th>Цена в тот год</th><th>Платёж по семейной</th><th>Семейная ипотека ещё доступна?</th></tr></thead><tbody>`;
-  P.prices.forEach((X,idx)=>{
-    const need=X-Math.min(P.flim,X*0.8)+P.renov+P.resv;
-    const w=whenBuy(P,m.rows,X);
-    h+=`<tr><td><input type="number" step="1" id="pr_${idx}" value="${X}" aria-label="Цена квартиры ${idx+1}"></td><td>${fmt(need,1)} млн</td>`+
-      (w?`<td>${w.y}</td><td>${w.age}</td><td>${fmt(w.pr,1)} млн</td><td>${fmt0(w.pay)} тыс</td><td class="t"><span class="pill ${w.ok?"good":"bad"}">${w.ok?"✓":"✕"} ${w.why}</span></td>`
-         :`<td>после ${P.base+HOR}</td><td>—</td><td>—</td><td>—</td><td class="t">—</td>`)+`</tr>`;
-  });
-  const t=$("#whenTbl"); const f=document.activeElement&&document.activeElement.id; t.innerHTML=h+"</tbody>";
-  P.prices.forEach((_,idx)=>{const el=$("#pr_"+idx); el.addEventListener("change",()=>{const v=parseFloat(el.value); if(isFinite(v)){P.prices[idx]=v; render(); saveParams();}});});
-  if(f&&f.startsWith("pr_")) $("#"+f)?.focus();
-}
-function renderProj(m){
-  let h=`<thead><tr><th>Год</th><th>Возраст</th><th>Взнос за год</th><th>в т.ч. ребёнок</th><th>Ипотека</th><th>Капитал на конец</th><th>Капитал, сегодня</th><th>Остаток ипотеки</th><th>Цель, сегодня</th></tr></thead><tbody>`;
-  for(const r of m.rows){
-    const cls=[r.y===P.buy?"buy":"", m.fiRow&&r.y===m.fiRow.y?"fi":"", (r.y>=P.birth&&r.y<P.birth+6)?"child":""].join(" ");
-    h+=`<tr class="${cls}"><td>${r.y}</td><td>${r.age}</td><td>${fmt(r.J,2)}</td><td>${fmt(r.E,2)}</td><td>${fmt(r.H,2)}</td><td>${fmt(r.N,1)}</td><td>${fmt(r.O,1)}</td><td>${fmt(r.Pb,1)}</td><td>${fmt(r.S,1)}</td></tr>`;
+function renderChart(){
+  const j=LASTJ; if(!j) return;
+  const svg=$("#chart"), box=$("#chartbox");
+  document.querySelectorAll("#pView button").forEach(x=>x.setAttribute("aria-selected",String(x.dataset.v===PVIEW)));
+  const W=Math.max(280,Math.round(box.clientWidth||340)), H=Math.round(Math.max(210,Math.min(300,W*0.64)));
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("width",W); svg.setAttribute("height",H);
+  const near=PVIEW==="near";
+  let pts;
+  if(near) pts=j.pts.slice(0,37);
+  else{ const end=Math.min(HOR*12,Math.max(120,(j.ms.m5!=null?j.ms.m5+60:HOR*12))); pts=j.pts.filter(p=>p.t%12===0&&p.t<=end); }
+  const mln=!near||Math.max(...pts.map(p=>p.cush+p.cap))>=2000;
+  const dv=v=>mln?v/1000:v;
+  const tot=p=>p.cush+p.cap;
+  const vals=pts.map(p=>dv(tot(p))).concat(near?[dv(j.T)]:pts.map(p=>dv(p.fi)));
+  let ymax=Math.max(...vals,0.001); const step=niceStep(ymax/4); ymax=Math.ceil(ymax*1.04/step)*step;
+  const fs=11, L=Math.round(fs*3.4), R=12, T=14, B=26;
+  const x=i=>L+(W-L-R)*i/(pts.length-1), y=v=>T+(H-T-B)*(1-v/ymax);
+  let s="";
+  for(let v=0; v<=ymax+1e-9; v+=step){ s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${v===0?1.2:0.7}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="${fs}" fill="var(--ink-3)" font-family="var(--mono)">${fmt(v,step<1?1:0)}</text>`; }
+  pts.forEach((p,i)=>{ const lab=near?((W<460?p.t%12===0:p.t%6===0)?`${MON3[monOf(p.t)]} ${String(yearOf(p.t)).slice(2)}`:null):(i===0||((p.y-planY0())%(pts.length>26?10:5)===0)?String(p.y):null);
+    if(lab&&!(i===pts.length-1&&x(i)>W-R-18&&i%6!==0)) s+=`<text x="${x(i)}" y="${H-8}" text-anchor="${i===0?"start":"middle"}" font-size="${fs}" fill="var(--ink-3)" font-family="var(--mono)">${lab}</text>`; });
+  // stacked areas: cushion at the bottom, capital on top (2px surface gap between)
+  const top=pts.map((p,i)=>[x(i),y(dv(tot(p)))]), mid=pts.map((p,i)=>[x(i),y(dv(p.cush))]), base=pts.map((p,i)=>[x(i),y(0)]);
+  const area=(up,down)=>"M"+up.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join("L")+"L"+down.slice().reverse().map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join("L")+"Z";
+  const line=arr=>"M"+arr.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join("L");
+  s+=`<path d="${area(top,mid)}" fill="var(--c-cap)" fill-opacity=".85"/>`;
+  s+=`<path d="${area(mid,base)}" fill="var(--c-cush)" fill-opacity=".85"/>`;
+  s+=`<path d="${line(mid)}" fill="none" stroke="var(--surface)" stroke-width="2"/>`;
+  const lbl=(xx,yy,t,anchor)=>`<text x="${xx}" y="${yy}" text-anchor="${anchor||"end"}" font-size="${fs}" fill="var(--ink-2)" paint-order="stroke" stroke="var(--surface)" stroke-width="3">${t}</text>`;
+  if(near){
+    const ty=y(dv(j.T)); s+=`<line x1="${L}" x2="${W-R}" y1="${ty}" y2="${ty}" stroke="var(--ink-2)" stroke-dasharray="5 4" stroke-width="1.5"/>`+lbl(W-R,ty-5,"цель подушки");
+    for(const [k,name] of [["m1","запас на месяц"],["m3","подушка собрана"]]){ const t=j.ms[k]; if(t&&t<=36){ const i=t; s+=`<circle cx="${x(i)}" cy="${y(dv(pts[i].cush))}" r="4.5" fill="var(--c-cush)" stroke="var(--surface)" stroke-width="2"/>`; } }
+  } else {
+    s+=`<path d="${line(pts.map((p,i)=>[x(i),y(dv(p.sec))]))}" fill="none" stroke="var(--ink-3)" stroke-dasharray="1.5 3.5" stroke-width="1.8" stroke-linecap="round"/>`;
+    s+=`<path d="${line(pts.map((p,i)=>[x(i),y(dv(p.fi))]))}" fill="none" stroke="var(--ink-2)" stroke-dasharray="6 4" stroke-width="1.6"/>`;
+    const li=pts.length-1;
+    s+=lbl(L+4,y(dv(pts[0].fi))-6,"независимость","start")+lbl(L+4,y(dv(pts[0].sec))-6,"безопасность","start");
+    const vmark=(yr,name)=>{ const i=pts.findIndex(p=>p.y===yr); if(i<=0) return ""; return `<line x1="${x(i)}" x2="${x(i)}" y1="${T}" y2="${H-B}" stroke="var(--ink-3)" stroke-dasharray="2 3" stroke-width="1"/>`+lbl(x(i)+(x(i)>W*0.7?-4:4),T+10,name,x(i)>W*0.7?"end":"start"); };
+    if(P.flat&&j.buy) s+=vmark(j.buy.y,"квартира");
+    if(P.kid) s+=vmark(P.birth,"ребёнок");
+    if(j.ms.m5!=null){ const i=pts.findIndex(p=>p.t>=j.ms.m5); if(i>=0) s+=`<circle cx="${x(i)}" cy="${y(dv(tot(pts[i])))}" r="5" fill="var(--c-cap)" stroke="var(--surface)" stroke-width="2"/>`; }
   }
-  $("#projTbl").innerHTML=h+"</tbody>";
+  s+=`<g id="hov" visibility="hidden"><line id="hl" y1="${T}" y2="${H-B}" stroke="var(--ink-3)" stroke-width="1"/><circle id="hc" r="4.5" fill="var(--c-cap)" stroke="var(--surface)" stroke-width="2"/></g>`;
+  s+=`<rect x="${L}" y="0" width="${W-L-R}" height="${H}" fill="transparent" id="hit" style="touch-action:pan-y"/>`;
+  svg.innerHTML=s;
+  $("#pLegend").innerHTML=`<span><i class="sw b"></i>Подушка</span><span><i class="sw a"></i>Капитал</span>`+(near?`<span><i class="sw t"></i>Цель подушки</span>`:`<span><i class="sw t"></i>Нужно для независимости</span><span><i class="sw s"></i>для безопасности</span>`);
+  $("#chartHint").textContent=near?`Ближайшие 3 года, ${mln?"млн":"тыс"} ₽. Пока подушка не собрана, большая часть сбережений идёт в неё, потом всё — в капитал.`:`Млн ₽ в сегодняшних деньгах. Где капитал пересекает пунктир — вы независимы.`;
+  const hit=svg.querySelector("#hit"), tip=$("#tip");
+  const move=ev=>{
+    const r=svg.getBoundingClientRect(); const sx=(ev.clientX-r.left)*W/r.width;
+    const i=Math.max(0,Math.min(pts.length-1,Math.round((sx-L)/(W-L-R)*(pts.length-1)))); const p=pts[i];
+    svg.querySelector("#hov").setAttribute("visibility","visible");
+    svg.querySelector("#hl").setAttribute("x1",x(i)); svg.querySelector("#hl").setAttribute("x2",x(i));
+    const c=svg.querySelector("#hc"); c.setAttribute("cx",x(i)); c.setAttribute("cy",y(dv(tot(p))));
+    tip.hidden=false;
+    tip.innerHTML=`<b>${near?tLabel(p.t):p.y}</b> · вам ${p.age}<div class="r"><span>Подушка</span><span class="num">${fmtM(p.cush)}</span></div><div class="r"><span>Капитал</span><span class="num">${fmtM(p.cap)}</span></div>`+(near?"":`<div class="r"><span>Нужно</span><span class="num">${fmtM(p.fi)}</span></div>`)+(p.debt>0?`<div class="r"><span>Долг</span><span class="num">${fmtM(p.debt)}</span></div>`:"")+(p.short>0?`<div class="r" style="color:var(--bad)"><span>Не хватает</span><span class="num">${fmtM(p.short)}</span></div>`:"");
+    const px=x(i)*r.width/W, bw=box.clientWidth, tw=tip.offsetWidth;
+    tip.style.left=Math.min(bw-tw,Math.max(0,px+12>bw-tw?px-tw-12:px+12))+"px"; tip.style.top="4px";
+  };
+  hit.addEventListener("pointermove",move); hit.addEventListener("pointerdown",move);
+  hit.addEventListener("pointerleave",()=>{ tip.hidden=true; svg.querySelector("#hov").setAttribute("visibility","hidden"); });
 }
-function renderLevers(m){
-  const el=$("#fiLevers"); if(!el) return;
-  const base=m.fiRow?m.fiRow.y:null;
-  const fy=pp=>{ const r=model(pp).fiRow; return r?r.y:null; };
-  const saveBoost=(P.exp*0.1+(P.flat?0:P.rent*12/1000*0.1));
+function fiDelta(base,t){
+  if(t==null) return base==null?`всё ещё позже ${planY0()+HOR}`:"позже";
+  const y=yearOf(t); if(base==null) return `станет реальной: ${y}`;
+  const d=yearOf(base)-y; return d>0?`на ${plural(d,"год","года","лет")} раньше · ${y}`:d<0?`на ${plural(-d,"год","года","лет")} позже · ${y}`:"почти не меняет";
+}
+function renderTry(j,b){
+  const base=j.ms.m5, S=TRY??b.S, max=Math.max(10,Math.ceil(b.I*0.6/5)*5,Math.ceil(b.S*2/5)*5);
   const L=[
-    ["+10 тыс в месяц к сбережениям", Object.assign({},P,{s_sal:P.s_sal+0.12})],
-    ["Тратить на 10% меньше и откладывать разницу", Object.assign({},P,{exp:P.exp*0.9,rent:P.flat?P.rent:P.rent*0.9,s_sal:P.s_sal+saveBoost})],
-    ["Повышать взносы на 2% в год быстрее инфляции", Object.assign({},P,{sg:P.sg+2})],
-    ["Доходность на 2% выше", Object.assign({},P,{ret:P.ret+2})],
+    ["+10 тыс в месяц к сбережениям",{S:b.S+10}],
+    ["Тратить на 10% меньше и откладывать разницу",{E:b.E*0.9,S:b.S+b.E*0.1}],
+    ["Сбережения растут на 2% в год быстрее",{sg:P.sg+2}],
+    ["Доходность на 2% выше",{ret:P.ret+2}],
   ];
-  const txt=y=>{ if(y===null) return base===null?`всё ещё дольше ${HOR} лет`:"—"; if(base===null) return `станет реальной в ${y}`; const d=base-y; return d>0?`на ${plural(d,"год","года","лет")} раньше · ${y}`:"почти не меняет"; };
-  el.innerHTML=`<h2>Что приблизит свободу</h2><p class="hint">${base?`Сейчас по плану — ${base} год. Если изменить одно из условий:`:`Сейчас за ${HOR} лет цель не достигается. Если изменить одно из условий:`}</p>`+
-    L.map(([t,pp])=>{ const y=fy(pp); const good=y!==null&&(base===null||y<base); return `<div class="spread" style="padding:8px 0;border-top:1px solid var(--line)"><span>${t}</span><span class="num" style="font-size:13px;white-space:nowrap;color:${good?"var(--good)":"var(--ink-3)"}">${txt(y)}</span></div>`; }).join("")+
-    `<p class="hint">Финансовая свобода — капитал, с которого можно жить на ${fmt(P.swr,1)}% в год и больше не зависеть от зарплаты. Расчёт в сегодняшних деньгах.</p>`;
+  $("#pTry").innerHTML=`<h2>Что приблизит свободу</h2>
+    <label class="hint" for="trySl">Если откладывать в месяц</label>
+    <div class="tryout"><span class="v num" id="tryV"></span><span class="hint" id="tryP"></span></div>
+    <input type="range" id="trySl" min="0" max="${max}" step="1" value="${Math.min(S,max)}" aria-describedby="tryR">
+    <div class="spread"><b id="tryR" class="num"></b><button type="button" id="tryApply" hidden>Записать в бюджет</button></div>
+    <div>${L.map(([t,o])=>{ const r=journey(P,b,o).ms.m5; const good=r!=null&&(base==null||yearOf(r)<yearOf(base)); const d=fiDelta(base,r).split(" · "); return `<div class="spread" style="padding:9px 0;border-top:1px solid var(--line)"><span>${t}</span><span class="num" style="text-align:right;display:flex;flex-direction:column;flex:0 0 auto"><b style="font-size:15px">${d[1]||""}</b><span style="font-size:12.5px;white-space:nowrap;color:${good?"var(--good)":"var(--ink-3)"}">${d[0]}</span></span></div>`; }).join("")}</div>
+    <p class="hint">Годы — до финансовой независимости, по сравнению с нынешним планом (${base==null?`позже ${planY0()+HOR}`:yearOf(base)}).</p>`;
+  const upd=()=>{ const v=+$("#trySl").value; TRY=v; const r=journey(P,b,{S:v}).ms.m5;
+    $("#tryV").textContent=fmtT(v); $("#tryP").textContent=`${Math.round(v/b.I*100)}% дохода`;
+    $("#tryR").textContent=r==null?`Независимость — позже ${planY0()+HOR}`:`Независимость в ${yearOf(r)}, вам ${ageAt(r)}`+(Math.abs(v-b.S)>=1?` (${fiDelta(base,r)})`.replace(/ · \d{4}\)$/,")"):"");
+    $("#tryApply").hidden=Math.abs(v-b.S)<1; };
+  $("#trySl").addEventListener("input",upd); upd();
+  $("#tryApply").addEventListener("click",()=>{ const v=+$("#trySl").value; const cush=+BUD.cushion||0; if(v<cush){ BUD.cushion=v; BUD.capital=0; } else BUD.capital=Math.round((v-cush)*10)/10; TRY=null; saveBud(); renderAll(); render(); });
+}
+function renderRate(j,b){
+  const r=j.rcReal, w=P.swr/100;
+  const yrs=s=>{ if(s<=0) return Infinity; const k=(1-s)/(s*w); return r>0.0001?Math.log(1+r*k)/Math.log(1+r):k; };
+  const me=b.S/b.I; let rows=[0.1,0.2,0.3,0.4,0.5,0.6]; const meR=Math.round(me*100)/100;
+  if(meR>0&&!rows.some(r=>Math.abs(r-meR)<0.005)) rows=rows.concat([meR]).sort((a,b)=>a-b);
+  const near=rows.reduce((a,c)=>Math.abs(c-meR)<Math.abs(a-meR)?c:a,rows[0]);
+  const mx=yrs(0.1);
+  $("#pRate").innerHTML=`<h2>Главный рычаг — доля сбережений</h2>
+    <p class="hint">Сколько лет копить до независимости с нуля, если откладывать эту долю дохода и жить на остальное. У вас сейчас — <b>${Math.round(me*100)}%</b>.</p>
+    <div>${rows.map(s=>{ const n=yrs(s); return `<div class="rrow${s===near?" me":""}"><span>${Math.round(s*100)}%${s===near?" ←":""}</span><i class="rb" style="width:${Math.max(2,Math.min(100,n/mx*100))}%"></i><span>${isFinite(n)?plural(Math.round(n),"год","года","лет"):"—"}</span></div>`; }).join("")}</div>
+    <p class="hint">Чем больше откладываете, тем меньше тратите — и тем меньше капитала нужно. Поэтому доля сбережений сдвигает дату сильнее, чем доходность. Расчёт при доходности ${fmt(r*100,1)}% сверх инфляции и изъятии ${fmt(P.swr,1)}% в год.</p>`;
+}
+function renderGoals(j,b){
+  let h="";
+  if(P.kid){
+    h+=`<div class="sub" style="padding-top:8px;border-top:1px solid var(--line)">Ребёнок в ${P.birth}: +${fmtT(P.ccost*1000/12)} в месяц до ${plural(P.cend,"года","лет","лет")} — учтено в графике и в цели.${b.kidCat>0?` В бюджете уже есть «Ребёнок» ${fmtT(b.kidCat)}: если это те же расходы, уменьшите сумму в «Мои цифры», чтобы не считать дважды.`:""}</div>`;
+  }
+  if(P.flat&&j.buy){
+    const B=j.buy, probs=[];
+    if(P.kid&&!B.famOk) probs.push(B.y<P.birth?"ребёнок ещё не родится — семейная ипотека недоступна, считаем рыночную":"ребёнку будет 6+ — семейная ипотека недоступна, считаем рыночную");
+    if(B.capAfter<B.resv) probs.push(`после взноса и ремонта останется ${fmtM(Math.max(0,B.capAfter))}, а нужен запас ${fmtM(B.resv)}`);
+    const extra=B.payR-b.rent;
+    if(extra>B.Sy+0.5) probs.push(`платёж ${fmtT(B.payR)} больше, чем аренда плюс сбережения (${fmtT(b.rent+B.Sy)}) — капитал начнёт уменьшаться`);
+    const kv=(a,v)=>`<div class="kv"><span>${a}</span><span>${v}</span></div>`;
+    const alt=[0.7,1,1.3].map(f=>{ const X=P.price*f; const w=whenAfford(X,b); return `<div class="kv"><span>${fmt(X,1)} млн сегодня</span><span>${w?`${w.y} · вам ${w.age}`:`позже ${planY0()+HOR}`}</span></div>`; }).join("");
+    h+=`<div style="padding-top:10px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px">
+      <h3>Квартира в ${B.y}</h3>
+      <div class="verdict ${probs.length?"bad":"good"}">${probs.length?"✕ Не сходится: "+probs.join("; ")+".":`✓ Сходится: после покупки останется ${fmtM(B.capAfter)}, запас ${fmtM(B.resv)} соблюдён.`}</div>
+      <div>${kv(`Цена в ${B.y}`,fmtM(B.price))+kv(B.floan>0?"Семейная ипотека":"Ипотека",fmtM(B.floan+B.mloan))+kv(`Свои деньги (взнос ${Math.round(B.down*100)}% + ремонт)`,fmtM(B.own))+kv("Платёж в месяц",fmtT(B.payR))+kv("Капитал к покупке",fmtM(B.capBefore))}</div>
+      <p class="hint">Когда хватит на первый взнос, ремонт и запас для квартиры подешевле или подороже (потянете ли платёж — смотрите строку выше):</p><div>${alt}</div>
+      <p class="hint">Суммы — в сегодняшних деньгах. Платёж по ипотеке фиксирован, поэтому с инфляцией он «дешевеет». Условия семейной ипотеки могут меняться — проверяйте в банке.</p></div>`;
+  }
+  $("#goalOut").innerHTML=h;
+}
+function whenAfford(X,b){
+  const pp=Object.assign({},P,{flat:0}); const j=journey(pp,b); const infl=P.infl/100;
+  for(const p of j.pts){ if(p.t%12!==0&&p.t!==0) continue;
+    const yrs=p.t/12, C=Math.pow(1+infl,yrs), gr=Math.pow((1+P.pg/100)/(1+infl),yrs), price=X*1000*gr, a=p.y-P.birth;
+    const fam=P.kid&&a>=0&&a<=5; const loan=fam?Math.min(P.flim*1000/C,price*0.8):price*0.8;
+    const need=price-loan+P.renov*1000*gr+P.resv*1000;
+    if(p.cap>=need) return {y:p.y,age:p.age};
+  }
+  return null;
+}
+function renderProj(j){
+  let h=`<thead><tr><th>Год</th><th>Возраст</th><th>Подушка</th><th>Капитал</th><th>Нужно</th></tr></thead><tbody>`;
+  const fy=j.ms.m5!=null?yearOf(j.ms.m5):null;
+  for(const p of j.pts){ if(p.t%12!==0) continue;
+    const cls=[P.flat&&j.buy&&p.y===j.buy.y?"buy":"", p.y===fy?"fi":""].join(" ");
+    h+=`<tr class="${cls}"><td>${p.y}</td><td>${p.age}</td><td>${fmt(p.cush/1000,2)}</td><td>${fmt(p.cap/1000,1)}</td><td>${fmt(p.fi/1000,1)}</td></tr>`; }
+  $("#projTbl").innerHTML=h+`</tbody>`;
 }
 
 
@@ -769,23 +983,30 @@ const LS="fp2:";
 const lsGet=k=>{ try{ const v=localStorage.getItem(LS+k); return v?JSON.parse(v):null; }catch(e){ return null; } };
 const lsSet=(k,v)=>{ try{ localStorage.setItem(LS+k,JSON.stringify(v)); }catch(e){} };
 /* Telegram cloud: each user's data lives in their own Telegram account, never on our side */
-let CLOUD=null;
+let CLOUD=null; const CLOUD_BAD=new Set();
 const tgCall=(fn,...a)=>Promise.race([new Promise((res,rej)=>{ try{ fn(...a,(err,val)=>err?rej(err):res(val)); }catch(e){ rej(e); } }), new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),8000))]);
 const ckey=p=>p.replace(/[^A-Za-z0-9_-]/g,"_");
 async function cloudGet(path){
   const cs=CLOUD, k=ckey(path);
-  const n=parseInt(await tgCall(cs.getItem.bind(cs),k+"__n"),10); if(!n) return null;
-  const keys=[...Array(n)].map((_,i)=>k+"__"+i);
+  const ptr=String(await tgCall(cs.getItem.bind(cs),k+"__n")||""); if(!ptr) return null;
+  let keys; const m=ptr.match(/^g(\w+):(\d+)$/);
+  if(m) keys=[...Array(+m[2])].map((_,i)=>k+"__"+m[1]+"_"+i);
+  else { const n=parseInt(ptr,10); if(!n) return null; keys=[...Array(n)].map((_,i)=>k+"__"+i); }
   const vals=await tgCall(cs.getItems.bind(cs),keys);
-  try{ return JSON.parse(keys.map(x=>vals[x]||"").join("")); }catch(e){ return null; }
+  return JSON.parse(keys.map(x=>vals[x]||"").join(""));   /* throws if broken -> caller keeps the local copy */
 }
 async function cloudSet(path,val){
   const cs=CLOUD, k=ckey(path), str=JSON.stringify(val), parts=[];
   for(let i=0;i<str.length;i+=1800) parts.push(str.slice(i,i+1800));
-  const oldN=parseInt(await tgCall(cs.getItem.bind(cs),k+"__n"),10)||0;
-  for(let i=0;i<parts.length;i++) await tgCall(cs.setItem.bind(cs),k+"__"+i,parts[i]);
-  await tgCall(cs.setItem.bind(cs),k+"__n",String(parts.length));
-  for(let i=parts.length;i<oldN;i++) await tgCall(cs.removeItem.bind(cs),k+"__"+i);
+  const old=String(await tgCall(cs.getItem.bind(cs),k+"__n")||"");
+  const gen=Date.now().toString(36);
+  await Promise.all(parts.map((x,i)=>tgCall(cs.setItem.bind(cs),k+"__"+gen+"_"+i,x)));
+  await tgCall(cs.setItem.bind(cs),k+"__n","g"+gen+":"+parts.length);
+  const m=old.match(/^g(\w+):(\d+)$/); let oldKeys=[];
+  if(m&&m[1]!==gen) oldKeys=[...Array(+m[2])].map((_,i)=>k+"__"+m[1]+"_"+i);
+  else if(/^\d+$/.test(old)) oldKeys=[...Array(+old)].map((_,i)=>k+"__"+i);
+  if(oldKeys.length&&cs.removeItems) await tgCall(cs.removeItems.bind(cs),oldKeys).catch(()=>{});
+  else for(const x of oldKeys) await tgCall(cs.removeItem.bind(cs),x).catch(()=>{});
 }
 async function cloudMonths(){ try{ const ks=await tgCall(CLOUD.getKeys.bind(CLOUD)); return ks.map(k=>(k.match(/^expenses_(\d{4}-\d{2})__n$/)||[])[1]).filter(Boolean); }catch(e){ return []; } }
 function inTelegram(){ try{ return /tgWebApp/.test(location.hash)||!!window.TelegramWebviewProxy||!!sessionStorage.getItem("__telegram__initParams")||/Telegram/i.test(navigator.userAgent); }catch(e){ return false; } }
@@ -799,12 +1020,13 @@ async function initTelegram(){
 }
 async function getDoc(path){
   if(db){ try{ const s=await db.doc(path).get(); return s.exists?s.data():null; }catch(e){} }
-  if(CLOUD){ try{ const v=await cloudGet(path); if(v!==null){ lsSet(path,v); return v; } }catch(e){} }
+  if(CLOUD){ try{ const v=await cloudGet(path); if(v!==null){ lsSet(path,v); return v; } }catch(e){ const l=lsGet(path); if(l!==null) return l; CLOUD_BAD.add(path); return null; } }
   return lsGet(path);
 }
 const chains={};
 function setDoc(path,val){
   lsSet(path,val);
+  if(CLOUD&&CLOUD_BAD.has(path)){ setStatus(false,"Не удалось прочитать данные из Telegram — откройте приложение ещё раз"); return Promise.resolve(); }
   if(CLOUD){ chains[path]=(chains[path]||Promise.resolve()).then(()=>cloudSet(path,val)).then(()=>setStatus(true,"Сохранено в вашем Telegram")).catch(()=>setStatus(false,"Не удалось сохранить в Telegram — попробуем при следующем изменении")); return chains[path]; }
   if(!db) return Promise.resolve();
   chains[path]=(chains[path]||Promise.resolve()).then(()=>db.doc(path).set(val)).catch(e=>{ if(e&&e.code==="invalid_argument"){ setStatus(false,"Только просмотр: изменения не сохраняются"); } });
@@ -819,7 +1041,7 @@ function applyParams(obj){
   if(!obj||typeof obj!=="object") return;
   const next=Object.assign(JSON.parse(JSON.stringify(DEFAULTS)),obj);
   if(!Array.isArray(next.prices)||next.prices.length!==5) next.prices=DEFAULTS.prices.slice();
-  next.base=new Date().getFullYear();
+  next.base=new Date().getFullYear(); if(!(next.debt>=0)) next.debt=0;
   P=next;
 }
 
@@ -827,13 +1049,13 @@ function applyParams(obj){
 const CAT_COLORS=["#2a78d6","#1baf7a","#eb6834","#8a63d2","#e87ba4","#008300","#eda100","#4a3aa7","#0f8a9d","#c2410c","#6b7280","#d55181","#7c8a83","#b45309","#0e7490","#9333ea"];
 function budFrom(o){
   const base={cats:CONFIG.cats.map(([name,plan])=>({name,plan})),income:CONFIG.budIncome,capital:CONFIG.budCapital,cushion:CONFIG.budCushion,
-    adults:CONFIG.family[0],kids:CONFIG.family[1],cushionHave:CONFIG.have[0],capitalHave:CONFIG.have[1],creditRate:null};
+    adults:CONFIG.family[0],kids:CONFIG.family[1],cushionHave:CONFIG.have[0],capitalHave:CONFIG.have[1],creditRate:null,haveAt:null};
   if(!o||!Array.isArray(o.cats)) return base;
   const cats=o.cats.map(c=>({name:String(c.name),plan:+c.plan||0}));
   CONFIG.cats.forEach(([name],i)=>{ if(!cats.some(c=>c.name===name)) cats.splice(Math.min(i,cats.length),0,{name,plan:0}); });
   const num=(v,d)=>typeof v==="number"&&isFinite(v)?v:(v===null?null:d);
   return {cats,income:num(o.income,base.income),capital:num(o.capital,base.capital)??0,cushion:num(o.cushion,0)??0,
-    adults:num(o.adults,base.adults)||1,kids:num(o.kids,base.kids)??0,cushionHave:num(o.cushionHave,base.cushionHave),capitalHave:num(o.capitalHave,base.capitalHave),creditRate:num(o.creditRate,null)};
+    adults:num(o.adults,base.adults)||1,kids:num(o.kids,base.kids)??0,cushionHave:num(o.cushionHave,base.cushionHave),capitalHave:num(o.capitalHave,base.capitalHave),creditRate:num(o.creditRate,null),haveAt:typeof o.haveAt==="number"?o.haveAt:null};
 }
 let BUD=budFrom(null);
 const freePlan=()=>BUD.income==null?null:BUD.income-(+BUD.capital||0)-(+BUD.cushion||0)-BUD.cats.reduce((t,c)=>t+(+c.plan||0),0);
@@ -849,7 +1071,7 @@ function recommend(){
   const cred=(BUD.cats.find(c=>c.name==="Кредиты")||{}).plan||0;
   const months=Math.min(6,3+(K>0?1:0)+(A===1?1:0)+(cred>0?1:0));
   const T=Math.round(months*E);
-  const have=BUD.cushionHave;
+  const have=curCush();
   const room=Math.max(0,(I-Eess)/I*100);
   let S=20; const tips=[];
   if(room<25){ S=Math.max(5,Math.floor(room-10)); tips.push(`Обязательные траты (жильё, кредиты, еда, транспорт, здоровье) занимают ${Math.round(100-room)}% дохода, поэтому рекомендация скромнее. Главный рычаг — снизить самые большие из них или увеличить доход.`); }
@@ -986,7 +1208,7 @@ function renderBudget(){
   const incFact=INC[VM]!=null?INC[VM]:(inc!=null?inc*1000:null);
   $("#bHero").innerHTML=`<h3>Бюджет на ${MONTHS[m-1].toLowerCase()}</h3><div class="big num">${tys(plan)}</div>
     <div class="stats"><div class="stat"><span class="l">Потрачено</span><span class="v num">${tys(total)}</span></div>
-    <div class="stat"><span class="l">${pc.cur?"Плана · месяца":"От плана"}</span><span class="v num" style="color:${pc.cur&&plan>0&&total/plan>pc.day/pc.dim+0.1?"var(--bad)":"var(--good)"}">${plan>0?Math.round(total/plan*100):0}%${pc.cur?" · "+Math.round(pc.day/pc.dim*100)+"%":""}</span></div>
+    <div class="stat"><span class="l">От плана</span><span class="v num" style="color:${pc.cur&&plan>0&&total/plan>pc.day/pc.dim+0.1?"var(--bad)":"var(--good)"}">${plan>0?Math.round(total/plan*100):0}%</span>${pc.cur?`<span class="hint">прошло ${Math.round(pc.day/pc.dim*100)}% мес.</span>`:""}</div>
     <div class="stat"><span class="l">Перерасход</span><span class="v num">${overs} кат.</span></div></div>
     <div class="grid2" style="align-items:end"><label class="hint" for="incPlan">Доход в месяц, тыс ₽<input type="number" inputmode="decimal" id="incPlan" value="${inc!=null?inc:""}" placeholder="например, 180" style="margin-top:4px"></label><button type="button" id="wizBtn">Разложить по доходу</button></div>
     ${inc!=null?`<div class="sub num">Доход ${fmtT(inc)} = траты ${fmtT(plan/1000)} + подушка ${fmtT(+BUD.cushion||0)} + капитал ${fmtT(cap)} + свободно <b style="color:${fp<0?"var(--bad)":"var(--good)"}">${fmtT(fp)}</b></div>`:`<div class="sub">Укажите доход — появятся подушка, капитал, свободные деньги и рекомендация, сколько откладывать.</div>`}`;
@@ -998,8 +1220,8 @@ function renderBudget(){
   if(inc!=null){
     const R=recommend(); const cush=+BUD.cushion||0;
     const left=incFact!=null?incFact-total:null;
-    h+=`<div class="brow" style="border-top:2px solid var(--line);margin-top:6px"><span class="ic" style="background:#0f8a9d">ПД</span><div style="min-width:0"><div class="n"><span>Подушка (копилка)</span><span>${R&&R.T?Math.round((R.fill??0)*100)+"% цели":""}</span></div><div class="bar" style="height:7px"><i style="width:${R&&R.fill!=null?R.fill*100:0}%;background:#0f8a9d"></i></div><div class="hint" style="margin-top:4px">Запас на ${R?R.months:3} мес. расходов на случай потери дохода${R&&R.cushAmt!==cush?` · рекомендуем ${fmtT(R.cushAmt)}`:""}</div></div><input type="number" inputmode="decimal" id="bpCush" value="${cush}" aria-label="План: подушка, тыс"></div>`;
-    h+=`<div class="brow"><span class="ic" style="background:var(--accent)">КП</span><div style="min-width:0"><div class="n"><span>Капитал (инвестиции)</span><span>${left!=null?"можно "+tys(Math.max(0,left)):""}</span></div><div class="hint">На долгие цели: квартира, свобода${R&&R.capAmt!==cap?` · рекомендуем ${fmtT(R.capAmt)}`:""}</div></div><input type="number" inputmode="decimal" id="bpCap" value="${cap}" aria-label="План: капитал, тыс"></div>`;
+    h+=`<div class="brow" style="border-top:2px solid var(--line);margin-top:6px"><span class="ic" style="background:#0f8a9d">ПД</span><div style="min-width:0"><div class="n"><span>Подушка (копилка)</span><span>${R&&R.T?Math.round((R.fill??0)*100)+"% цели":""}</span></div><div class="bar" style="height:7px"><i style="width:${R&&R.fill!=null?R.fill*100:0}%;background:#0f8a9d"></i></div><div class="hint" style="margin-top:4px">Запас на ${R?R.months:3} мес. расходов на случай потери дохода${R&&R.cushAmt!==cush?` · рекомендуем ${fmtT(R.cushAmt)}`:""}</div><div class="hint">${savLine("c")}</div></div><input type="number" inputmode="decimal" id="bpCush" value="${cush}" aria-label="План: подушка, тыс"></div>`;
+    h+=`<div class="brow"><span class="ic" style="background:var(--accent)">КП</span><div style="min-width:0"><div class="n"><span>Капитал (инвестиции)</span><span>${left!=null?"можно "+tys(Math.max(0,left)):""}</span></div><div class="hint">На долгие цели: квартира, свобода${R&&R.capAmt!==cap?` · рекомендуем ${fmtT(R.capAmt)}`:""}</div><div class="hint">${savLine("p")}</div></div><input type="number" inputmode="decimal" id="bpCap" value="${cap}" aria-label="План: капитал, тыс"></div>`;
     h+=`<div class="brow"><span class="ic" style="background:${fp<0?"var(--bad)":"var(--ink-3)"}">СВ</span><div style="min-width:0"><div class="n"><span>Свободные деньги</span><span></span></div><div class="hint">${fp<0?"Не хватает: уменьшите категории или сбережения":"Всё, что не распределено. Меняете план категории — разница уходит сюда"}</div></div><span class="num" style="font:600 15px var(--mono);width:84px;text-align:right;color:${fp<0?"var(--bad)":"var(--good)"}">${fmtT(fp)}</span></div>`;
     h+=`<div style="padding-top:12px;border-top:1px solid var(--line)"><label class="hint" for="incM">Доход в этом месяце, если отличался (премия, отпускные), тыс ₽<input type="number" inputmode="decimal" id="incM" value="${INC[VM]!=null?INC[VM]/1000:""}" placeholder="${inc}" style="margin-top:4px"></label></div>`;
   }
@@ -1011,6 +1233,11 @@ function renderBudget(){
   if($("#incM")) $("#incM").addEventListener("change",e=>{ const v=parseFloat(e.target.value); mutateMonth(VM,x=>x,isFinite(v)&&v>0?Math.round(v*1000):null); });
   if(foc&&(foc.startsWith("bp")||foc.startsWith("inc"))) $("#"+foc)?.focus();
   $("#bNote").textContent=CONFIG.budgetNote;
+}
+function savLine(k){
+  const o=savByMonth()[VM]; const v=o?o[k]:0; const [,m]=VM.split("-").map(Number);
+  const plan=(k==="c"?+BUD.cushion:+BUD.capital)||0;
+  return `В ${MONTHS_P[m-1]} ${v<0?"снято":"отложено"}: <b style="color:${v>0&&v>=plan*1000*0.95?"var(--good)":"var(--ink-2)"}">${tys(Math.abs(v))}</b>${plan>0?` из ${fmtT(plan)}`:""}`;
 }
 function renderSavings(){
   const el=$("#savCard"); const R=recommend();
@@ -1027,15 +1254,16 @@ function renderSavings(){
     <div class="sub">${R.have==null?"Укажите, сколько уже отложено, — рекомендация станет точнее.":R.gap>0?`В подушке ${fmtT(R.have)} из ${fmtT(R.T)} (${R.months} мес. расходов).${R.toFill?` При таком темпе заполнится примерно за ${plural(R.toFill,"месяц","месяца","месяцев")}.`:""} Пока подушка не собрана, большая часть сбережений идёт в неё.`:`Подушка собрана: ${fmtT(R.have)} при цели ${fmtT(R.T)}. Теперь все сбережения — в капитал.`}</div>
     ${R.tips.map(t=>`<div class="sub" style="color:var(--warn)">${esc(t)}</div>`).join("")}
     <div class="grid2">
-      <label class="hint" for="haveCush">Уже в подушке, тыс ₽<input type="number" inputmode="decimal" id="haveCush" value="${BUD.cushionHave??""}" placeholder="0" style="margin-top:4px"></label>
-      <label class="hint" for="haveCap">Уже в капитале, тыс ₽<input type="number" inputmode="decimal" id="haveCap" value="${BUD.capitalHave??""}" placeholder="0" style="margin-top:4px"></label>
+      <label class="hint" for="haveCush">Уже в подушке, тыс ₽<input type="number" inputmode="decimal" id="haveCush" value="${curCush()??""}" placeholder="0" style="margin-top:4px"></label>
+      <label class="hint" for="haveCap">Уже в капитале, тыс ₽<input type="number" inputmode="decimal" id="haveCap" value="${curCap()??""}" placeholder="0" style="margin-top:4px"></label>
     </div>
     <div class="grid2"><label class="hint" for="famA">Взрослых<select id="famA" style="margin-top:4px">${[1,2,3,4].map(n=>`<option${n===(BUD.adults||1)?" selected":""}>${n}</option>`).join("")}</select></label><label class="hint" for="famK">Детей<select id="famK" style="margin-top:4px">${[0,1,2,3,4].map(n=>`<option${n===(BUD.kids||0)?" selected":""}>${n}</option>`).join("")}</select></label></div>
-    <button type="button" class="${applied?"":"btn-primary"}" id="applyRec" ${applied?"disabled":""}>${applied?"Рекомендация уже в бюджете":"Применить к бюджету"}</button>
+    <div class="grid2"><button type="button" class="${applied?"":"btn-primary"}" id="applyRec" ${applied?"disabled":""}>${applied?"Рекомендация уже в бюджете":"Применить к бюджету"}</button><button type="button" id="savOpen">Отметить, сколько отложено</button></div>
     <p class="hint">Подушка — деньги на вкладе или накопительном счёте, которые можно снять в любой день. Капитал — вложения на годы. Правило: сначала подушка на ${R.months} мес. расходов, потом капитал. Это ориентир, а не финансовая рекомендация.</p>`;
   const numOrNull=v=>{ const x=parseFloat(v); return isFinite(x)&&x>=0?x:null; };
-  $("#haveCush").addEventListener("change",e=>{ BUD.cushionHave=numOrNull(e.target.value); saveBud(); renderAll(); });
-  $("#haveCap").addEventListener("change",e=>{ BUD.capitalHave=numOrNull(e.target.value); saveBud(); renderAll(); });
+  $("#haveCush").addEventListener("change",e=>{ setHave("c",numOrNull(e.target.value)); saveBud(); renderAll(); });
+  $("#haveCap").addEventListener("change",e=>{ setHave("p",numOrNull(e.target.value)); saveBud(); renderAll(); });
+  $("#savOpen").addEventListener("click",()=>openSav());
   $("#famA").addEventListener("change",e=>{ BUD.adults=+e.target.value; saveBud(); renderAll(); });
   $("#famK").addEventListener("change",e=>{ BUD.kids=+e.target.value; saveBud(); renderAll(); });
   $("#applyRec").addEventListener("click",()=>{ BUD.cushion=R.cushAmt; BUD.capital=R.capAmt; saveBud(); renderAll(); });
@@ -1043,17 +1271,9 @@ function renderSavings(){
 const fmtT=v=>(v==null?"—":(Math.round(v*10)/10).toLocaleString("ru-RU"))+" тыс";
 let bTimer=null;
 function saveBud(){ clearTimeout(bTimer); bTimer=setTimeout(()=>setDoc("plan/budget",Object.assign({},BUD)),600); syncPlan(); }
-function syncPlan(){
-  if(CONFIG.mode!=="public") return;
-  const have=(BUD.cushionHave||0)+(BUD.capitalHave||0); let ch=false;
-  if(have>0&&Math.abs(P.cap0-have/1000)>1e-6){ P.cap0=Math.round(have)/1000; ch=true; }
-  const yr=((+BUD.capital||0)+(+BUD.cushion||0))*12/1000; if(yr>0&&Math.abs(P.s_sal-yr)>1e-6){ P.s_sal=Math.round(yr*1000)/1000; ch=true; }
-  const r=BUD.cats.find(c=>c.name==="Аренда"); if(r&&r.plan!==P.rent){ P.rent=r.plan; ch=true; }
-  const ex=BUD.cats.filter(c=>!["Аренда","Кредиты"].includes(c.name)).reduce((t,c)=>t+(+c.plan||0),0)*12/1000; if(ex>0&&Math.abs(P.exp-ex)>1e-6){ P.exp=Math.round(ex*1000)/1000; ch=true; }
-  if(ch){ syncInputs(); render(); saveParams(); }
-}
+function syncPlan(){ if(!$("#scr-plan").hidden) render(); }
 
-function renderAll(){ $("#mLabel").textContent=ymLabel(VM); renderHero(); renderChips(); renderList(); renderBudget(); if(!$("#scr-stats").hidden) renderStats(); }
+function renderAll(){ $("#mLabel").textContent=ymLabel(VM); renderHero(); renderChips(); renderList(); renderBudget(); if(!$("#scr-stats").hidden) renderStats(); if(!$("#scr-plan").hidden) render(); }
 
 /* ---------- sheets ---------- */
 let openSheetEl=null, lastFocus=null;
@@ -1091,15 +1311,16 @@ function prog(p){ const el=$("#prog"); if(p===null){ el.hidden=true; return; } e
 const KW=CONFIG.keywords;
 function guessCat(text){
   const rc=ruleCat(text); if(rc) return rc;
-  const t=text.toLowerCase().replace(/ё/g,"е");
-  for(const [cat,list] of KW){ if(!catNames().includes(cat)) continue; for(const k of list){ if(t.includes(k)) return cat; } }
+  const t=text.toLowerCase().replace(/ё/g,"е"), tn=t.replace(/[.*\/\\|_-]+/g," ").replace(/\s+/g," ");
+  for(const [cat,list] of KW){ if(!catNames().includes(cat)) continue; for(const k of list){ if(t.includes(k)||tn.includes(k)) return cat; } }
   return "Прочее";
 }
 function localParse(text){
   const out=[]; const now=new Date();
-  const parts=text.split(/\n|;|,(?!\d)/).map(s=>s.trim()).filter(Boolean);
+  const parts=text.split(/\n/).flatMap((ln,li)=>ln.split(/;|,(?!\d)/).map((x,pi)=>[x.trim(),pi===0])).filter(x=>x[0]);
   let ctxDate=null, ctxWho=null;
-  for(let p of parts){
+  for(let [p,newLine] of parts){
+    if(newLine) ctxWho=null;
     let who=null;
     const wm=p.match(/^(я|мне|муж|жена|партн[её]р|мы|общее)\s*[:\-—]\s*/i);
     if(wm){ const w=wm[1].toLowerCase(); who=/^(я|мне)$/.test(w)?WHO[1]:/^(мы|общее)$/.test(w)?WHO[0]:WHO[2]; p=p.slice(wm[0].length); ctxWho=who; }
@@ -1107,10 +1328,13 @@ function localParse(text){
     if(/позавчера/.test(lower)){ d=new Date(now-2*864e5); p=p.replace(/позавчера/i,""); }
     else if(/вчера/.test(lower)){ d=new Date(now-864e5); p=p.replace(/вчера/i,""); }
     else if(/сегодня/.test(lower)){ d=new Date(now); p=p.replace(/сегодня/i,""); }
+    else { const wd=lower.match(/(^|\s)во?\s+(понедельник|вторник|среду|четверг|пятницу|субботу|воскресенье)(?=\s|$|[,.])/);
+      if(wd){ const idx=["воскресенье","понедельник","вторник","среду","четверг","пятницу","субботу"].indexOf(wd[2]); const back=(now.getDay()-idx+7)%7; d=new Date(now-back*864e5); p=p.slice(0,wd.index)+" "+p.slice(wd.index+wd[0].length); } }
     const dm=p.match(/\b(\d{1,2})\.(\d{1,2})(?:\.(\d{2,4}))?\b/);
     if(dm){ let y=dm[3]?+dm[3]:now.getFullYear(); if(y<100) y+=2000; const cand=new Date(y,+dm[2]-1,+dm[1]); if(!dm[3]&&cand>now) cand.setFullYear(y-1); d=cand; p=p.replace(dm[0],""); }
     if(d) ctxDate=d;
-    const am=p.match(/(\d[\d\s]*(?:[.,]\d+)?)\s*(к|k|тыс\.?|т\.?р\.?|р\.?|руб\.?|₽)?(?=\s|$)/i);
+    const ams=[...p.matchAll(/(\d{1,3}(?:\s\d{3})+(?:[.,]\d+)?|\d+(?:[.,]\d+)?)\s*(к|k|тыс\.?|т\.?р\.?|р\.?|руб\.?|₽)?(?=\s|$)/gi)];
+    const am=ams.length?ams[ams.length-1]:null;
     if(!am) continue;
     let a=parseFloat(am[1].replace(/\s/g,"").replace(",","."));
     const suf=(am[2]||"").toLowerCase(); if(/^(к|k|тыс)/.test(suf)) a*=1000;
@@ -1187,6 +1411,27 @@ function cleanMerchant(s){
 }
 
 let RULES={};
+/* ---------- savings history ----------
+   SAVH: [{id, d:"YYYY-MM-DD", k:"c" (подушка) | "p" (капитал), a: ₽ (минус — сняли), n, src, at: ms}]
+   Current balance = the last number the person entered (snapshot at BUD.haveAt) + everything recorded after it. */
+let SAVH=[], SAVC=[], SAVP=[], HSEL=null;
+const SAV_C_RE=/накопительн|копилк|вклад|сбережени|альфа-сч[её]т|savings/i, SAV_P_RE=/брокерск|инвест|иис(\s|$)|broker|invest|ценн(ые|ых) бумаг/i, SAV_NOT_RE=/процент|капитализац|кэшбэк|кешбэк|cashback|выплата дохода|купон|дивиденд/i;
+function savKind(text){ const t=String(text||""); if(SAV_NOT_RE.test(t)) return null; if(SAV_P_RE.test(t)) return "p"; if(SAV_C_RE.test(t)) return "c"; return null; }
+function saveSav(){ setDoc("plan/savings",{list:SAVH}); }
+function afterSnap(e){ if(!BUD.haveAt) return true; const sd=dstr(new Date(BUD.haveAt)); return e.d>sd||(e.d===sd&&(e.at||0)>BUD.haveAt); }
+function curHave(k){ const base=k==="c"?BUD.cushionHave:BUD.capitalHave; const add=SAVH.filter(e=>e.k===k&&afterSnap(e)).reduce((t,e)=>t+e.a,0)/1000; if(base==null&&!add) return null; return Math.round(((base||0)+add)*10)/10; }
+const curCush=()=>curHave("c"), curCap=()=>curHave("p");
+function setHave(k,v){ const c=curCush(), p=curCap(); BUD.cushionHave=c; BUD.capitalHave=p; BUD.haveAt=Date.now(); if(k==="c") BUD.cushionHave=v; if(k==="p") BUD.capitalHave=v; }
+function savByMonth(){ const m={}; for(const e of SAVH){ const ym=ymOf(e.d); const o=m[ym]||(m[ym]={c:0,p:0}); o[e.k]+=e.a; } return m; }
+function savStats(){
+  if(!SAVH.length) return null;
+  const by=savByMonth(), cur=ymOf(todayStr()), first=Object.keys(by).sort()[0];
+  const months=[]; for(let ym=first; ym<=cur&&months.length<600; ym=shiftYM(ym,1)) months.push(ym);
+  const tot=ym=>{ const o=by[ym]; return o?o.c+o.p:0; };
+  const done=months.filter(ym=>ym<cur||by[cur]).slice(-12);   /* the current month counts once something is recorded */
+  const avg=done.length?done.reduce((t,ym)=>t+tot(ym),0)/done.length:0;
+  return {by,months,done,avg,tot,zero:done.filter(ym=>tot(ym)<=0).length};
+}
 const normText=s=>String(s||"").toLowerCase().replace(/ё/g,"е");
 function ruleFor(text){
   const t=normText(text), tn=t.replace(/[^a-zа-я0-9_ ]/g," ").replace(/\s+/g," ");
@@ -1195,9 +1440,15 @@ function ruleFor(text){
   return best;
 }
 const ruleCat=text=>{ const r=ruleFor(text); return r?r[1]:null; };
+/* balances entered before the savings history existed: treat them as a snapshot taken now */
+function stampHave(){ if(BUD.haveAt==null&&(BUD.cushionHave!=null||BUD.capitalHave!=null)){ BUD.haveAt=Date.now(); setDoc("plan/budget",Object.assign({},BUD)); } }
+function pruneRules(){ let n=0; for(const k of Object.keys(RULES)) if(BRANDS.has(k)){ delete RULES[k]; n++; } if(n) saveRules(); }
+/* brands with many services: «yandex» alone would send taxi, food and Plus to one category */
+const BRANDS=new Set(["yandex","яндекс","ya","ozon","озон","sber","сбер","sberbank","сбербанк","tinkoff","тинькофф","tbank","vk","вк","mts","мтс","wb","wildberries","alfa","альфа","ooo","ооо","ip","ип","ao","ао","pao","пао","www","megamarket","avito","авито","tele2","beeline"]);
 function suggestKey(note){
-  const t=normText(cleanMerchant(note)).replace(/[«»"'.,;:()]/g," ").trim(); const tok=t.split(/\s+/).filter(Boolean);
-  if(!tok.length) return ""; return (tok[0].length>=5||!tok[1]?tok[0]:tok[0]+" "+tok[1]).slice(0,40);
+  const tok=normText(cleanMerchant(note)).split(/[^a-zа-я0-9]+/).filter(w=>w&&!/^\d+$/.test(w));
+  if(!tok.length) return "";
+  return ((BRANDS.has(tok[0])||tok[0].length<5)&&tok[1]?tok[0]+" "+tok[1]:tok[0]).slice(0,40);
 }
 function saveRules(){ setDoc("plan/rules",{map:RULES}); }
 function applyRule(p,cat){
@@ -1239,7 +1490,7 @@ function tableLocal(rows){
   if(hi<0) return null;
   const f=re=>h.findIndex(x=>re.test(x));
   const iDate=f(/^дата операции|^дата$|дата и время|^дата/), iAmt=f(/^сумма операции$|^сумма в валюте (счета|карты)|^сумма$|^сумма операции в валюте|^сумма платежа|^amount/),
-    iDeb=f(/расход|списани|дебет/), iDesc=f(/описание|назначение|контрагент|получатель|место|торгов|description|детали/), iCat=f(/^категория|category/), iSt=f(/^статус|status/), iMcc=f(/^mcc/), iType=f(/^тип|вид операции/);
+    iDeb=f(/расход|списани|дебет/), iDesc=f(/описание|назначение|контрагент|получатель|место|торгов|description|детали/), iCat=f(/^категория|category/), iSt=f(/^статус|status/), iMcc=f(/^mcc/), iType=f(/^тип|вид операции/), iCr=f(/^приход|зачислени|^кредит$|поступлени/);
   if(iDate<0||(iAmt<0&&iDeb<0)) return null;
   const body=rows.slice(hi+1);
   const amts=body.map(r=>parseAmt(r[iAmt>=0?iAmt:iDeb])).filter(isFinite);
@@ -1247,11 +1498,14 @@ function tableLocal(rows){
   const out=[];
   for(const r of body){
     const st=iSt>=0?String(r[iSt]||"").trim().toUpperCase():""; if(st&&!/^(OK|ИСПОЛНЕН|ВЫПОЛНЕН|УСПЕШ|ПРОВЕДЕН|ЗАВЕРШ)/.test(st)) continue;
-    let amt;
-    if(iAmt>=0&&hasNeg){ amt=parseAmt(r[iAmt]); if(!(amt<0)) continue; amt=-amt; }
-    else if(iDeb>=0){ amt=parseAmt(r[iDeb]); if(!(amt>0)) continue; }
-    else { amt=parseAmt(r[iAmt]); const ty=iType>=0?String(r[iType]||""):""; if(!(amt>0)||/приход|зачисл|пополн|кредит/i.test(ty)) continue; }
+    let amt, inc=false; const ty=iType>=0?String(r[iType]||""):"";
+    if(iAmt>=0&&hasNeg){ amt=parseAmt(r[iAmt]); if(!isFinite(amt)||!amt) continue; if(amt>0) inc=true; else amt=-amt; }
+    else if(iDeb>=0){ amt=parseAmt(r[iDeb]); if(!(amt>0)){ const cr=iCr>=0&&iCr!==iDeb?parseAmt(r[iCr]):NaN; if(cr>0){ amt=cr; inc=true; } else continue; } }
+    else { amt=parseAmt(r[iAmt]); if(!(amt>0)) continue; if(/приход|зачисл|пополн|кредит/i.test(ty)) inc=true; }
     const descRaw=iDesc>=0?String(r[iDesc]||"").trim():""; const bcat=iCat>=0?String(r[iCat]||"").trim():"";
+    const sk=savKind(descRaw+" "+bcat+" "+ty);
+    if(sk){ const d=toISO(r[iDate]); if(d) SAVC.push({d,a:Math.round(inc?-amt:amt),k:sk,n:cleanMerchant(descRaw)||bcat||"Перевод"}); continue; }
+    if(inc) continue;
     if(SKIP_RE.test(descRaw+" "+bcat)||/^(пополнения|проценты|бонусы|кэшбэк|инвестиции|зарплата)$/i.test(bcat)) continue;
     const d=toISO(r[iDate]); if(!d) continue;
     const note=cleanMerchant(descRaw)||bcat;
@@ -1284,12 +1538,14 @@ function pdfLocal(text){
   });
   const out=[]; const seen=new Set();
   for(const o of ops){
-    if(o.income||!(o.a>0)) continue;
+    if(!(o.a>0)) continue;
     const full=(o.desc+" "+o.detail).trim();
+    const sk=savKind(full);
+    if(sk){ SAVC.push({d:o.d,a:Math.round(o.income?-o.a:o.a),k:sk,n:cleanMerchant(o.detail||o.desc)||"Перевод"}); continue; }
+    if(o.income) continue;
     if(SKIP_RE.test(full)) continue;
     const bankCat=Object.keys(BANK_MAP).find(k=>o.desc.toLowerCase().startsWith(k.toLowerCase()))||"";
     let note=cleanMerchant(o.detail&&(bankCat||o.desc.length<4)?o.detail:(o.desc.replace(bankCat,"").trim()||o.detail))||bankCat||"Операция";
-    const key=o.d+"|"+o.a+"|"+note; if(seen.has(key)) continue; seen.add(key);
     let cat=categorize(note,bankCat,null), chk=false;
     if(TRANSFER_RE.test(full)){ if(!ruleCat(note)) cat="Прочее"; chk=true; }
     const it=cleanItem({date:o.d,amount:o.a,category:cat,note,s:"выписка",chk}); if(it) out.push(it);
@@ -1299,10 +1555,11 @@ function pdfLocal(text){
 let pdfReady=null, xlsReady=null;
 function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 function ensurePdf(){
-  if(!pdfReady) pdfReady=(async()=>{ const base="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/"; await loadScript(base+"pdf.worker.min.js"); await loadScript(base+"pdf.min.js"); window.pdfjsLib.GlobalWorkerOptions.workerSrc=base+"pdf.worker.min.js"; return window.pdfjsLib; })().catch(e=>{ pdfReady=null; throw e; });
+  if(!pdfReady) pdfReady=(async()=>{ const src=await loadFirst(["vendor/pdf.min.js","https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"]); window.pdfjsLib.GlobalWorkerOptions.workerSrc=src.replace("pdf.min.js","pdf.worker.min.js"); return window.pdfjsLib; })().catch(e=>{ pdfReady=null; throw e; });
   return pdfReady;
 }
-function ensureXlsx(){ if(!xlsReady) xlsReady=loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js").then(()=>window.XLSX).catch(e=>{ xlsReady=null; throw e; }); return xlsReady; }
+async function loadFirst(list){ let err; for(const u of list){ try{ await loadScript(u); return u; }catch(e){ err=e; } } throw err; }
+function ensureXlsx(){ if(!xlsReady) xlsReady=loadFirst(["vendor/xlsx.full.min.js","https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"]).then(()=>window.XLSX).catch(e=>{ xlsReady=null; throw e; }); return xlsReady; }
 async function pdfText(buf){
   const lib=await ensurePdf(); const doc=await lib.getDocument({data:buf}).promise; let out="";
   for(let i=1;i<=doc.numPages;i++){ const pg=await doc.getPage(i); const tc=await pg.getTextContent();
@@ -1313,7 +1570,7 @@ async function pdfText(buf){
 function chunks(text,size){ const lines=text.split("\n"); const res=[]; let cur=""; for(const l of lines){ if((cur+l).length>size&&cur){ res.push(cur); cur=""; } cur+=l+"\n"; } if(cur.trim()) res.push(cur); return res; }
 $("#bankFile").addEventListener("change",async e=>{
   const files=[...e.target.files]; e.target.value=""; if(!files.length) return;
-  resetPreview(); let all=[]; const imgs=files.filter(f=>/^image\//.test(f.type)); const others=files.filter(f=>!/^image\//.test(f.type));
+  resetPreview(); SAVC=[]; let all=[]; const imgs=files.filter(f=>/^image\//.test(f.type)); const others=files.filter(f=>!/^image\//.test(f.type));
   const notes=[];
   try{
     for(const f of others){
@@ -1333,7 +1590,7 @@ $("#bankFile").addEventListener("change",async e=>{
         got=rows.length>1?tableLocal(rows):null;
         if(!got&&sample){ const parts=chunks(text,12000); got=[]; for(let i=0;i<parts.length;i++){ msg(`Разбираю ${f.name} с Claude: часть ${i+1} из ${parts.length}…`); got=got.concat(await aiParse(parts[i],"bank")); } }
       }
-      if(got&&got.length) all=all.concat(got); else notes.push(`${f.name}: не нашла трат. Если это выписка, пришлите её автору — добавим ваш банк.`);
+      if(got&&got.length){ const fi=others.indexOf(f); got.forEach(it=>it._f=fi); all=all.concat(got); } else notes.push(`${f.name}: не нашла трат. Если это выписка, пришлите её автору — добавим ваш банк.`);
     }
     if(imgs.length){
       if(!sample||!IMG_OK){ notes.push(CONFIG.ai===false?"Скриншоты приложение не читает. Скачайте выписку в PDF, Excel или CSV в приложении банка.":"Скриншоты пока разбираются только с Claude. Скачайте выписку в PDF или Excel в приложении банка."); }
@@ -1341,28 +1598,37 @@ $("#bankFile").addEventListener("change",async e=>{
     }
   }catch(err){ const t=sampleErr(err); if(t) notes.push(t); }
   prog(null);
-  if(!all.length){ msg(notes.join(" ")||"Трат не нашла.",true); return; }
-  await showPreview(all);
-  msg(`Нашла ${plural(all.length,"трату","траты","трат")} на ${rub(all.reduce((t,i)=>t+i.a,0))}.${PENDING.some(p=>p.dup)?" Жёлтым — похоже, уже есть: они не отмечены.":""}${all.some(i=>i.chk)?" Переводы людям отмечены «проверьте».":""}${notes.length?" "+notes.join(" "):""}`);
+  if(!all.length&&!SAVC.length){ msg(notes.join(" ")||"Трат не нашла.",true); return; }
+  await showPreview(all,SAVC);
+  msg(`${all.length?`Нашла ${plural(all.length,"трату","траты","трат")} на ${rub(all.reduce((t,i)=>t+i.a,0))}.`:"Трат нет."}${SAVP.length?` Переводов в сбережения: ${SAVP.length} — они внизу.`:""}${PENDING.some(p=>p.dup)?" Жёлтым — похоже, уже есть: они не отмечены.":""}${all.some(i=>i.chk)?" Переводы людям отмечены «проверьте».":""}${notes.length?" "+notes.join(" "):""}`);
 });
 
 
 /* preview */
-async function showPreview(items){
+async function showPreview(items,sav){
   try{ if(document.activeElement&&document.activeElement.blur) document.activeElement.blur(); }catch(e){}
   const yms=[...new Set(items.map(i=>ymOf(i.d)))];
   for(const ym of yms) if(!XP[ym]) await loadMonth(ym);
-  const seen=new Set();
+  const used=new Set(), prior=[];
   PENDING=items.map(it=>{
-    const key=it.d+"|"+it.a+"|"+(it.n||"").toLowerCase();
-    let dup=seen.has(key); seen.add(key);
-    if(!dup){ const t=new Date(it.d+"T12:00:00").getTime(); for(const ym of [ymOf(it.d)]) for(const e of (XP[ym]||[])) if(e.a===it.a&&Math.abs(new Date(e.d+"T12:00:00").getTime()-t)<=864e5*1.5){ dup=true; break; } }
+    const t=new Date(it.d+"T12:00:00").getTime(), near=e=>e.a===it.a&&Math.abs(new Date(e.d+"T12:00:00").getTime()-t)<=864e5*1.5;
+    let dup=false;
+    for(const e of (XP[ymOf(it.d)]||[])) if(!used.has(e)&&near(e)){ used.add(e); dup=true; break; }
+    if(!dup) for(const e of prior) if(e._f!==it._f&&!used.has(e)&&near(e)&&(e.n||"").toLowerCase()===(it.n||"").toLowerCase()){ used.add(e); dup=true; break; }
+    prior.push(it);
     return {it,on:!dup,dup};
   });
+  const ids=new Set(SAVH.map(e=>e.id));
+  SAVP=(sav||[]).map(e=>{ const id="st:"+e.d+"|"+e.a+"|"+normText(e.n); const dup=ids.has(id); return {e:Object.assign({},e,{id,src:"выписка"}),on:!dup,dup}; });
   renderPreview();
 }
 function renderPreview(){
-  const box=$("#pvBox"); box.hidden=!PENDING.length; if(!PENDING.length) return;
+  const box=$("#pvBox"); box.hidden=!PENDING.length&&!SAVP.length; if(box.hidden) return;
+  $("#pv").hidden=!PENDING.length; $("#pvToggle").hidden=!PENDING.length;
+  $("#pvSav").hidden=!SAVP.length;
+  $("#pvSavList").innerHTML=SAVP.map((p,i)=>{ const e=p.e, dd=new Date(e.d+"T12:00:00");
+    return `<div class="pvi${p.dup?" dup":""}"><input type="checkbox" id="svc_${i}" ${p.on?"checked":""} aria-label="Записать"><div style="min-width:0"><div class="t">${esc(e.n)}</div><div class="m">${dd.getDate()} ${MONTHS_G[dd.getMonth()]}${p.dup?" · уже записано":""}</div><select id="svk_${i}" aria-label="Куда"><option value="c"${e.k==="c"?" selected":""}>Подушка</option><option value="p"${e.k==="p"?" selected":""}>Капитал</option></select></div><span class="a">${e.a<0?"−":"+"}${rub(Math.abs(e.a))}</span></div>`; }).join("");
+  SAVP.forEach((p,i)=>{ $("#svc_"+i).addEventListener("change",ev=>{ p.on=ev.target.checked; }); $("#svk_"+i).addEventListener("change",ev=>{ p.e.k=ev.target.value; }); });
   const on=PENDING.filter(p=>p.on); $("#pvTitle").textContent=`Отмечено ${on.length} на ${rub(on.reduce((t,p)=>t+p.it.a,0))}`;
   $("#pvToggle").textContent=on.length?"Снять все":"Отметить все";
   $("#pv").innerHTML=PENDING.map((p,i)=>{ const it=p.it; const dd=new Date(it.d+"T12:00:00");
@@ -1370,19 +1636,49 @@ function renderPreview(){
   PENDING.forEach((p,i)=>{ fillSel($("#ps_"+i),catNames(),p.it.c); $("#ps_"+i).addEventListener("change",e=>{ p.it.c=e.target.value; p.it.chk=false; learn(p.it.n,p.it.c); }); $("#pc_"+i).addEventListener("change",e=>{ p.on=e.target.checked; renderPreviewTitle(); }); });
 }
 function renderPreviewTitle(){ const on=PENDING.filter(p=>p.on); $("#pvTitle").textContent=`Отмечено ${on.length} на ${rub(on.reduce((t,p)=>t+p.it.a,0))}`; $("#pvToggle").textContent=on.length?"Снять все":"Отметить все"; }
-function resetPreview(){ PENDING=[]; $("#pvBox").hidden=true; prog(null); }
+function resetPreview(){ PENDING=[]; SAVP=[]; $("#pvBox").hidden=true; prog(null); }
 $("#pvToggle").addEventListener("click",()=>{ const any=PENDING.some(p=>p.on); PENDING.forEach(p=>p.on=!any); renderPreview(); });
 $("#pvCancel").addEventListener("click",()=>{ resetPreview(); msg(""); });
 $("#pvSave").addEventListener("click",async()=>{
-  const list=PENDING.filter(p=>p.on).map(p=>p.it); if(!list.length){ msg("Ничего не отмечено.",true); return; }
+  const list=PENDING.filter(p=>p.on).map(p=>{ const it=Object.assign({},p.it); delete it._f; return it; });
+  const sv=SAVP.filter(p=>p.on).map(p=>Object.assign({},p.e,{at:Date.now()}));
+  if(!list.length&&!sv.length){ msg("Ничего не отмечено.",true); return; }
+  if(sv.length){ const ids=new Set(SAVH.map(e=>e.id)); SAVH=SAVH.concat(sv.filter(e=>!ids.has(e.id))); saveSav(); }
+  if(!list.length){ resetPreview(); msg(`Записано в историю сбережений: ${sv.length}.`); renderAll(); setTimeout(()=>closeSheet(),700); return; }
   const btn=$("#pvSave"); if(btn.disabled) return; btn.disabled=true; btn.textContent="Сохраняю…";
   setTimeout(()=>{ btn.disabled=false; btn.textContent="Сохранить"; },2500);
   const sum=list.reduce((t,i)=>t+i.a,0); const firstYM=ymOf(list.sort((a,b)=>b.d.localeCompare(a.d))[0].d);
   await addItems(list); resetPreview(); $("#aiText").value="";
-  msg(`Сохранено: ${plural(list.length,"трата","траты","трат")} на ${rub(sum)}.`);
+  msg(`Сохранено: ${plural(list.length,"трата","траты","трат")} на ${rub(sum)}.${sv.length?` В историю сбережений: ${sv.length}.`:""}`);
   if(firstYM!==VM) setVM(firstYM);
   setTimeout(()=>closeSheet(),700);
 });
+
+/* savings sheet */
+let SSIGN=1;
+function openSav(){
+  SSIGN=1; document.querySelectorAll("#sSign button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.s==="1"))); setSignLabels();
+  const [y,m]=VM.split("-").map(Number); const now=new Date();
+  $("#sDate").value=(y===now.getFullYear()&&m===now.getMonth()+1)||VM>ymOf(todayStr())?todayStr():dstr(new Date(y,m,0));
+  $("#sCush").value=""; $("#sCap").value=""; $("#sNote").value=""; $("#sMsg").textContent=""; fillHaves();
+  openSheet("#savSheet");
+}
+function setSignLabels(){ $("#sCush").parentElement.firstChild.textContent=SSIGN>0?"В подушку, ₽":"Из подушки, ₽"; $("#sCap").parentElement.firstChild.textContent=SSIGN>0?"В капитал, ₽":"Из капитала, ₽"; }
+function fillHaves(){ const c=curCush(), p=curCap(); $("#sHaveC").value=c!=null?Math.round(c*1000):""; $("#sHaveP").value=p!=null?Math.round(p*1000):""; }
+document.querySelectorAll("#sSign button").forEach(b=>b.addEventListener("click",()=>{ SSIGN=+b.dataset.s; document.querySelectorAll("#sSign button").forEach(x=>x.setAttribute("aria-selected",String(x===b))); setSignLabels(); }));
+$("#sGo").addEventListener("click",()=>{
+  const c=parseFloat($("#sCush").value), p=parseFloat($("#sCap").value), d=$("#sDate").value||todayStr(), n=$("#sNote").value.trim().slice(0,60);
+  const add=[]; if(c>0) add.push({k:"c",a:c}); if(p>0) add.push({k:"p",a:p});
+  const sm=$("#sMsg");
+  if(!add.length){ sm.textContent="Впишите сумму хотя бы в одно поле."; sm.className="msg err"; return; }
+  for(const x of add) SAVH.push({id:uid(),d,k:x.k,a:Math.round(SSIGN*x.a),n,src:"",at:Date.now()});
+  saveSav(); HSEL=ymOf(d);
+  $("#sCush").value=""; $("#sCap").value=""; $("#sNote").value=""; fillHaves();
+  const cc=curCush(), pp=curCap();
+  sm.className="msg"; sm.textContent=`Записано. Сейчас в подушке ${tys((cc||0)*1000)}, в капитале ${tys((pp||0)*1000)}.`;
+  renderAll();
+});
+["C","P"].forEach(K=>$("#sHave"+K).addEventListener("change",e=>{ const v=parseFloat(e.target.value); setHave(K==="C"?"c":"p",isFinite(v)&&v>=0?Math.round(v)/1000:null); saveBud(); renderAll(); $("#sMsg").className="msg"; $("#sMsg").textContent="Остаток обновлён."; }));
 
 /* edit sheet */
 let EDIT=null;
@@ -1444,7 +1740,7 @@ $("#csvDl").addEventListener("click",async()=>{
   try{ await downloads.save({filename:`траты-${VM}.csv`,data:csv}); menuMsg("Файл сохранён."); }catch(e){ if(e&&e.code!=="declined") menuMsg("Не получилось сохранить файл.",true); }
 });
 async function collectBackup(){
-  const out={app:"finplan",v:3,at:new Date().toISOString(),params:P,budget:BUD,rules:RULES,expenses:{},income:{}};
+  const out={app:"finplan",v:4,at:new Date().toISOString(),params:P,budget:BUD,rules:RULES,savings:SAVH,expenses:{},income:{}};
   const keys=[]; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith(LS+"expenses/")) keys.push(k.slice((LS+"expenses/").length)); } }catch(e){}
   if(CLOUD) keys.push(...await cloudMonths());
   for(const ym of new Set(keys.concat(Object.keys(XP)))){ const d=await getDoc("expenses/"+ym); if(d&&d.items&&d.items.length) out.expenses[ym]=d.items; if(d&&typeof d.income==="number") out.income[ym]=d.income; }
@@ -1463,6 +1759,7 @@ async function restoreBackup(text){
     if(o.rules&&typeof o.rules==="object"){ RULES=Object.assign({},RULES,o.rules); await setDoc("plan/rules",{map:RULES}); }
     for(const [ym,v] of Object.entries(o.income||{})){ if(/^\d{4}-\d{2}$/.test(ym)&&typeof v==="number") await mutateMonth(ym,x=>x,v); }
     if(o.budget&&Array.isArray(o.budget.cats)){ BUD=budFrom(o.budget); await setDoc("plan/budget",Object.assign({},BUD)); }
+    if(Array.isArray(o.savings)){ const ids=new Set(SAVH.map(e=>e.id)); SAVH=SAVH.concat(o.savings.filter(e=>e&&e.id&&/^\d{4}-\d{2}-\d{2}$/.test(e.d)&&(e.k==="c"||e.k==="p")&&isFinite(e.a)&&!ids.has(e.id))); await setDoc("plan/savings",{list:SAVH}); }
     let n=0; for(const [ym,items] of Object.entries(o.expenses||{})){ if(!/^\d{4}-\d{2}$/.test(ym)||!Array.isArray(items)) continue; const clean=items.map(cleanItem).filter(Boolean); n+=clean.length;
       await mutateMonth(ym,cur=>{ const ids=new Set(cur.map(i=>i.id)); return cur.concat(clean.filter(i=>!ids.has(i.id))); }); }
     syncInputs(); render(); await setVM(VM); menuMsg(`Загружено: ${plural(n,"трата","траты","трат")}, бюджет и план.`);
@@ -1523,7 +1820,7 @@ function openWizard(){
   $("#wAd").value=String(BUD.adults||2); $("#wKid").value=String(BUD.kids||0);
   const g=n=>(BUD.cats.find(c=>c.name===n)||{}).plan; $("#wRent").value=g("Аренда")||0; $("#wCred").value=g("Кредиты")||0; $("#wRate").value=BUD.creditRate??"";
   const t=BUD.cats.find(c=>/Путешеств/.test(c.name)); $("#wTrip").value=t?t.plan:"";
-  $("#wCush").value=BUD.cushionHave??""; $("#wCap").value=BUD.capitalHave??""; $("#wMsg").textContent=""; openSheet("#wizSheet");
+  $("#wCush").value=curCush()??""; $("#wCap").value=curCap()??""; $("#wMsg").textContent=""; openSheet("#wizSheet");
 }
 $("#wGo").addEventListener("click",()=>{
   const f=id=>parseFloat($(id).value);
@@ -1531,7 +1828,7 @@ $("#wGo").addEventListener("click",()=>{
   const wm=$("#wMsg");
   if(!(inc>0)){ wm.textContent="Впишите доход."; wm.className="msg err"; return; }
   BUD.income=inc; BUD.adults=A; BUD.kids=K; BUD.creditRate=isFinite(rate)?rate:null;
-  const ch=f("#wCush"), cp=f("#wCap"); BUD.cushionHave=isFinite(ch)?ch:(BUD.cushionHave??null); BUD.capitalHave=isFinite(cp)?cp:(BUD.capitalHave??null);
+  const ch=f("#wCush"), cp=f("#wCap"); if(isFinite(ch)||isFinite(cp)){ const c=isFinite(ch)?ch:curCush(), pp=isFinite(cp)?cp:curCap(); setHave(null); BUD.cushionHave=c; BUD.capitalHave=pp; }
   const tripV=isFinite(trip)?trip:Math.round(inc*0.06);
   // first pass: provisional categories to estimate expenses for the recommendation
   const distribute=savePct=>{
@@ -1553,13 +1850,15 @@ $("#wGo").addEventListener("click",()=>{
   saveBud(); renderAll(); closeSheet();
 });
 $("#homeTip").addEventListener("click",()=>{ $("#homeText").hidden=false; });
+/* donate: set CONFIG.donateUrl to your Boosty / CloudTips / ЮMoney link to show the menu item */
+if(CONFIG.donateUrl){ $("#donateBtn").hidden=false; $("#donateBtn").addEventListener("click",()=>{ const W=window.Telegram&&window.Telegram.WebApp; if(W&&W.initData&&W.openLink) W.openLink(CONFIG.donateUrl); else window.open(CONFIG.donateUrl,"_blank","noopener"); }); }
 
 /* assistant */
 let TURNS=[], askCtl=null;
 $("#sugg").innerHTML=CONFIG.sugg.map((q,i)=>`<button type="button" data-q="${i}">${esc(q)}</button>`).join("");
 $("#sugg").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ $("#askText").value=CONFIG.sugg[+b.dataset.q]; ask(); }));
 async function buildContext(){
-  const m=model(P); const cur=ymOf(todayStr()); const yms=[shiftYM(cur,-2),shiftYM(cur,-1),cur];
+  const pb=planBase(); const pj=pb.I>0?journey(P,pb):null; const fiT=pj?pj.ms.m5:null; const cur=ymOf(todayStr()); const yms=[shiftYM(cur,-2),shiftYM(cur,-1),cur];
   for(const ym of yms) if(!XP[ym]) await loadMonth(ym);
   const lines=yms.map(ym=>{ const s=sumsByCat(XP[ym]||[]); const tot=Object.values(s).reduce((a,b)=>a+b,0); return `${ymLabel(ym)}: всего ${Math.round(tot)} ₽; `+Object.entries(s).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${Math.round(v)}`).join(", "); }).join("\n");
   const recent=(XP[cur]||[]).slice().sort((a,b)=>b.d.localeCompare(a.d)).slice(0,40).map(i=>`${i.d} ${i.a} ₽ ${i.c} ${i.n} (${i.w})`).join("\n");
@@ -1567,8 +1866,8 @@ async function buildContext(){
   return `${CONFIG.persona}
 Отвечай по-русски, коротко и по делу, с конкретными цифрами из данных ниже. Не выдумывай данных; если чего-то не хватает — скажи, что нужно. Не советуй конкретные ценные бумаги; ты не финансовый консультант — даёшь расчёты и варианты, решение за человеком. Без морализаторства: траты на радости — часть плана.
 Сегодня ${todayStr()}, прошло ${d.getDate()} из ${dim} дней месяца.
-ПЛАН: капитал ${P.cap0} млн; откладывают в год ${fmt(m.s_tot,2)} млн; рост взносов сверх инфляции ${P.sg}%; доходность ${P.ret}%; инфляция ${P.infl}%; расходы без аренды ${P.exp} млн/год; аренда ${P.rent} тыс/мес; возраст ${P.age}; ребёнок: ${P.kid?"в "+P.birth:"не в плане"}; квартира: ${P.flat?`${P.price} млн в сегодняшних ценах, покупка в ${P.buy}, платёж ${Math.round(m.fpay+m.mpay)} тыс/мес, денег с резервом ${m.resok?"хватает":"не хватает"}`:"не в плане"}; финансовая свобода ${m.fiRow?m.fiRow.y+" (в "+m.fiRow.age+" лет)":"не достигается за "+HOR+" лет"}, нужно ~${Math.round(m.tgt)} млн в сегодняшних деньгах.
-БЮДЖЕТ (тыс ₽/мес): доход ${BUD.income??"не указан"}; семья: взрослых ${BUD.adults}, детей ${BUD.kids}; в подушку ${BUD.cushion}, в капитал ${BUD.capital} в месяц; уже отложено: подушка ${BUD.cushionHave??"?"}, капитал ${BUD.capitalHave??"?"} тыс; ставка по кредиту ${BUD.creditRate??"нет"}; свободно ${freePlan()??"—"}; траты по категориям: ${BUD.cats.map(c=>c.name+" "+c.plan).join("; ")}.
+ПЛАН: возраст ${P.age}; доходность ${P.ret}%, инфляция ${P.infl}%, изъятие ${P.swr}%; ребёнок: ${P.kid?"в "+P.birth:"не в плане"}; квартира: ${P.flat&&pj&&pj.buy?`${P.price} млн сегодня, покупка в ${pj.buy.y}, платёж ~${Math.round(pj.buy.payR)} тыс/мес`:"не в плане"}; финансовая независимость: ${fiT!=null?yearOf(fiT)+" (в "+ageAt(fiT)+" лет)":"не достигается за "+HOR+" лет"}, нужно ~${pj?Math.round(pj.pts[0].fi/1000):"?"} млн в сегодняшних деньгах.
+БЮДЖЕТ (тыс ₽/мес): доход ${BUD.income??"не указан"}; семья: взрослых ${BUD.adults}, детей ${BUD.kids}; в подушку ${BUD.cushion}, в капитал ${BUD.capital} в месяц; уже отложено: подушка ${curCush()??"?"}, капитал ${curCap()??"?"} тыс; история сбережений по месяцам (₽): ${(()=>{ const st=savStats(); return st?st.months.slice(-12).map(ym=>ym+" "+Math.round(st.tot(ym))).join(", "):"нет"; })()}; ставка по кредиту ${BUD.creditRate??"нет"}; свободно ${freePlan()??"—"}; траты по категориям: ${BUD.cats.map(c=>c.name+" "+c.plan).join("; ")}.
 ФАКТ ПО МЕСЯЦАМ (₽):
 ${lines}
 ПОСЛЕДНИЕ ТРАТЫ:
@@ -1593,7 +1892,7 @@ $("#askClear").addEventListener("click",()=>{ TURNS=[]; $("#chat").innerHTML="";
 /* navigation */
 const SCR=["spend","budget","stats","plan"];
 function show(s){ if(!SCR.includes(s)) s="spend"; SCR.forEach(k=>$("#scr-"+k).hidden=k!==s); document.querySelectorAll(".nav [data-scr]").forEach(b=>{ if(b.dataset.scr===s) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
-  $("#monthBox").style.visibility=(s==="plan")?"hidden":"visible"; if(s==="stats") renderStats(); if(s==="plan") render(); $("#app").classList.toggle("wide",s==="plan"); try{ localStorage.setItem(LS+"tab",s);}catch(e){} window.scrollTo(0,0); }
+  $("#monthBox").style.display=(s==="plan")?"none":""; if(s==="stats") renderStats(); if(s==="plan") render();  try{ localStorage.setItem(LS+"tab",s);}catch(e){} window.scrollTo(0,0); }
 document.querySelectorAll(".nav [data-scr]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.scr)));
 $("#mPrev").addEventListener("click",()=>setVM(shiftYM(VM,-1)));
 $("#mNext").addEventListener("click",()=>setVM(shiftYM(VM,1)));
@@ -1619,11 +1918,13 @@ function backupBanner(){
 /* boot */
 let IMG_OK=false, IMG_MAX=1;
 applyParams((lsGet("plan/params")||{}).p);
-{ const b=lsGet("plan/budget"); if(b&&Array.isArray(b.cats)) BUD=budFrom(b); const r=lsGet("plan/rules"); if(r&&r.map) RULES=r.map; }
+{ const b=lsGet("plan/budget"); if(b&&Array.isArray(b.cats)) BUD=budFrom(b); const r=lsGet("plan/rules"); if(r&&r.map){ RULES=r.map; pruneRules(); } const sv=lsGet("plan/savings"); if(sv&&Array.isArray(sv.list)) SAVH=sv.list; stampHave(); }
 fillSel($("#mCat"),catNames(),"Продукты"); fillSel($("#mWho"),WHO,WHO[0]);
 buildInputs(); syncInputs(); render();
 $("#tKid").addEventListener("change",e=>{ P.kid=e.target.checked?1:0; render(); saveParams(); });
 $("#tFlat").addEventListener("change",e=>{ P.flat=e.target.checked?1:0; render(); saveParams(); });
+document.querySelectorAll("#pView button").forEach(x=>x.addEventListener("click",()=>{ PVIEW=x.dataset.v; renderChart(); }));
+{ let rz=null; window.addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(!$("#scr-plan").hidden){ renderChart(); if(LASTJ) renderHist(LASTJ,LASTB); } },150); }); }
 let st=(location.hash||"").slice(1); if(!SCR.includes(st)){ try{ st=localStorage.getItem(LS+"tab")||"spend"; }catch(e){ st="spend"; } } show(st);
 setStatus(false,CONFIG.localStatus);
 if(CONFIG.mode==="public"){ let seen=false; try{ seen=localStorage.getItem(LS+"banner")==="1"; }catch(e){} $("#pubBanner").hidden=seen; $("#pubOk").addEventListener("click",()=>{ $("#pubBanner").hidden=true; try{ localStorage.setItem(LS+"banner","1"); }catch(e){} }); }
@@ -1637,12 +1938,12 @@ try{ if(CONFIG.mode==="public"&&navigator.storage&&navigator.storage.persist) na
     $("#pubBanner").querySelector("span").textContent="Мы их не видим. Они будут на месте на любом телефоне, где вы вошли в Telegram.";
     $("#homeTip").hidden=true; $("#csvDl").hidden=true;
     try{
-      const [ps,bs,rs]=await Promise.all([getDoc("plan/params"),getDoc("plan/budget"),getDoc("plan/rules")]);
-      if(rs&&rs.map) RULES=rs.map; if(ps&&ps.p) applyParams(ps.p); if(bs&&Array.isArray(bs.cats)) BUD=budFrom(bs);
+      const [ps,bs,rs,svs]=await Promise.all([getDoc("plan/params"),getDoc("plan/budget"),getDoc("plan/rules"),getDoc("plan/savings")]);
+      if(rs&&rs.map){ RULES=rs.map; pruneRules(); } if(ps&&ps.p) applyParams(ps.p); if(bs&&Array.isArray(bs.cats)) BUD=budFrom(bs); if(svs&&Array.isArray(svs.list)) SAVH=svs.list;
       /* first launch in Telegram: carry over what was entered in this browser before */
-      if(!ps&&!bs){ const lp=lsGet("plan/params"), lb=lsGet("plan/budget"), lr=lsGet("plan/rules"); if(lp) setDoc("plan/params",lp); if(lb) setDoc("plan/budget",lb); if(lr) setDoc("plan/rules",lr);
+      if(!ps&&!bs){ const lp=lsGet("plan/params"), lb=lsGet("plan/budget"), lr=lsGet("plan/rules"), lsv=lsGet("plan/savings"); if(lp) setDoc("plan/params",lp); if(lb) setDoc("plan/budget",lb); if(lr) setDoc("plan/rules",lr); if(lsv) setDoc("plan/savings",lsv);
         try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith(LS+"expenses/")){ const v=lsGet(k.slice(LS.length)); if(v&&v.items&&v.items.length) setDoc(k.slice(LS.length),v); } } }catch(e){} }
-      fillSel($("#mCat"),catNames(),"Продукты"); syncInputs(); render(); await setVM(VM); backupBanner();
+      stampHave(); fillSel($("#mCat"),catNames(),"Продукты"); syncInputs(); render(); await setVM(VM); backupBanner();
     }catch(e){}
     return;
   }
